@@ -1,5 +1,5 @@
 import pickle
-
+from parameters import armor_names, attribute_names, attribute_skill_dict, character_names, parameter_names
 
 class Character:
 
@@ -10,115 +10,30 @@ class Character:
         self.race = None
         self.profession = None
         self.traits = None
-        self.attributes = {"Strength": 0,
-                           "Agility": 0,
-                           "Intelligence": 0,
-                           "Toughness": 0,
-                           "Willpower": 0,
-                           "Charisma": 0
-                           }
+        self.attributes = {}
+        self.attribute_advancements = {}
+        self.attribute_bonuses = {}
+        for attribute in attribute_names:
+            self.attributes[attribute] = 0
+            self.attribute_advancements[attribute] = 0
+            self.attribute_bonuses[attribute] = 0
 
-        self.attribute_advancements = {"Strength": 0,
-                                       "Agility": 0,
-                                       "Intelligence": 0,
-                                       "Toughness": 0,
-                                       "Willpower": 0,
-                                       "Charisma": 0
-                                       }
+        self.skills = {}
+        self.skill_bonuses = {}
+        for skill in attribute_skill_dict:
+            self.skills[skill] = 0
+            self.skill_bonuses[skill] = 0
 
-        self.attribute_bonuses = {"Strength": 0,
-                                  "Agility": 0,
-                                  "Intelligence": 0,
-                                  "Toughness": 0,
-                                  "Willpower": 0,
-                                  "Charisma": 0
-                                  }
-
-        self.skills = {"Athletics": 0,
-                       "Unarmed": 0,
-                       "Armed": 0,
-                       "Light weapons": 0,
-                       "Heavy weapons": 0,
-                       "Gunnery": 0,
-                       "Dodge": 0,
-                       "Dexterity": 0,
-                       "Perception": 0,
-                       "Analysis": 0,
-                       "Calmness": 0,
-                       "Persistence": 0,
-                       "Resistance": 0,
-                       "Steal": 0,
-                       "Hide": 0,
-                       "Diplomacy": 0,
-                       "Deceive": 0,
-                       "Commerce": 0,
-                       "Interrogation": 0,
-                       "Intimidation": 0,
-                       "Survival": 0,
-                       "Cybernetics": 0,
-                       "Mechanics": 0,
-                       "Lockpicking": 0,
-                       "Navigation": 0,
-                       "Medicine": 0,
-                       "Speeders": 0,
-                       "Walkers": 0,
-                       "Starships": 0
-                       }
-
-        self.skill_bonuses = {"Athletics": 0,
-                              "Unarmed": 0,
-                              "Armed": 0,
-                              "Light weapons": 0,
-                              "Heavy weapons": 0,
-                              "Gunnery": 0,
-                              "Dodge": 0,
-                              "Dexterity": 0,
-                              "Perception": 0,
-                              "Analysis": 0,
-                              "Calmness": 0,
-                              "Persistence": 0,
-                              "Resistance": 0,
-                              "Steal": 0,
-                              "Hide": 0,
-                              "Diplomacy": 0,
-                              "Deceive": 0,
-                              "Commerce": 0,
-                              "Interrogation": 0,
-                              "Intimidation": 0,
-                              "Survival": 0,
-                              "Cybernetics": 0,
-                              "Mechanics": 0,
-                              "Lockpicking": 0,
-                              "Navigation": 0,
-                              "Medicine": 0,
-                              "Speeders": 0,
-                              "Walkers": 0,
-                              "Starships": 0
-                              }
-
-        self.parameters = {
-            "Low encumbrance": 0,
-            "Medium encumbrance": 0,
-            "High encumbrance": 0,
-            "Low speed": 0,
-            "Medium speed": 0,
-            "High speed": 0,
-            "Bad reputation": 0,
-            "Good reputation": 0,
-            "Total HP": 0,
-            "Current HP": 0,
-            "Total PP": 0,
-            "Current PP": 0,
-            "Fatigue": 0,
-            "Armor head": 0,
-            "Armor chest": 0,
-            "Armor rh": 0,
-            "Armor lh": 0,
-            "Armor rl": 0,
-            "Armor ll": 0
-        }
+        self.parameters = {}
+        for parameter in parameter_names:
+            self.parameters[parameter] = 0
+        for name in character_names:
+            self.parameters[name] = ""
 
         self.armor = {}
+        # for armor in armor_names:
+        #     self.armor[armor] = 0
+
         self.weapons = {}
         self.items = {}
         self.notes = ""

@@ -4,37 +4,7 @@ from PyQt5.QtCore import pyqtSignal
 
 from sheet import Character
 from window import MainWindow
-
-attribute_skill_dict = {"Athletics": ["Strength"],
-                        "Unarmed": ["Strength", "Agility"],
-                        "Armed": ["Strength", "Agility"],
-                        "Light weapons": ["Agility"],
-                        "Heavy weapons": ["Strength"],
-                        "Gunnery": ["Intelligence", "Agility"],
-                        "Dodge": ["Agility"],
-                        "Dexterity": ["Agility"],
-                        "Perception": ["Intelligence", "Agility"],
-                        "Analysis": ["Intelligence"],
-                        "Calmness": ["Willpower"],
-                        "Persistence": ["Willpower"],
-                        "Resistance": ["Toughness"],
-                        "Steal": ["Agility"],
-                        "Hide": ["Agility"],
-                        "Diplomacy": ["Charisma"],
-                        "Deceive": ["Charisma"],
-                        "Commerce": ["Charisma"],
-                        "Interrogation": ["Charisma"],
-                        "Intimidation": ["Strength", "Charisma"],
-                        "Survival": ["Intelligence", "Agility"],
-                        "Cybernetics": ["Intelligence"],
-                        "Mechanics": ["Intelligence"],
-                        "Lockpicking": ["Agility"],
-                        "Navigation": ["Intelligence"],
-                        "Medicine": ["Intelligence"],
-                        "Speeders": ["Agility"],
-                        "Walkers": ["Agility"],
-                        "Starships": ["Agility"]
-                        }
+from parameters import attribute_skill_dict, armor_names
 
 
 class Application:
@@ -60,14 +30,11 @@ class Application:
             param_class = self.main_widget.params_dict[parameter]
             param_class.value_changed.connect(self.change_parameter)
 
-        for armor in self.main_widget.armor_dict:
-            armor_class = self.main_widget.armor_dict[armor]
-            armor_class.armor_changed.connect(self.change_armor)
+        # for armor in self.main_widget.armor_dict:
+        #     armor_class = self.main_widget.armor_dict[armor]
+        #     armor_class.armor_changed.connect(self.change_armor)
 
         self.fill_form()
-
-
-
 
     def file_IO(self, *args):
         path, action = args
@@ -91,6 +58,7 @@ class Application:
             self.sheet.attribute_advancements[name] = value
         total = self.calculate_attribute(name)
         self.update_attribute(name, total)
+        self.calculate_armor()
 
     def calculate_attribute(self, attribute):
         att_value = 0
@@ -106,6 +74,14 @@ class Application:
                 skill_val = self.calculate_skill(skill)
                 self.update_skill(skill, skill_val)
 
+    def change_skill(self, name, val_type, value):
+        if val_type == "adv":
+            self.sheet.skills[name] = int(value)
+        if val_type == "bonus":
+            self.sheet.skill_bonuses[name] = int(value)
+        final_value = self.calculate_skill(name)
+        self.update_skill(name, final_value)
+
     def calculate_skill(self, skill):
         ski_value = 0
         ski_value += self.sheet.skills[skill]
@@ -117,33 +93,19 @@ class Application:
         final_value = "/".join(values)
         return final_value
 
-    def change_skill(self, name, val_type, value):
-        if val_type == "adv":
-            self.sheet.skills[name] = value
-        if val_type == "bonus":
-            self.sheet.skill_bonuses[name] = value
-        final_value = self.calculate_skill(name)
-        self.update_skill(name, final_value)
-
     def update_skill(self, name, value):
         self.main_widget.skills_dict[name].set_total(value)
 
     def change_parameter(self, name, value):
         self.sheet.parameters[name] = value
 
+    def update_parameter(self, name, value):
+        self.main_widget.params_dict[name].setText(str(value))
+
     def change_armor(self, slot, armor_dict):
         self.sheet.armor[slot] = armor_dict
 
-    def fill_armor(self, slot):
-        if slot not in self.sheet.armor:
-            return
-        armor_dict = self.sheet.armor[slot]
-        armor_widget = self.main_widget.armor_dict[slot]
-        for key in armor_dict:
-            armor_widget.set_prop(key, armor_dict[key])
-
-    def fill_form(self):
-        # Attributes
+    def fill_attributes(self):
         for attribute in self.sheet.attributes:
             val = self.sheet.attributes[attribute]
             self.main_widget.attribute_dict[attribute].set_base(val)
@@ -151,7 +113,8 @@ class Application:
             self.main_widget.attribute_dict[attribute].set_advancement(val)
             val = self.calculate_attribute(attribute)
             self.update_attribute(attribute, val)
-        # Skills
+
+    def fill_skills(self):
         for skill in self.sheet.skills:
             val = self.sheet.skills[skill]
             self.main_widget.skills_dict[skill].set_advancement(val)
@@ -159,7 +122,43 @@ class Application:
             self.main_widget.skills_dict[skill].set_bonus(val)
             val = self.calculate_skill(skill)
             self.update_skill(skill, val)
-        pass
+
+    def fill_parameters(self):
+        for parameter in self.sheet.parameters:
+            val = self.sheet.parameters[parameter]
+            if parameter not in self.main_widget.params_dict:
+                continue
+            self.main_widget.params_dict[parameter].setText(str(val))
+            self.update_parameter(parameter, val)
+
+    def calculate_armor(self):
+        armor = {}
+        for armor_slot in armor_names:
+            armor[armor_slot] = self.sheet.attributes["Toughness"] // 10
+        for armor_name in self.sheet.armor:
+            armor_item = self.sheet.armor[armor_name]
+            if not armor_item["Equipped"]:
+                continue
+            for armor_slot in armor_names:
+                armor[armor_slot] += armor_item[armor_slot]
+        print(armor)
+        self.update_armor(armor)
+
+    def update_armor(self, armor_dict):
+        for armor_slot in armor_dict:
+            self.main_widget.params_dict[armor_slot].setText(str(armor_dict[armor_slot]))
+
+    def fill_form(self):
+        # Attributes
+        self.fill_attributes()
+        # Skills
+        self.fill_skills()
+        # Parameters
+        self.fill_parameters()
+        # Armor
+        self.calculate_armor()
+
+        self.main_widget.character = self.sheet
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

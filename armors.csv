@@ -1,0 +1,47 @@
+#Wewnętrzna nazwa;Wyświetlana nazwa;Dostępność;Cena;Opancerzenie;Waga;Specjalne
+tact_vest;Kamizelka taktyczna;Zwykła;300;Chest 1;3;
+bh_armor;Zbroja łowcy nagród;Bardzo Rzadka;2500;Chest 2, Head 1, LH 1, RH 1, LL 1, RL 1;6;
+ball_vest;Kamizelka balistyczna;Niezwykła;500;Chest 1;3;Physical 1
+ball_helm;Hełm balistyczny;Zwykła;300;Head 1;1;
+storm_armor;Zbroja szturmowca;Czarnorynkowa;10000;Chest 2, Head 2, LH 2, RH 2, LL 2, RL 2;12;Energy 2
+lamel_armor;Zbroja laminatowa;Niezwykła;3500;Chest 2, LH 2, RH 2, LL 2, RL 2;10;
+
+#Metalowe części zbroi:
+#Korpus/Ręce/Nogi
+#Durastal
+dust_vest;Napierśnik durastalowy;Niezwykła;600;Chest 3;5;
+dust_rh;Prawa rękawica durastalowa;Niezwykła;300;RH 3;2;
+dust_lh;Lewa rękawica durastalowa;Niezwykła;300;LH 3;2;
+dust_legs;Nogawice durastalowe;Niezwykła;400;LL 3, RL 3;4;
+
+#Duraplast
+dupl_vest;Napierśnik duraplastowy;Niezwykła;1000;Chest 2;4;Energy 2
+dupl_rh;Prawa rękawica duraplastowa;Niezwykła;550;RH 2;1;Energy 2
+dupl_lh;Lewa rękawica duraplastowa;Niezwykła;550;LH 2;1;Energy 2
+dupl_legs;Nogawice duraplastowe;Niezwykła;800;LL 2, RL 2;3;Energy 2
+dupl_helm;Hełm duraplastowy;Niezwykła;1200;Head 2;2;Energy 2
+
+#DuraPancerz
+duar_vest;Napierśnik durapancerzowy;Bardzo Rzadka;1200;Chest 3;4;Energy 1
+duar_rh;Prawa rękawica durapancerzowa;Bardzo Rzadka;500;RH 3;2;Energy 1
+duar_lh;Lewa rękawica durapancerzowa;Bardzo Rzadka;500;LH 3;2;Energy 1
+duar_legs;Nogawice durapancerzowe;Bardzo Rzadka;700;LL 3, RL 3;3;Energy 1
+duar_helm;Hełm durapancerzowy;Niezwykła;1500;Head 3;2;Energy 1
+
+#Beskar
+besk_vest;Napierśnik beskarowy;Czarnorynkowa;12000;Chest 4;5;Energy 3
+besk_rh;Prawa rękawica beskarowa;Czarnorynkowa;6000;RH 4;2;Energy 3
+besk_lh;Lewa rękawica beskarowa;Czarnorynkowa;6000;LH 4;2;Energy 3
+besk_legs;Nogawice beskarowe;Czarnorynkowa;9000;LL 4, RL 4;4;Energy 3
+besk_helm;Hełm beskarowy;Czarnorynkowa;13000;Head 4;2;Energy 3
+
+#Wzmacniane ubranie
+cloth_shirt;Wzmacniana koszula;Zwykła;100;Chest 1, LH 1, RH 1;1;
+cloth_legs;Wzmacniane spodnie;Zwykła;100;LL 1, RL 1;1;
+
+#Tarcza osobista
+#Czarnorynkowa
+#20000
+#25 punktów
+
+

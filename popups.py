@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QComboBox, QLabel, 
                             QSizePolicy, QTextEdit
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
+from parameters import load_abilities
 
 
 class BasePopup(QWidget):
@@ -35,10 +36,13 @@ class BasePopup(QWidget):
 
 
 class AbilityPopup(BasePopup):
+    popup_ok = pyqtSignal(dict)
 
-    def __init__(self, character=None):
+    def __init__(self, parent=None, character=None):
         self.abilities = load_abilities()
-        self.ability_names = sorted([a for a in self.abilities.keys()])
+        self.character = character
+        self.ability_names = sorted([a for a in self.abilities.keys()
+                                     if a not in self.character.abilities])
         self.selected_ability = None
         BasePopup.__init__(self)
         self.setWindowTitle("Dodaj zdolność")
@@ -47,7 +51,7 @@ class AbilityPopup(BasePopup):
         self.ability_requirements = QLabel()
         self.ability_requirements.setText(" " * 30)
         self.ability_cost = QLabel()
-        self.ability_combobox.addItems(self.ability_names)
+        self.ability_combobox.addItems([self.abilities[a]["display"] for a in self.ability_names])
         self.ability_combobox.currentIndexChanged.connect(self.select_item)
         self.ability_name_layout = QVBoxLayout()
         self.ability_requirements_layout = QVBoxLayout()
@@ -78,27 +82,16 @@ class AbilityPopup(BasePopup):
     def select_item(self):
         index = self.ability_combobox.currentIndex()
         item = self.ability_names[index]
-        # self.selected_ability = item
         self.ability_requirements.setText("\n".join(self.abilities[item]["requirements"]))
         self.ability_description.setText(self.abilities[item]["description"])
+        print(self.abilities[item]["tier"])
+        self.ability_cost.setText("{} XP".format(int(self.abilities[item]["tier"])*300))
 
     def ok_pressed(self):
         index = self.ability_combobox.currentIndex()
         item = self.ability_names[index]
-        self.popup_ok.emit(item if item is not None else "")
+        self.popup_ok.emit(self.abilities[item])
         self.close()
 
 
 
-def load_abilities():
-    abilities = {}
-    with open("abilities.csv", "r") as infile:
-        for line in infile:
-            if not line.strip():
-                continue
-            name, requirements, desc = line.strip().split(";")
-            abilities[name] = {
-                "requirements": [a.strip() for a in requirements.split(",")],
-                "description": desc
-                }
-    return abilities

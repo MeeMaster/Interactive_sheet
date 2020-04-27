@@ -1,80 +1,80 @@
-Przeszywaj¹ce spojrzenie;Analiza 15;+10 do rzutów na rozpoznanie oszustwa
-Po³¹cz kropki;Analiza 20;+10 do rzutów analizy przy szukaniu wzorca
-Naukowiec danych;Analiza 15;+10 do rzutów na wyszukiwanie istotnych informacji
-Sprinter;Atletyka 15;2x d³u¿szy zasiêg ruchu podczas sprintu
-¯wawy p³ywak;Atletyka 15;Mo¿e p³ywaæ z podwójn¹ prêdkoœci¹ oraz zatrzymywaæ oddech na dwa razy d³u¿szy czas
-Konstrukcja uk³adów;Cybernetyka 10;Pozwala na konstruowanie prostych urz¹dzeñ elektronicznych i cybernetycznych
-Znajomoœæ kultury;Dyplomacja 10;Znajomoœæ konkretnej kultury u³atwia kontakt z jej przedstawicielami
-Weteran targu;Handel 15, Charyzma 15;+10 do rzutu na Handel podczas targowania siê o cenê
-Towar spod lady;Weteran targu, Handel 20;Wszystkie towary otrzymuj¹ +1 do poziomu dostêpnoœci
-Z³ota r¹czka;Mechanika 10;Pozwala na budowanie prostych urz¹dzeñ mechanicznych
-Naprawa pojazdów;Mechanika 15;Pozwala na analizê i naprawê prostych pojazdów (speedery)
-Tria¿;Medycyna 10;Mo¿e wykonywaæ proste zabiegi medyczne w warunkach bojowych
-Wywiad medyczny;Medycyna 15;+10 do testów rozpoznania choroby
-Wyczucie kierunku;Nawigacja 15;+10 przy nawigacji w terenie
-Astrograf;Nawigacja 15;+10 do nawigacji w przestrzeni kosmicznej
-Z nurtem ulicy;Nawigacja 15;+10 do nawigacji w przestrzeni miejskiej
-Nieustraszony;Opanowanie 15;+10 do rzutów na strach
-Zaprawiony w boju;Opanowanie 15;+10 do rzutów przy ogniu zaporowym
-Spokojny umys³;Opanowanie 20;+20 do rzutów odpornoœci na Moce umys³u
-Szuler;Oszustwo 15, Zwinne palce 10;+10 przy oszukiwaniu w grach
-Fa³szerz;Oszustwo 15;+10 podczas podrabiania dokumentów / przedmiotów
-Klucznik;Oszustwo 25, Cybernetyka 20, Zabezpieczenia 20;+20 do testu podrabiania kluczy dostêpu
-K³amstwo w ¿ywe oczy;Oszustwo 10;+10 do próby ok³amania innej postaci
-Kim ty jesteœ?;Oszustwo 15;+10 do próby podszywania siê
-As przestworzy;Pilota¿: Statki kosmiczne 20;+10 do pilota¿u podczas kierowania ma³ymi statkami kosmicznymi
-Œcigacz;Pilota¿: Speedery 10;+20 do pilota¿u podczas wyœcigów lub w warunkach przypominaj¹cych wyœcigi
-Dobry glina, z³y glina;Przes³uchiwanie 15;Jeœli iloœæ ludzi przes³uchuj¹cych wynosi 2 lub wiêcej, +10 do przes³uchiwania
-Kat;Przes³uchiwanie 15, Opanowanie 15;Pozwala na torturowanie przes³uchiwanych, gdzie testowana jest ich wytrzyma³oœæ i opanowanie
-Znane sztuczki;Przes³uchiwanie 10;Postaæ otrzymuje +10 do opanowania podczas bycia przes³uchiwan¹
-Koci refleks;Spostrzegawczoœæ: 15;+10 do testu zaskoczenia
-Czu³e ucho;Spostrzegawczoœæ: 10;+10 do testu pods³uchiwania
-Strzelec wyborowy;Strzelectwo: Lekka 15;Podwaja maksymaln¹ odleg³oœæ strza³u lekkimi blasterami
-Snajper;Strzelectwo: Lekka 15;Podczas celowania nie otrzymujesz kar za celowanie w konkretn¹ czêœæ cia³a
-Naznaczony;Strzelectwo: Lekka 20;Trafienie przeciwnika daje bonus +10 do kolejnego strza³u w tego samego przeciwnika
-Poprawka na wiatr;Strzelectwo: Lekka 20;Podczas strzelania na d³ugie dystanse (modyfikator < 0), podczas strzelania do tego samego celu, ka¿dy kolejny strza³ daje modyfikator +10 do testu trafienia, maksymalnie 2 razy.
-Strza³ w biegu;Strzelectwo: Lekka 20;+10 do testu trafienia podczas strzelania w biegu
-Szybki strza³;Zrêcznoœæ 15, Strzelectwo: Lekka 20;W trakcie walki, podczas wyci¹gania blastera mo¿e wykonaæ pojedynczy strza³ za darmo
-Rewolwerowiec;Strzelectwo: Lekka 30;Mo¿e u¿ywaæ dwóch blasterów naraz bez kary
-Praca na spuœcie;Strzelectwo: Lekka 25;Pozwala na wystrzelenie wiêcej ni¿ jednego pocisku w trakcie tury
-Strza³ z biodra;Strzelectwo: Lekka 25;Kara za strzelanie bez celowania wynosi -10 zamiast -30
-Wstrzymanie oddechu;Strzelectwo: Lekka 20;+5 do strza³u na odleg³oœci dalekie
-Lob;Strzelectwo: Ciê¿ka 15, Zrêcznoœæ: 10;+10 do trafienia przy u¿yciu granatów (granatniki równie¿)
-Ruchoma forteca;Strzelectwo: Ciê¿ka 10, Si³a 20;Pozwala na wykonanie strza³u w trakcie ruchu z u¿yciem broni ciê¿kiej
-Skupienie ognia;Strzelectwo: Ciê¿ka 20;Zwiêksza szansê na trafienie podczas u¿ywania ognia automatycznego o 5
-G³owy w dó³;Strzelectwo: Ciê¿ka 15;Ogieñ zaporowy zwiêksza trudnoœæ testu opanowania o 1
-Czu³y punkt;Strzelectwo: Ciê¿ka 20;Bezpoœrednie trafienie rakiet¹ otrzymuje dodatkowe 2 PP
-Mechaniczne ruchy;Strzelectwo: stacjonarna 10;Czas potrzebny na rozstawienie i uruchomienie dzia³ka stacjonarnego skrócony do 2 rund
-£owca;Sztuka przetrwania 10;+15 do spostrzegawczoœci podczas œledzenia zwierzyny
-Kucharz;Sztuka przetrwania 10;Pozwala na stworzenie wytrzyma³ych racji ¿ywnoœciowych z podstawowego po¿ywienia
-Traper;Sztuka przetrwania 15;Pozwala na zak³adanie trudnych do wykrycia pu³apek
-Partyzant;Sztuka przetrwania 20;Pozwala na tworzenie materia³ów wybuchowych z powszechnie dostêpnych elementów
-Zas³ona cienia;Ukrywanie siê 15;+10 do ukrywania siê jeœli postaæ ukrywa siê w miejscu
-Ukryte kieszenie;Ukrywanie 15;Wykonaj test Zwinnych Palców, aby ukryæ ma³y przedmiot podczas przeszukiwania
-Szybki zwód;Unik 15;Po udanym uniku postaæ mo¿e przemieœciæ siê do 2 metrów w dowolnym kierunku
-Rozbrojenie;Zrêcznoœæ 15, Walka wrêcz nieuzbrojona 10;Wykonaj rzut Przewagi Zwinnoœci aby wytr¹ciæ broñ z r¹k przeciwnika
-Cios poni¿ej pasa;Walka wrêcz Nieuzbrojona 20;Mo¿e próbowaæ zadaæ cios wy³¹czaj¹cy przeciwnika z bójki. Test WW, 2+ sukcesów: Obrona: trudny Unik. Powalenie i og³uszenie. Mniej ni¿ 2 sukcesy: 0 Obr.
-Celowane ciêcie;Walka wrêcz uzbrojona 15;,Pozwala wykonaæ celowane ciêcie, z modyfikatorem 10 aby uzyskaæ 1PP
-Zas³ona z ostrzy;Walka wrêcz uzbrojona 20;Pozwala na dodatkowe parowanie w rundzie
-Autorytet;Wp³yw 20;Pozwala zastraszaæ z u¿yciem Charyzmy zamiast Si³y
-Pod w³os;Wp³yw 20;Pozwala zastraszaæ z u¿yciem Inteligencji zamiast Si³y
-Filtrowanie informacji;Wp³yw 15;Pozwala plotkowaæ z u¿yciem Inteligencji zamiast Charyzmy
-M¹dre s³ówka;Wp³yw 15;Pozwala przekonywaæ z u¿yciem Inteligencji zamiast Charyzmy
-Nieugiêty;Wytrwa³oœæ 15;+10 do rzutów na odpornoœæ na przes³uchiwanie
-Nieczu³y;Wytrwa³oœæ 10;Postaæ nie musi rzucaæ na wytrwa³oœæ przy codziennych okropnoœciach
-Silny umys³;Wytrwa³oœæ 20;+20 do rzutów odpornoœci na Moce umys³u
-Mocna g³owa;Wytrzyma³oœæ 15;+20 do Twardoœci podczas testów wytrzyma³oœci podczas spo¿ywania alkoholu lub narkotyków
-Znajomoœæ systemu;Zabezpieczenia 10;Postaæ otrzymuje +10 do prze³amywania konkretnego systemu zabezpieczeñ
-Szybki uczeñ;Zabezpieczenia 15;Determinacja daje +20 do ponownego podejœcia zamiast +10
-Ostro¿ne podejœcie;Zabezpieczenia 15;Alarm systemu zostanie wszczêty przy 5 pora¿kach zamiast 4
-K³ody pod nogi;Zabezpieczenia 20;Jeœli postaæ ma dostêp do systemu, mo¿e wykonaæ trudny test zabezpieczeñ w celu utrudnienia dostêpu innym u¿ytkownikom (modyfikator -30)
-Mistrz hakowania;Zabezpieczenia 30;Pozwala postaci na przejêcie systemów wroga (ochrona, drzwi i inne)
-Szybkie palce;Zabezpieczenia 25;Jeœli inna postaæ przeciwdzia³a postaci w hakowaniu, otrzymuje ona modyfikator -20 do przewagi zabezpieczeñ
-Na cztery ³apy;Zwinnoœæ 15;Pozwala na upadek z  wy¿szych wysokoœci bez utraty punktów ¿ycia
-Rakietowiec;Zrêcznoœæ 15, Zwinnoœæ 15;Pozwala na u¿ycie plecaków rakietowych
-Don¿uan/Femme Fatale;Charyzma 15;+10 do rzutów Charyzmy przy oddzia³ywaniu z osobnikiem przeciwnej  p³ci (Rasa musi byæ zbie¿na)
-¯elazna wola;Si³a Woli 25;Pozwala na przerzut testów opartych na Sile Woli
-Zwinne palce;Zrêcznoœæ 20;Pozwala postaci na wykonywanie szybkich, zwinnych ruchów z u¿yciem r¹k
-Niechciany prezent;Zwinne palce;+10 jeœli postaæ próbuje podrzuciæ komuœ ma³y przedmiot
-Bombowy goœæ;-;+10 do testów podczas pracy z materia³ami wybuchowymi
-Bieg³oœæ: He³my bojowe;-;Pozwala na u¿ywanie he³mów z interfejsem bitewnym
+ability_analysis1;Przeszywaj¹ce spojrzenie;Analiza 15;+10 do rzutów na rozpoznanie oszustwa;1
+ability_analysis2;Po³¹cz kropki;Analiza 20;+10 do rzutów analizy przy szukaniu wzorca;2
+ability_analysis3;Naukowiec danych;Analiza 15;+10 do rzutów na wyszukiwanie istotnych informacji;1
+ability_athletics1;Sprinter;Atletyka 15;2x d³u¿szy zasiêg ruchu podczas sprintu;1
+ability_athletics2;¯wawy p³ywak;Atletyka 15;Mo¿e p³ywaæ z podwójn¹ prêdkoœci¹ oraz zatrzymywaæ oddech na dwa razy d³u¿szy czas;1
+ability_cyber1;Konstrukcja uk³adów;Cybernetyka 10;Pozwala na konstruowanie prostych urz¹dzeñ elektronicznych i cybernetycznych;1
+ability_dipl1;Znajomoœæ kultury;Dyplomacja 10;Znajomoœæ konkretnej kultury u³atwia kontakt z jej przedstawicielami;1
+ability_commerce1;Weteran targu;Handel 15, Charyzma 15;+10 do rzutu na Handel podczas targowania siê o cenê;1
+ability_commerce2;Towar spod lady;Weteran targu, Handel 20;Wszystkie towary otrzymuj¹ +1 do poziomu dostêpnoœci;2
+ability_mech1;Z³ota r¹czka;Mechanika 10;Pozwala na budowanie prostych urz¹dzeñ mechanicznych;1
+ability_mech2;Naprawa pojazdów;Mechanika 15;Pozwala na analizê i naprawê prostych pojazdów (speedery);1
+ability_med1;Tria¿;Medycyna 10;Mo¿e wykonywaæ proste zabiegi medyczne w warunkach bojowych;1
+ability_med2;Wywiad medyczny;Medycyna 15;+10 do testów rozpoznania choroby;1
+ability_nav1;Wyczucie kierunku;Nawigacja 15;+10 przy nawigacji w terenie;1
+ability_nav2;Astrograf;Nawigacja 15;+10 do nawigacji w przestrzeni kosmicznej;1
+ability_nav3;Z nurtem ulicy;Nawigacja 15;+10 do nawigacji w przestrzeni miejskiej;1
+ability_comp1;Nieustraszony;Opanowanie 15;+10 do rzutów na strach;1
+ability_comp2;Zaprawiony w boju;Opanowanie 15;+10 do rzutów przy ogniu zaporowym;1
+ability_comp3;Spokojny umys³;Opanowanie 20;+20 do rzutów odpornoœci na Moce umys³u;2
+ability_cheat1;Szuler;Oszustwo 15, Zwinne palce 10;+10 przy oszukiwaniu w grach;1
+ability_cheat2;Fa³szerz;Oszustwo 15;+10 podczas podrabiania dokumentów / przedmiotów;1
+ability_cheat3;Klucznik;Oszustwo 25, Cybernetyka 20, Zabezpieczenia 20;+20 do testu podrabiania kluczy dostêpu;3
+ability_cheat4;K³amstwo w ¿ywe oczy;Oszustwo 10;+10 do próby ok³amania innej postaci;1
+ability_cheat5;Kim ty jesteœ?;Oszustwo 15;+10 do próby podszywania siê;2
+ability_pilot1;As przestworzy;Pilota¿: Statki kosmiczne 20;+10 do pilota¿u podczas kierowania ma³ymi statkami kosmicznymi;1
+ability_pilot2;Œcigacz;Pilota¿: Speedery 10;+20 do pilota¿u podczas wyœcigów lub w warunkach przypominaj¹cych wyœcigi;2
+ability_inter1;Dobry glina, z³y glina;Przes³uchiwanie 15;Jeœli iloœæ ludzi przes³uchuj¹cych wynosi 2 lub wiêcej, +10 do przes³uchiwania;1
+ability_inter2;Kat;Przes³uchiwanie 15, Opanowanie 15;Pozwala na torturowanie przes³uchiwanych, gdzie testowana jest ich wytrzyma³oœæ i opanowanie;2
+ability_inter3;Znane sztuczki;Przes³uchiwanie 10;Postaæ otrzymuje +10 do opanowania podczas bycia przes³uchiwan¹;1
+ability_perception1;Koci refleks;Spostrzegawczoœæ: 15;+10 do testu zaskoczenia;1
+ability_perception2;Czu³e ucho;Spostrzegawczoœæ: 10;+10 do testu pods³uchiwania;1
+#ability_guns1;Strzelec wyborowy;Strzelectwo: Lekka 15;Podwaja maksymaln¹ odleg³oœæ strza³u lekkimi blasterami;1
+ability_guns2;Snajper;Strzelectwo: Lekka 15;Podczas celowania nie otrzymujesz kar za celowanie w konkretn¹ czêœæ cia³a;1
+ability_guns3;Naznaczony;Strzelectwo: Lekka 20;Trafienie przeciwnika daje bonus +10 do kolejnego strza³u w tego samego przeciwnika;1
+ability_guns4;Poprawka na wiatr;Strzelectwo: Lekka 20;Podczas strzelania na d³ugie dystanse (modyfikator < 0), podczas strzelania do tego samego celu, ka¿dy kolejny strza³ daje modyfikator +10 do testu trafienia, maksymalnie 2 razy.;2
+ability_guns5;Strza³ w biegu;Strzelectwo: Lekka 20;+10 do testu trafienia podczas strzelania w biegu;2
+ability_guns6;Szybki strza³;Zrêcznoœæ 15, Strzelectwo: Lekka 20;W trakcie walki, podczas wyci¹gania blastera mo¿e wykonaæ pojedynczy strza³ za darmo;1
+ability_guns7;Rewolwerowiec;Strzelectwo: Lekka 30;Mo¿e u¿ywaæ dwóch blasterów naraz bez kary;3
+ability_guns8;Praca na spuœcie;Strzelectwo: Lekka 25;Pozwala na wystrzelenie wiêcej ni¿ jednego pocisku w trakcie tury;3
+ability_guns9;Strza³ z biodra;Strzelectwo: Lekka 25;Kara za strzelanie bez celowania wynosi -10 zamiast -30;3
+ability_guns10;Wstrzymanie oddechu;Strzelectwo: Lekka 20;+5 do strza³u na odleg³oœci dalekie;2
+ability_hguns1;Lob;Strzelectwo: Ciê¿ka 15, Zrêcznoœæ: 10;+10 do trafienia przy u¿yciu granatów (granatniki równie¿);1
+ability_hguns2;Ruchoma forteca;Strzelectwo: Ciê¿ka 10, Si³a 20;Pozwala na wykonanie strza³u w trakcie ruchu z u¿yciem broni ciê¿kiej;2
+ability_hguns3;Skupienie ognia;Strzelectwo: Ciê¿ka 20;Zwiêksza szansê na trafienie podczas u¿ywania ognia automatycznego o 5;1
+ability_hguns4;G³owy w dó³;Strzelectwo: Ciê¿ka 15;Ogieñ zaporowy zwiêksza trudnoœæ testu opanowania o 1;1
+ability_hguns5;Czu³y punkt;Strzelectwo: Ciê¿ka 20;Bezpoœrednie trafienie rakiet¹ otrzymuje dodatkowe 2 PP;2
+ability_gunnery1;Mechaniczne ruchy;Strzelectwo: stacjonarna 10;Czas potrzebny na rozstawienie i uruchomienie dzia³ka stacjonarnego skrócony do 2 rund;1
+ability_survival1;£owca;Sztuka przetrwania 10;+15 do spostrzegawczoœci podczas œledzenia zwierzyny;1
+ability_survival2;Kucharz;Sztuka przetrwania 10;Pozwala na stworzenie wytrzyma³ych racji ¿ywnoœciowych z podstawowego po¿ywienia;1
+ability_survival3;Traper;Sztuka przetrwania 15;Pozwala na zak³adanie trudnych do wykrycia pu³apek;2
+ability_survival4;Partyzant;Sztuka przetrwania 20;Pozwala na tworzenie materia³ów wybuchowych z powszechnie dostêpnych elementów;3
+ability_hide1;Zas³ona cienia;Ukrywanie siê 15;+10 do ukrywania siê jeœli postaæ ukrywa siê w miejscu;1
+ability_hide2;Ukryte kieszenie;Ukrywanie 15;Wykonaj test Zwinnych Palców, aby ukryæ ma³y przedmiot podczas przeszukiwania;1
+ability_evade1;Szybki zwód;Unik 15;Po udanym uniku postaæ mo¿e przemieœciæ siê do 2 metrów w dowolnym kierunku;1
+ability_unarmed1;Rozbrojenie;Zrêcznoœæ 15, Walka wrêcz nieuzbrojona 10;Wykonaj rzut Przewagi Zwinnoœci aby wytr¹ciæ broñ z r¹k przeciwnika;1
+ability_unarmed2;Cios poni¿ej pasa;Walka wrêcz Nieuzbrojona 20;Mo¿e próbowaæ zadaæ cios wy³¹czaj¹cy przeciwnika z bójki. Test WW, 2+ sukcesów: Obrona: trudny Unik. Powalenie i og³uszenie. Mniej ni¿ 2 sukcesy: 0 Obr.;1
+ability_armed1;Celowane ciêcie;Walka wrêcz uzbrojona 15;,Pozwala wykonaæ celowane ciêcie, z modyfikatorem 10 aby uzyskaæ 1PP;1
+ability_armed2;Zas³ona z ostrzy;Walka wrêcz uzbrojona 20;Pozwala na dodatkowe parowanie w rundzie;2
+ability_influence1;Autorytet;Wp³yw 20;Pozwala zastraszaæ z u¿yciem Charyzmy zamiast Si³y;2
+ability_influence2;Pod w³os;Wp³yw 20;Pozwala zastraszaæ z u¿yciem Inteligencji zamiast Si³y;2
+ability_influence3;Filtrowanie informacji;Wp³yw 15;Pozwala plotkowaæ z u¿yciem Inteligencji zamiast Charyzmy;1
+ability_influence4;M¹dre s³ówka;Wp³yw 15;Pozwala przekonywaæ z u¿yciem Inteligencji zamiast Charyzmy;1
+ability_influence5;Don¿uan/Femme Fatale;Charyzma 15;+10 do rzutów Charyzmy przy oddzia³ywaniu z osobnikiem przeciwnej  p³ci (Rasa musi byæ zbie¿na);1
+ability_persistence1;Nieugiêty;Wytrwa³oœæ 15;+10 do rzutów na odpornoœæ na przes³uchiwanie;1
+ability_persistence2;Nieczu³y;Wytrwa³oœæ 10;Postaæ nie musi rzucaæ na wytrwa³oœæ przy codziennych okropnoœciach;1
+ability_persistence3;Silny umys³;Wytrwa³oœæ 20;+20 do rzutów odpornoœci na Moce umys³u;2
+ability_resistence1;Mocna g³owa;Wytrzyma³oœæ 15;+20 do Twardoœci podczas testów wytrzyma³oœci podczas spo¿ywania alkoholu lub narkotyków;2
+ability_lock1;Znajomoœæ systemu;Zabezpieczenia 10;Postaæ otrzymuje +10 do prze³amywania konkretnego systemu zabezpieczeñ;1
+ability_lock2;Szybki uczeñ;Zabezpieczenia 15;Determinacja daje +20 do ponownego podejœcia zamiast +10;1
+ability_lock3;Ostro¿ne podejœcie;Zabezpieczenia 15;Alarm systemu zostanie wszczêty przy 5 pora¿kach zamiast 4;2
+ability_lock4;K³ody pod nogi;Zabezpieczenia 20;Jeœli postaæ ma dostêp do systemu, mo¿e wykonaæ trudny test zabezpieczeñ w celu utrudnienia dostêpu innym u¿ytkownikom (modyfikator -30);2
+ability_lock5;Mistrz hakowania;Zabezpieczenia 30;Pozwala postaci na przejêcie systemów wroga (ochrona, drzwi i inne);3
+ability_lock6;Szybkie palce;Zabezpieczenia 25;Jeœli inna postaæ przeciwdzia³a postaci w hakowaniu, otrzymuje ona modyfikator -20 do przewagi zabezpieczeñ;2
+ability_dexterity1;Na cztery ³apy;Zwinnoœæ 15;Pozwala na upadek z  wy¿szych wysokoœci bez utraty punktów ¿ycia;1
+ability_dexterity2;Rakietowiec;Zrêcznoœæ 15, Zwinnoœæ 15;Pozwala na u¿ycie plecaków rakietowych;2
+ability_willpower1;¯elazna wola;Si³a Woli 25;Pozwala na przerzut testów opartych na Sile Woli;2
+ability_dexterity1;Zwinne palce;Zrêcznoœæ 20;Pozwala postaci na wykonywanie szybkich, zwinnych ruchów z u¿yciem r¹k;1
+ability_dexterity2;Niechciany prezent;Zwinne palce;+10 jeœli postaæ próbuje podrzuciæ komuœ ma³y przedmiot;1
+ability_general1;Bombowy goœæ;-;+10 do testów podczas pracy z materia³ami wybuchowymi;1
+ability_general2;Bieg³oœæ: He³my bojowe;-;Pozwala na u¿ywanie he³mów z interfejsem bitewnym;1
