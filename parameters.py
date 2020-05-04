@@ -1,49 +1,44 @@
 import codecs
+import os
 
-attribute_names = ["Strength", "Agility", "Intelligence", "Toughness", "Willpower", "Charisma"]
+attribute_names = ["strength", "agility", "intelligence", "toughness", "willpower", "charisma"]
 
-skill_names = ["Athletics", "Unarmed", "Armed", "Light weapons", "Heavy weapons", "Gunnery", "Dodge", "Dexterity",
-               "Perception", "Analysis", "Composition", "Persistence", "Resistance", "Steal", "Hide", "Diplomacy",
-               "Cheat", "Commerce", "Interrogation", "Survival", "Cybernetics", "Mechanics",
-               "Lockpicking", "Navigation", "Medicine", "Speeders", "Walkers", "Starships"]
+character_names = ["name", "race", "planet", "age", "traits", "profession"]
 
-character_names = ["Name", "Race", "Planet", "Age", "Traits", "Profession"]
+parameter_names = ["encumbrance_low", "encumbrance_med", "encumbrance_high", "speed_low", "speed_med",
+                   "speed_high", "reputation_bad", "reputation_good", "hp_max", "hp_current", "pp_total",
+                   "pp_curr", "fatigue", "xp_total", "xp_free"]
 
-parameter_names = ["Low encumbrance", "Medium encumbrance", "High encumbrance", "Low speed", "Medium speed",
-                   "High speed", "Bad reputation", "Good reputation", "Total HP", "Current HP", "Total PP",
-                   "Current PP", "Fatigue", "Total XP", "Free XP"]
+armor_names = ["armor_head", "armor_rh", "armor_chest", "armor_lh", "armor_rl", "armor_ll"]
 
-armor_names = ["Armor head", "Armor rh", "Armor chest", "Armor lh", "Armor rl", "Armor ll"]
-
-attribute_skill_dict = {"Athletics": ["Strength"],
-                        "Unarmed": ["Strength", "Agility"],
-                        "Armed": ["Strength", "Agility"],
-                        "Light weapons": ["Agility"],
-                        "Heavy weapons": ["Strength"],
-                        "Gunnery": ["Intelligence", "Agility"],
-                        "Dodge": ["Agility"],
-                        "Dexterity": ["Agility"],
-                        "Perception": ["Intelligence", "Agility"],
-                        "Analysis": ["Intelligence"],
-                        "Composition": ["Willpower"],
-                        "Persistence": ["Willpower"],
-                        "Resistance": ["Toughness"],
-                        "Steal": ["Agility"],
-                        "Hide": ["Agility"],
-                        "Influence": ["Charisma"],
-                        "Diplomacy": ["Charisma"],
-                        "Cheat": ["Charisma"],
-                        "Commerce": ["Charisma"],
-                        "Interrogation": ["Charisma"],
-                        "Survival": ["Intelligence", "Agility"],
-                        "Cybernetics": ["Intelligence"],
-                        "Mechanics": ["Intelligence"],
-                        "Lockpicking": ["Agility"],
-                        "Navigation": ["Intelligence"],
-                        "Medicine": ["Intelligence"],
-                        "Speeders": ["Agility"],
-                        "Walkers": ["Agility"],
-                        "Starships": ["Agility"]
+attribute_skill_dict = {"athletics": ["strength"],
+                        "melee_unarmed": ["strength", "agility"],
+                        "melee_armed": ["strength", "agility"],
+                        "ranged_light": ["agility"],
+                        "ranged_heavy": ["strength"],
+                        "ranged_stationary": ["intelligence", "agility"],
+                        "dodge": ["agility"],
+                        "dexterity": ["agility"],
+                        "perception": ["intelligence", "agility"],
+                        "analysis": ["intelligence"],
+                        "composition": ["willpower"],
+                        "persistence": ["willpower"],
+                        "resistance": ["toughness"],
+                        "conceal": ["agility"],
+                        "influence": ["charisma"],
+                        "diplomacy": ["charisma"],
+                        "cheat": ["charisma"],
+                        "commerce": ["charisma"],
+                        "interrogation": ["charisma"],
+                        "survival": ["intelligence", "agility"],
+                        "cybernetics": ["intelligence"],
+                        "mechanics": ["intelligence"],
+                        "security": ["agility"],
+                        "navigation": ["intelligence"],
+                        "medicine": ["intelligence"],
+                        "pilot_speeders": ["agility"],
+                        "pilot_walkers": ["agility"],
+                        "pilot_spaceships": ["agility"]
                         }
 
 
@@ -54,11 +49,74 @@ def load_abilities():
             if not line.strip():
                 continue
             name, display, requirements, desc, tier = line.strip().split(";")
+            if name in abilities:
+                print("Ability '{}' already defined, check the config files!")
+                continue
             abilities[name] = {
                 "name": name,
                 "display": display,
-                "requirements": [a.strip() for a in requirements.split(",")],
+                "requirements": {},
                 "description": desc,
                 "tier": tier
                 }
+            if not requirements:
+                continue
+            for requirement in requirements.split(","):
+                requirement = requirement.strip()
+                if len(requirement.split()) == 1:
+                    abilities[name]["requirements"][requirement] = True
+                else:
+                    requirement, value = requirement.split()
+                    abilities[name]["requirements"][requirement] = int(value)
     return abilities
+
+
+def translate_ability(name, locale="PL"):
+    locale_file = "ability_names_{}.csv".format(locale)
+    if not os.path.exists(locale_file):
+        print("Could not localize locale file '{}'".format(locale_file))
+        locale_file = "ability_names_{}.csv".format("EN")
+        if not os.path.exists(locale_file):
+            return name, ""
+    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.startswith(name):
+                continue
+            name, display_name, description = line.strip().split(";")
+            return display_name, description
+        print("No translation found for ability '{}' and locale '{}'".format(name, locale))
+        return name, ""
+
+
+def translate_parameter(name, locale="PL"):
+    locale_file = "parameter_names_{}.csv".format(locale)
+    if not os.path.exists(locale_file):
+        print("Could not localize locale file '{}'".format(locale_file))
+        locale_file = "parameter_names_{}.csv".format("EN")
+        if not os.path.exists(locale_file):
+            return name
+    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.startswith(name):
+                continue
+            name, translation = line.strip().split(";")
+            return translation
+        print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
+        return name
+
+
+def translate_ui(name, locale="PL"):
+    locale_file = "ui_names_{}.csv".format(locale)
+    if not os.path.exists(locale_file):
+        print("Could not localize locale file '{}'".format(locale_file))
+        locale_file = "ui_names_{}.csv".format("EN")
+        if not os.path.exists(locale_file):
+            return name
+    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.startswith(name):
+                continue
+            name, translation = line.strip().split(";")
+            return translation
+        print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
+        return name

@@ -1,7 +1,9 @@
-import os, sys
+# import os
+import sys
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import pyqtSignal
+# from PyQt5.QtCore import pyqtSignal
 
+import pickle
 from sheet import Character
 from window import MainWindow
 from parameters import attribute_skill_dict, armor_names
@@ -30,10 +32,6 @@ class Application:
             param_class = self.main_widget.params_dict[parameter]
             param_class.value_changed.connect(self.change_parameter)
 
-        # for armor in self.main_widget.armor_dict:
-        #     armor_class = self.main_widget.armor_dict[armor]
-        #     armor_class.armor_changed.connect(self.change_armor)
-
         self.fill_form()
 
     def file_IO(self, *args):
@@ -45,11 +43,13 @@ class Application:
         pass
 
     def read_character(self, path):
-        self.sheet.load_character(path)
+        self.sheet = pickle.load(open(path, "rb"))
+        # self.sheet.load_character(path)
         self.fill_form()
 
     def save_character(self, path):
-        self.sheet.save_character(path)
+        pickle.dump(self.sheet, open(path, "wb"))
+        # self.sheet.save_character(path)
 
     def change_attribute(self, name, val_type, value):
         if val_type == "base":
@@ -134,7 +134,7 @@ class Application:
     def calculate_armor(self):
         armor = {}
         for armor_slot in armor_names:
-            armor[armor_slot] = self.sheet.attributes["Toughness"] // 10
+            armor[armor_slot] = self.sheet.attributes["toughness"] // 10
         for armor_name in self.sheet.armor:
             armor_item = self.sheet.armor[armor_name]
             if not armor_item["Equipped"]:

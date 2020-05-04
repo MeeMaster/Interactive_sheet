@@ -12,9 +12,9 @@ line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-widt
 
 class ScrollContainer(QWidget):
 
-    def __init__(self, name, button_text, content_widget, popup=None, parent=None, **kwargs):
+    def __init__(self, name, button_text, content_widget, parent=None, popup=None, target_function=None, **kwargs):
         QWidget.__init__(self)
-        self.parent = parent
+        self.parent=parent
         self.kwargs = kwargs
         self.layout = QVBoxLayout()
         self.label = QLabel(name)
@@ -35,6 +35,7 @@ class ScrollContainer(QWidget):
         self.scroll_widget.setLayout(self.scroll_layout)
         self.scroll_widget.setContentsMargins(0, 0, 0, 0)
         self.scroll.setWidget(self.scroll_widget)
+        self.target_function = target_function
 
     def remove_widget(self, name):
         for child_index in range(self.scroll_layout.count()):
@@ -46,11 +47,13 @@ class ScrollContainer(QWidget):
                 continue
             if child.name == name:
                 child.setParent(None)
-                self.parent.character.abilities.remove(name)
+                self.target_function("remove", name)  # TODO create a "handle widget" function in window
 
     def add_widget(self):
         if self.popup is not None:
-            self.current_popup = self.popup(self, self.parent.character)
+            print(self.parent)
+            # self.current_popup = self.popup(self, self.parent.character)
+            self.current_popup = self.popup(self.parent.character)
             self.current_popup.popup_ok.connect(self._add_widget)
             self.current_popup.popup_cancel.connect(self.close_popup)
         else:
@@ -66,11 +69,38 @@ class ScrollContainer(QWidget):
         self.current_popup = None
 
 
-class AbilityView(QWidget):
+class View(QWidget):
     delete = pyqtSignal(str)
 
-    def __init__(self, ability, character):
+    def __init__(self):
         QWidget.__init__(self)
+        self.menu = QMenu(self)
+        self.menu_actions = {"Usun": self.remove}
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.show_header_menu)
+
+    def add_header_option(self, option, target):
+        self.menu.addAction(QAction(option, self))
+        self.menu_actions[option] = target
+
+    def show_header_menu(self, point):
+        self.menu.addAction(QAction("Usun", self))
+        self.menu.triggered[QAction].connect(self.resolve_action)
+        self.menu.exec_(self.mapToGlobal(point))
+
+    def resolve_action(self, action):
+        if action.text() not in self.menu_actions:
+            return
+        self.menu_actions[action.text()]()
+
+    def remove(self):
+        self.delete.emit(self.name)
+
+
+class AbilityView(View):
+
+    def __init__(self, ability, character):
+        View.__init__(self)
         # self.setMinimumHeight(20)
         self.name = ability["name"]
         layout = QVBoxLayout()
@@ -84,30 +114,20 @@ class AbilityView(QWidget):
         self.display.setEnabled(False)
         self.setLayout(layout)
         self.layout().setContentsMargins(0, 0, 0, 0)
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.show_header_menu)
         character.abilities.append(self.name)
-
-    def show_header_menu(self, point):
-        menu = QMenu(self)
-        menu.addAction(QAction("Usun", self))
-        menu.triggered[QAction].connect(self.remove)
-        menu.exec_(self.mapToGlobal(point))
-
-    def remove(self):
-        self.delete.emit(self.name)
 
 
 class InputLine(QWidget):
     value_changed = pyqtSignal(str, str)
 
     def __init__(self, name, align_flag=Qt.AlignCenter, enabled=True, val_dict=None,
-                 dtype="str", maxwidth=None, label=None):
+                 dtype="str", maxwidth=None, label=None, spacer=None):
         QWidget.__init__(self)
         self.dtype = dtype
         self.layout = QVBoxLayout()
         if label is not None:
             self.label = QLabel(label)
+            self.label.setWordWrap(True)
             self.label.setStyleSheet("font: 8px")
             self.label.setContentsMargins(0, 0, 0, 0)
             self.layout.addWidget(self.label)
@@ -124,6 +144,10 @@ class InputLine(QWidget):
             self.line.setValidator(MyIntValidator(0, 10000))
         self.register_field(val_dict=val_dict)
         self.layout.addWidget(self.line)
+        if spacer == "lower":
+            self.layout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        if spacer == "upper":
+            self.layout.insertSpacerItem(0, QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
 
@@ -229,7 +253,8 @@ class SkillView(QWidget):
         self.setLayout(self.layout)
 
     def print_sizehints(self):
-        print(self.display_name, self.sizeHint(), self.label.sizeHint(), self.advancement.sizeHint(), self.bonus.sizeHint(), self.total.sizeHint())
+        print(self.display_name, self.sizeHint(), self.label.sizeHint(),
+              self.advancement.sizeHint(), self.bonus.sizeHint(), self.total.sizeHint())
 
     def emit_changed(self, field_type, value):
         self.skill_changed.emit(self.name, field_type, int(value))
@@ -255,12 +280,11 @@ class NameView(QWidget):
     def __init__(self, name="", display_name=None, val_dict=None):
         QWidget.__init__(self)
         self.display_name = display_name if display_name is not None else name
-        self.setFixedWidth(200)
+        self.setMinimumWidth(200)
         self.name = name
         self.val_dict = val_dict
         self.layout = QHBoxLayout()
         self.label = QLabel(self.display_name)
-        # self.label.setFixedWidth(80)
         self.value = InputLine(name, dtype="str", enabled=True)
         self.value.value_changed.connect(self.emit_changed)
         self.layout.addWidget(self.label)
@@ -281,11 +305,10 @@ class NameView(QWidget):
         val_dict[self.name] = self
 
 
-class WeaponView(QWidget):
-    delete = pyqtSignal(bool)
+class WeaponView(View):
 
     def __init__(self, name="", display_name=None, val_dict=None):
-        QWidget.__init__(self)
+        View.__init__(self)
         self.display_name = display_name if display_name is not None else name
 
         p = self.palette()
@@ -293,7 +316,6 @@ class WeaponView(QWidget):
         self.setPalette(p)
         self.setAutoFillBackground(True)
 
-        self.setFixedWidth(400)
         self.name = name
         self.val_dict = val_dict
         self.layout = QVBoxLayout()
@@ -311,31 +333,26 @@ class WeaponView(QWidget):
         self.line1_layout.addWidget(self.weapon_pp, stretch=0)
         self.weapon_damage_type = InputLine("damage_type", Qt.AlignLeft, label="Dmg type")
         self.line1_layout.addWidget(self.weapon_damage_type, stretch=0)
-        self.weapon_ranges = InputLine("range", label="Range")
-        self.line2_layout.addWidget(self.weapon_ranges, stretch=0)
+        self.weapon_ammo_cost = InputLine("shoot_cost", dtype="int", label="Cost")
+        self.line1_layout.addWidget(self.weapon_ammo_cost, stretch=0)
+        self.weapon_current_power = InputLine("battery", dtype="int", label="Power")
+        self.line1_layout.addWidget(self.weapon_current_power, stretch=0)
+        self.weapon_current_gas = InputLine("gas", dtype="int", label="Gas")
+        self.line1_layout.addWidget(self.weapon_current_gas, stretch=0)
+        self.weapon_traits = InputLine("traits", Qt.AlignLeft, label="Traits")
+        self.line2_layout.addWidget(self.weapon_traits, stretch=0)
+        self.weapon_value = InputLine("value", dtype="int", label="Value", maxwidth=40)
+        self.line2_layout.addWidget(self.weapon_value, stretch=0)
         self.weapon_weight = InputLine("weight", dtype="int", label="Weight")
         self.line2_layout.addWidget(self.weapon_weight, stretch=0)
-        self.weapon_ammo_cost = InputLine("shoot_cost", dtype="int", label="Cost")
-        self.line2_layout.addWidget(self.weapon_ammo_cost, stretch=0)
-        self.weapon_current_power = InputLine("battery", dtype="int", label="Power")
-        self.line2_layout.addWidget(self.weapon_current_power, stretch=0)
-        self.weapon_current_gas = InputLine("gas", dtype="int", label="Gas")
-        self.line2_layout.addWidget(self.weapon_current_gas, stretch=0)
-        self.weapon_traits = InputLine("traits", Qt.AlignLeft, label="Traits")
-        self.line3_layout.addWidget(self.weapon_traits, stretch=0)
-        self.weapon_value = InputLine("value", dtype="int", label="Value", maxwidth=40)
-        self.line3_layout.addWidget(self.weapon_value, stretch=0)
         self.equipped_checkbox = EquippedCheckbox()
-        self.line3_layout.addWidget(self.equipped_checkbox)
+        self.line2_layout.addWidget(self.equipped_checkbox)
         self.layout.addLayout(self.line1_layout, stretch=0)
         self.layout.addLayout(self.line2_layout, stretch=0)
-        self.layout.addLayout(self.line3_layout, stretch=0)
         self.layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
 
-    def remove(self):
-        self.delete.emit(self.name)
 
 class EquippedCheckbox(QWidget):
 
@@ -354,9 +371,10 @@ class EquippedCheckbox(QWidget):
         self.setLayout(self.layout)
 
 
-class ArmorView(QWidget):
+class ArmorView(View):
+
     def __init__(self, name="", display_name=None, val_dict=None):
-        QWidget.__init__(self)
+        View.__init__(self)
         self.display_name = display_name if display_name is not None else name
         self.name = name
         self.val_dict = val_dict
@@ -402,7 +420,6 @@ class EquipmentView(QWidget):
         self.display_name = display_name if display_name is not None else name
         self.name = name
         self.val_dict = val_dict
-        # self.setFixedWidth(200)
         self.layout = QHBoxLayout()
         self.layout.setSpacing(0)
         self.eq_name = InputLine("name", Qt.AlignLeft, maxwidth=120)

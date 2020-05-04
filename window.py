@@ -8,6 +8,7 @@ from layout_classes import *
 from popups import *
 from PyQt5.QtGui import QPixmap, QIntValidator
 from parameters import attribute_names, attribute_skill_dict, character_names, armor_names
+from parameters import translate_ability, translate_parameter, translate_ui
 
 
 colors = [Qt.white, Qt.black, Qt.red, Qt.darkRed, Qt.green, Qt.darkGreen, Qt.blue, Qt.darkBlue, Qt.cyan, Qt.darkCyan,
@@ -22,21 +23,21 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.title = 'Karta postaci'
+        self.title = translate_ui("window_name")
         self.setWindowTitle(self.title)
 
         # Add menu bar
         bar = self.menuBar()
-        file = bar.addMenu("Plik")
-        file.addAction("Nowa")
-        file.addAction("Otworz")
-        save = QAction("Zapisz", self)
+        file = bar.addMenu(translate_ui("menu_file"))
+        file.addAction(translate_ui("new_sheet"))
+        file.addAction(translate_ui("menu_load_sheet"))
+        save = QAction(translate_ui("menu_save_sheet"), self)
         save.setShortcut("Ctrl+S")
         file.addAction(save)
-        save_as = QAction("Zapisz jako...", self)
+        save_as = QAction(translate_ui("menu_save_sheet_as"), self)
         save_as.setShortcut("Ctrl+Shift+S")
         file.addAction(save_as)
-        exit_action = QAction("Wyjdz", self)
+        exit_action = QAction(translate_ui("menu_quit"), self)
         file.addAction(exit_action)
         file.triggered[QAction].connect(self.process_trigger)
 
@@ -53,26 +54,26 @@ class MainWindow(QMainWindow):
         # options |= QFileDialog.DontUseNativeDialog
         filepath = ""
         if pop_type == "open":
-            filepath = file_dialog.getOpenFileName(self, "Wczytaj karte", os.getcwd(),
+            filepath = file_dialog.getOpenFileName(self, translate_ui("load_sheet_window_title"), os.getcwd(),
                                                    "Character files (*.cht)", options=options)
 
         if pop_type == "save":
-            filepath = file_dialog.getSaveFileName(self, "Zapisz karte", os.getcwd(),
+            filepath = file_dialog.getSaveFileName(self, translate_ui("save_sheet_window_title"), os.getcwd(),
                                                    "Character files (*.cht)", options=options)
         if not filepath[0]:
             return
         self.directory_signal.emit(filepath[0], pop_type)
 
     def process_trigger(self, q):
-        if q.text() == "Otworz":
+        if q.text() == translate_ui("menu_load_sheet"):
             self.open_file_name_dialog("open")
-        if q.text() == "Zapisz":
+        if q.text() == translate_ui("menu_save_sheet"):
             self.save_signal.emit()
-        if q.text() == "Zapisz jako...":
+        if q.text() == translate_ui("menu_save_sheet_as"):
             self.open_file_name_dialog("save")
-        if q.text() == "Nowa":
+        if q.text() == translate_ui("new_sheet"):
             self.new_sheet.emit()
-        if q.text() == "Wyjdz":
+        if q.text() == translate_ui("menu_quit"):
             self.exit.emit()
 
 
@@ -114,57 +115,9 @@ class MyWindowWidget(QWidget):
         self.tab1 = self.get_tab1()
         self.tab2 = self.get_tab2()
         self.tab3 = QWidget()
-        self.tabs.addTab(self.tab1, "Postać")
-        self.tabs.addTab(self.tab2, "Ekwipunek")
-        self.tabs.addTab(self.tab3, "Pozostałe")
-
-
-
-
-
-
-        # self.weapons_label = QLabel("Weapons")
-        # self.weapons_label.setStyleSheet("font: bold 14px")
-        # self.weapons_scroll_layout.addWidget(self.weapons_label)
-        # for n in range(3):
-        #     weapon = WeaponView("Weapon1", val_dict=self.weapons_dict)
-        #     self.weapons_scroll_layout.addWidget(weapon)
-        # self.weapons_scroll.setWidget(self.weapons_scroll_widget)
-
-
-        # self.armor_label = QLabel("Armor")
-        # self.armor_label.setStyleSheet("font: bold 14px")
-        # self.armor_scroll_layout.addWidget(self.armor_label)
-        # for n in range(4):
-        #     armor = ArmorView("Armor1", val_dict=self.armor_dict)
-        #     self.armor_scroll_layout.addWidget(armor)
-        # self.armor_scroll.setWidget(self.armor_scroll_widget)
-
-        # self.equipment_dict = {}
-        # for n in range(20):
-        #     eq = EquipmentView("Equipment1", val_dict=self.equipment_dict)
-        #     self.equipment_scroll_area_layout.addWidget(eq)
-        # self.equipment_scroll_area_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-
-
-
-        # self.equipment_scroll_area.setWidget(self.equipment_scroll_area_widget)
-
-        # self.knowledge_label = QLabel("Knowledge")
-        # self.knowledge_label.setStyleSheet("font: bold 14px")
-        # self.knowledge = QTextEdit()
-        # self.knowledge.setFixedWidth(200)
-        # self.knowledge.setFixedHeight(400)
-        # self.knowledge_layout.addWidget(self.knowledge_label)
-        # self.knowledge_layout.addWidget(self.knowledge)
-        #
-        # self.contacts_label = QLabel("Contacts")
-        # self.contacts_label.setStyleSheet("font: bold 14px")
-        # self.contacts = QTextEdit()
-        # self.contacts.setFixedWidth(200)
-        # self.contacts.setFixedHeight(400)
-        # self.contacts_layout.addWidget(self.contacts_label)
-        # self.contacts_layout.addWidget(self.contacts)
+        self.tabs.addTab(self.tab1, translate_ui("character_tab"))
+        self.tabs.addTab(self.tab2, translate_ui("equipment_tab"))
+        self.tabs.addTab(self.tab3, translate_ui("misc_tab"))
 
     def get_tab1(self):
         tab1 = QWidget()
@@ -200,8 +153,8 @@ class MyWindowWidget(QWidget):
         self.fill_attributes(attributes_layout)
         # Set skills
 
-        abilities = ScrollContainer("Abilities", "Add ability", AbilityView,
-                                    popup=AbilityPopup, val_dict=self.abilities, parent=self)
+        abilities = ScrollContainer(translate_ui("abilities"), translate_ui("ability_add_button"), AbilityView, parent=self,
+                                    popup=AbilityPopup, target_function=self.handle_ability_widget)
         abilities_layout.addWidget(abilities)
         return tab1
 
@@ -212,11 +165,11 @@ class MyWindowWidget(QWidget):
         tab2.setLayout(page2)
         weapons_armor_layout = QVBoxLayout()
         weapons_layout = QVBoxLayout()
-        weapons_scroll = ScrollContainer("Weapons", "Add weapon", WeaponView, parent=self)
+        weapons_scroll = ScrollContainer(translate_ui("weapons"), translate_ui("weapons_add_button"), WeaponView, parent=self)
         weapons_layout.addWidget(weapons_scroll)
         weapons_armor_layout.addLayout(weapons_layout)
         armor_layout = QVBoxLayout()
-        armor_scroll = ScrollContainer("Armor", "Add armor piece", EquipmentView)
+        armor_scroll = ScrollContainer(translate_ui("armor_list"), translate_ui("armor_add_button"), EquipmentView)
         armor_layout.addWidget(armor_scroll)
         weapons_armor_layout.addLayout(armor_layout)
         weapons_armor_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -230,35 +183,31 @@ class MyWindowWidget(QWidget):
         wealth_and_knowledge_layout.addLayout(contacts_layout)
         wealth_and_knowledge_layout.addLayout(wealth_layout)
         wealth_and_knowledge_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        # misc_and_notes_layout = QVBoxLayout()
-        # miscellaneous_equipment = QVBoxLayout()
-        # misc_and_notes_layout.addLayout(miscellaneous_equipment)
-        # equipment_scroll_area = ScrollContainer("Equipment", "Add item", EquipmentView)
-        # miscellaneous_equipment.addWidget(equipment_scroll_area)
-        # page2.addLayout(misc_and_notes_layout, stretch=2)
-        # notes_layout = QVBoxLayout()
-        # misc_and_notes_layout.addLayout(notes_layout)
-        # misc_and_notes_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        # notes_label = QLabel("Notes")
-        # notes_label.setStyleSheet("font: bold 14px")
-        # notes = QTextEdit()
-        # notes.setFixedWidth(200)
-        # notes.setFixedHeight(400)
-        # notes_layout.addWidget(notes_label)
-        # notes_layout.addWidget(notes)
         return tab2
+
+    def handle_ability_widget(self, action, name):
+        pass
+
+    def handle_weapon_widget(self, action, weapon):
+        pass
+
+    def handle_armor_widget(self, action, armor):
+        pass
+
+    def handle_equipment_widget(self, action, item):
+        pass
 
     def fill_skills(self):
         skills1_layout = QVBoxLayout()
         skills2_layout = QVBoxLayout()
-        label = QLabel("Skills")
+        label = QLabel(translate_ui("skills"))
         label.setStyleSheet("font: bold 14px")
         skills1_layout.addWidget(label)
         label = QLabel(" ")
         label.setStyleSheet("font: bold 14px")
         skills2_layout.addWidget(label)
         for index, skill in enumerate(sorted(attribute_skill_dict.keys())):
-            ski = SkillView(name=skill, val_dict=self.skills_dict)
+            ski = SkillView(name=skill, display_name=translate_parameter(skill), val_dict=self.skills_dict)
             if index < 25:
                 skills1_layout.addWidget(ski)
             else:
@@ -269,7 +218,7 @@ class MyWindowWidget(QWidget):
 
     def fill_attributes(self, attributes_layout):
         for attribute in attribute_names:
-            att = AttributeView(name=attribute, val_dict=self.attribute_dict)
+            att = AttributeView(name=attribute, display_name=translate_parameter(attribute), val_dict=self.attribute_dict)
             attributes_layout.addWidget(att, stretch=0)
 
     def fill_names(self):
@@ -277,17 +226,19 @@ class MyWindowWidget(QWidget):
         layout_1 = QVBoxLayout()
         layout_2 = QVBoxLayout()
         layout_3 = QVBoxLayout()
-        inner_names_layout.addLayout(layout_1)
-        inner_names_layout.addLayout(layout_2)
-        inner_names_layout.addLayout(layout_3)
+        inner_names_layout.addLayout(layout_1, 2)
+        inner_names_layout.addLayout(layout_2, 4)
+        inner_names_layout.addLayout(layout_3, 1)
         for index, name in enumerate(character_names):
-            na = NameView(name=name, val_dict=self.params_dict)
+            na = NameView(name=name, display_name=translate_parameter(name), val_dict=self.params_dict)
             if index < 3:
                 layout_1.addWidget(na)
             else:
                 layout_2.addWidget(na)
-        total_xp = InputLine("Total XP", dtype="int", val_dict=self.params_dict, label="Total XP", maxwidth=60)
-        free_xp = InputLine("Free XP", dtype="int", val_dict=self.params_dict, label="Free XP", maxwidth=60)
+        total_xp = InputLine("xp_total", dtype="int", val_dict=self.params_dict,
+                             label=translate_parameter("xp_total"), maxwidth=60)
+        free_xp = InputLine("xp_free", dtype="int", val_dict=self.params_dict,
+                            label=translate_parameter("xp_free"), maxwidth=60)
         layout_3.addWidget(total_xp)
         layout_3.addWidget(free_xp)
         return inner_names_layout
@@ -303,7 +254,7 @@ class MyWindowWidget(QWidget):
         life = QHBoxLayout()
         life.setContentsMargins(0, 0, 0, 0)
         label_layout = QHBoxLayout()
-        label = QLabel("Armor")
+        label = QLabel(translate_ui("armor"))
         label.setStyleSheet("font: bold 14px")
         # label.setMaximumHeight(30)
         label.setContentsMargins(0, 0, 0, 0)
@@ -315,18 +266,24 @@ class MyWindowWidget(QWidget):
         inner_armor_layout.addLayout(arms, 3)
         inner_armor_layout.addLayout(legs, 2)
         inner_armor_layout.addLayout(life, 1)
-        total_hp = InputLine("Total HP", val_dict=self.params_dict, label="Total HP", maxwidth=35)
-        current_hp = InputLine("Current HP", val_dict=self.params_dict, label="Current HP", maxwidth=35)
-        total_pp = InputLine("Total PP", val_dict=self.params_dict, label="Total PP", maxwidth=35)
-        current_pp = InputLine("Current PP", val_dict=self.params_dict, label="Current PP", maxwidth=35)
-        fatigue = InputLine("Fatigue", val_dict=self.params_dict, label="Fatigue", maxwidth=35)
+        total_hp = InputLine("hp_max", val_dict=self.params_dict,
+                             label=translate_parameter("hp_max"), maxwidth=35, spacer="upper")
+        current_hp = InputLine("hp_current", val_dict=self.params_dict,
+                               label=translate_parameter("hp_current"), maxwidth=35, spacer="upper")
+        total_pp = InputLine("pp_total", val_dict=self.params_dict,
+                             label=translate_parameter("pp_total"), maxwidth=35, spacer="upper")
+        current_pp = InputLine("pp_curr", val_dict=self.params_dict,
+                               label=translate_parameter("pp_curr"), maxwidth=35, spacer="upper")
+        fatigue = InputLine("fatigue", val_dict=self.params_dict,
+                            label=translate_parameter("fatigue"), maxwidth=35, spacer="upper")
         life.addWidget(total_hp)
         life.addWidget(current_hp)
         life.addWidget(total_pp)
         life.addWidget(current_pp)
         life.addWidget(fatigue)
         for index, name in enumerate(armor_names):
-            na = InputLine(name=name, val_dict=self.params_dict, enabled=False, label=name, maxwidth=30)
+            na = InputLine(name=name, val_dict=self.params_dict, enabled=False,
+                           label=translate_parameter(name), maxwidth=30, spacer="lower")
             na.setContentsMargins(0, 0, 0, 0)
             if index < 1:
                 head.addWidget(na)
