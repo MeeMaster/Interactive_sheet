@@ -38,4 +38,11 @@ jobs:
     - name: Create package
       run: |
         pyinstaller --onefile --name Karta application.py
+    
+    - name: Push result
+      run: |
+        git add dist/Karta.exe
+        git commit -m "Build -> Push"
+        git push
+        
       
