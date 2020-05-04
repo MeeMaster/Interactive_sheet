@@ -51,7 +51,7 @@ jobs:
         echo "Copied names"
         copy abilities.csv dist\
         echo "Copied abilities"
-        7z -a dist\Karta.zip *_names_*.csv abilities.csv dist\Karta.exe
+        7za a dist\Karta.zip *_names_*.csv abilities.csv dist\Karta.exe
         echo "Zipped"
         git config --global user.email "krzysiek.firmowy.pan@gmail.com"
         git add dist\Karta.zip
