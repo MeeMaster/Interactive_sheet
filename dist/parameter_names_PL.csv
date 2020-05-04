@@ -1,0 +1,61 @@
+strength;Si³a
+agility;Zrêcznoœæ
+intelligence;Inteligencja
+toughness;Twardoœæ
+willpower;Si³a Woli
+charisma;Charyzma
+athletics;Atletyka
+melee_unarmed;Walka nieuzbrojona
+melee_armed;Broñ bia³a
+ranged_light;Broñ lekka
+ranged_heavy;Broñ ciê¿ka
+ranged_stationary;Broñ stacjonarna
+dodge;Unik
+dexterity;Zwinnoœæ
+perception;Percepcja
+analysis;Analiza
+composition;Opanowanie
+persistence;Wytrwa³oœæ
+resistance;Odpornoœæ
+conceal;Ukrycie
+diplomacy;Dyplomacja
+cheat;Oszustwo
+commerce;Handel
+interrogation;Przes³uchiwanie
+survival;Sztuka przetrwania
+cybernetics;Cybernetyka
+mechanics;Mechanika
+security;Zabezpieczenia
+navigation;Nawigacja
+medicine;Medycyna
+pilot_speeders;Speedery
+pilot_walkers;Maszyny krocz¹ce
+pilot_spaceships;Statki kosmiczne
+influence;Wp³yw
+encumbrance_low;Lekkie
+encumbrance_med;Komfortowe
+encumbrance_high;Maksymalne
+speed_low;Wolny
+speed_med;Normalny
+speed_high;Sprint
+reputation_bad;Negatywna
+reputation_good;Pozytywna
+hp_max;P¯ maks
+hp_current;P¯ obecne
+pp_total;PP ca³kowite
+pp_curr;PP obecne
+fatigue;Zmêczenie
+xp_total;XP wykorzystane
+xp_free;XP wolne
+armor_head;G³owa
+armor_rh;Prawa rêka
+armor_chest;Korpus
+armor_lh;Lewa rêka
+armor_rl;Prawa noga
+armor_ll;Lewa noga
+name;Imiê
+race;Rasa
+planet;Planeta
+age;Wiek
+traits;Cechy szczególne
+profession;Zawód

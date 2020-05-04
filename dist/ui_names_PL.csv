@@ -1,0 +1,24 @@
+armor;Pancerz
+equipment;Wyposa¿enie
+skills;Umiejêtnoœci
+abilities;Zdolnoœci
+character_tab;Postaæ
+equipment_tab;Ekwipunek
+misc_tab;Pozosta³e
+ability_add_button;Dodaj zdolnoœæ
+weapons;Broñ
+weapons_add_button;Dodaj broñ
+armor_list;Pancerz
+armor_add_button;Dodaj pancerz
+menu_file;Plik
+new_sheet;Nowa
+menu_load_sheet;Otwórz
+menu_save_sheet;Zapisz
+menu_save_sheet_as;Zapisz jako
+menu_quit;WyjdŸ
+window_name;Karta postaci
+load_sheet_window_title;Wczytaj kartê
+save_sheet_window_title;Zapisz kartê
+ability_display_name;Nazwa
+ability_requirements;Wymagania
+ability_description;Opis
