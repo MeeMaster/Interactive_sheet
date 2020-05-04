@@ -16,10 +16,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
+#    - name: Set up Python 3.7
+#      uses: actions/setup-python@v1
+#      with:
+#        python-version: 3.7
     - name: Install GoW
       run: |
         Set-ExecutionPolicy RemoteSigned -scope CurrentUser
@@ -48,11 +48,15 @@ jobs:
     - name: Push result
       run: |
         copy *_names_* dist\
+        echo "Copied names"
         copy abilities.csv dist\
+        echo "Copied abilities"
         #zip dist\Karta.zip *_names_*.csv abilities.csv dist\Karta.exe
         git config --global user.email "krzysiek.firmowy.pan@gmail.com"
         git add dist\*
+        echo "Added files"
         git commit -m "Build -> Push"
         git push
+        echo "Pushed"
         
       
