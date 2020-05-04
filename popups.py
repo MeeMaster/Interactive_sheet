@@ -1,11 +1,12 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem,\
-                            QSizePolicy, QTextEdit, QScrollArea, QTableWidget, QCheckBox
+from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, \
+    QSizePolicy, QTextEdit, QScrollArea, QTableWidget, QCheckBox, QComboBox
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
-from parameters import load_abilities, translate_parameter, translate_ui, translate_ability
-
+from parameters import load_abilities, translate_parameter, translate_ui, translate_ability, load_weapons, damage_types
+from item_classes import Weapon
+from layout_classes import InputLine, LabelledComboBox
 
 class BasePopup(QWidget):
     popup_cancel = pyqtSignal(bool)
@@ -44,6 +45,7 @@ class AbilityPopup(BasePopup):
         BasePopup.__init__(self)
 
         self.abilities = load_abilities()
+        self.translate_abilities()
         self.character = character
         self.override_checkbox = QCheckBox("override_disabled")
         self.override_checkbox.stateChanged.connect(self.update_button)
@@ -57,71 +59,91 @@ class AbilityPopup(BasePopup):
         layout.addWidget(scroll)
         scroll_widget = QWidget()
         scroll.setWidget(scroll_widget)
+        self.main_layout.addLayout(layout)
+        self.selected_ability = None
+        self.setWindowTitle("Dodaj zdolność")
+        self.ability_layout = QVBoxLayout()
+        scroll_widget.setLayout(self.ability_layout)
+        # scroll_widget.setLayout(self.ability_layout)
+        self.ability_is_valid = False
+        self.current_row = None
+        self.current_column = None
+        self.current_table = None
+        self.build_table()
+        self.update_button()
+        self.show()
+
+    def build_table(self):
         abilities_tier1 = [ability_name for ability_name in self.abilities
                            if self.abilities[ability_name]["tier"] == "1"]
         abilities_tier2 = [ability_name for ability_name in self.abilities
                            if self.abilities[ability_name]["tier"] == "2"]
         abilities_tier3 = [ability_name for ability_name in self.abilities
                            if self.abilities[ability_name]["tier"] == "3"]
-        self.selected_ability = None
-        self.setWindowTitle("Dodaj zdolność")
-        self.ability_layout = QVBoxLayout()
-        scroll_widget.setLayout(self.ability_layout)
-        self.ability_is_valid = False
-        self.current_row = None
-        self.current_column = None
-        self.current_table = None
-        self.update_button()
         for index, ability_subset in enumerate([abilities_tier1, abilities_tier2, abilities_tier3]):
-            label = QLabel("Tier{}".format(index+1))
+            label = QLabel("Tier{}".format(index + 1))
             label.setStyleSheet("font: bold 16px;")
             self.ability_layout.addWidget(label)
-            table = MyTableWidget(index)
-            table.setRowCount(len(ability_subset))
-            table.setColumnCount(5)
-            table.setSelectionBehavior(1)
-            table.setHorizontalScrollBarPolicy(1)
-            table.setVerticalScrollBarPolicy(1)
-            table.setColumnHidden(0, True)
-            table.setColumnHidden(4, True)
-            table.verticalHeader().setVisible(False)
-            table.klik.connect(self.selected)
-            table.currentCellChanged.connect(self.cell_changed)
-            table.setHorizontalHeaderLabels([translate_ui("ability_name"), translate_ui("ability_display_name"),
-                                             translate_ui("ability_requirements"), translate_ui("ability_description"),
-                                             translate_ui("ability_tier")])
-            for row, ability in enumerate(ability_subset):
-                row_enabled = True
-                for column, parameter in enumerate(["name", "display", "requirements", "description", "tier"]):
-                    value = self.abilities[ability][parameter]
-                    if isinstance(value, dict):
-                        item = TableRequirementItem(value, self.character)
-                        table.setCellWidget(row, column, item)
-                        row_enabled = item.fulfilled
-                    elif column == 3:
-                        item = TableDescriptionItem(value, 400)
-                        table.setCellWidget(row, column, item)
-                    else:
-                        item = TableDescriptionItem(value, 150)
-                        table.setCellWidget(row, column, item)
-                if not row_enabled:
-                    for column, parameter in enumerate(["name", "display", "requirements", "description", "tier"]):
-                        # table.cell
-                        child = table.cellWidget(row, column)
-                        p = child.palette()
-                        p.setColor(child.backgroundRole(), QColor(0, 0, 0, 50))
-                        child.setPalette(p)
-                        child.setAutoFillBackground(True)
-
+            table = self.get_table(ability_subset, index)
+            self.fill_table(ability_subset, table)
             table.resizeColumnsToContents()
             table.resizeRowsToContents()
             self.ability_layout.addWidget(table)
             width, height = get_true_table_size(table)
             table.setFixedWidth(width)
             table.setFixedHeight(height)
-        scroll_widget.setLayout(self.ability_layout)
-        self.main_layout.addLayout(layout)
-        self.show()
+
+    def fill_table(self, ability_subset, table):
+        for row, ability in enumerate(ability_subset):
+            row_enabled = True
+            already_bought = False
+            for column, parameter in enumerate(["name", "display", "requirements", "description", "tier"]):
+                value = self.abilities[ability][parameter]
+                if isinstance(value, dict):
+                    item = TableRequirementItem(value, self.character)
+                    table.setCellWidget(row, column, item)
+                    row_enabled = item.fulfilled
+                elif column == 3:
+                    item = TableDescriptionItem(value, 400)
+                    table.setCellWidget(row, column, item)
+                else:
+                    if column == 0:
+                        if value in self.character.abilities:
+                            already_bought = True
+                            row_enabled = False
+                    item = TableDescriptionItem(value, 150)
+                    table.setCellWidget(row, column, item)
+            if not row_enabled:
+                for column in range(5):
+                    child = table.cellWidget(row, column)
+                    p = child.palette()
+                    p.setColor(child.backgroundRole(), QColor(0, 0, 0, 50)
+                    if not already_bought else QColor(0, 100, 0, 50))
+                    child.setPalette(p)
+                    child.setAutoFillBackground(True)
+
+    def get_table(self, ability_subset, index):
+        table = MyTableWidget(index)
+        table.setRowCount(len(ability_subset))
+        table.setColumnCount(5)
+        table.setSelectionBehavior(1)
+        table.setHorizontalScrollBarPolicy(1)
+        table.setVerticalScrollBarPolicy(1)
+        table.setColumnHidden(0, True)
+        table.setColumnHidden(4, True)
+        table.verticalHeader().setVisible(False)
+        table.klik.connect(self.selected)
+        table.currentCellChanged.connect(self.cell_changed)
+        table.setHorizontalHeaderLabels([translate_ui("ability_name"), translate_ui("ability_display_name"),
+                                         translate_ui("ability_requirements"), translate_ui("ability_description"),
+                                         translate_ui("ability_tier")])
+        return table
+
+    def translate_abilities(self, locale="PL"):
+        for ability in self.abilities:
+            display, description = translate_ability(ability, locale=locale)
+            self.abilities[ability]["display"] = display
+            self.abilities[ability]["description"] = description
 
     def cell_changed(self, current_row, current_column, last_row, last_column):
         self.current_column = current_column
@@ -211,63 +233,69 @@ class TableDescriptionItem(QLabel):
         self.setContentsMargins(2, 2, 2, 2)
 
 
+class WeaponPopup(BasePopup):
 
-# class AbilityPopup(BasePopup):
-#     popup_ok = pyqtSignal(dict)
-#
-#     def __init__(self, character=None):
-#         self.abilities = load_abilities()
-#         self.character = character
-#         self.ability_names = sorted([a for a in self.abilities.keys()
-#                                      if a not in self.character.abilities])
-#         self.selected_ability = None
-#         BasePopup.__init__(self)
-#         self.setWindowTitle("Dodaj zdolność")
-#         self.ability_layout = QHBoxLayout()
-#         self.ability_combobox = QComboBox()
-#         self.ability_requirements = QLabel()
-#         self.ability_requirements.setText(" " * 30)
-#         self.ability_cost = QLabel()
-#         self.ability_combobox.addItems([self.abilities[a]["display"] for a in self.ability_names])
-#         self.ability_combobox.currentIndexChanged.connect(self.select_item)
-#         self.ability_name_layout = QVBoxLayout()
-#         self.ability_requirements_layout = QVBoxLayout()
-#         self.ability_cost_layout = QVBoxLayout()
-#         name_label = QLabel("Nazwa zdolności")
-#         req_label = QLabel("Wymagania")
-#         cost_label = QLabel("Koszt")
-#         self.ability_name_layout.addWidget(name_label)
-#         self.ability_requirements_layout.addWidget(req_label)
-#         self.ability_cost_layout.addWidget(cost_label)
-#         self.ability_name_layout.addWidget(self.ability_combobox)
-#         self.ability_requirements_layout.addWidget(self.ability_requirements)
-#         self.ability_cost_layout.addWidget(self.ability_cost)
-#         self.ability_name_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-#         self.ability_requirements_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-#         self.ability_cost_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-#         self.ability_layout.addLayout(self.ability_name_layout)
-#         self.ability_layout.addLayout(self.ability_requirements_layout)
-#         self.ability_layout.addLayout(self.ability_cost_layout)
-#         self.ability_description = QTextEdit()
-#         self.ability_description.setEnabled(False)
-#         self.ability_description.setMaximumHeight(80)
-#         self.ability_layout.addWidget(self.ability_description)
-#         self.main_layout.addLayout(self.ability_layout)
-#         self.select_item()
-#         self.show()
-#
-#     def select_item(self):
-#         index = self.ability_combobox.currentIndex()
-#         item = self.ability_names[index]
-#         self.ability_requirements.setText("\n".join(self.abilities[item]["requirements"]))
-#         self.ability_description.setText(self.abilities[item]["description"])
-#         print(self.abilities[item]["tier"])
-#         self.ability_cost.setText("{} XP".format(int(self.abilities[item]["tier"])*300))
-#
-#     def ok_pressed(self):
-#         index = self.ability_combobox.currentIndex()
-#         item = self.ability_names[index]
-#         self.popup_ok.emit(self.abilities[item])
-#         self.close()
+    def __init__(self, character=None):
+        BasePopup.__init__(self)
+        self.archetype_weapons = load_weapons()
 
+        self.combo_layout = QHBoxLayout()
+        self.archetype_combobox = LabelledComboBox(label="weapon_archetype")
+        self.archetype_names = []
+        self.fill_archetype_combobox()
+        self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
+        self.weapon_name = InputLine("weapon_name", Qt.AlignLeft, label="weapon_name")
+        self.combo_layout.addWidget(self.archetype_combobox)
+        self.combo_layout.addWidget(self.weapon_name)
+
+        self.damage_layout = QHBoxLayout()
+        self.damage_value = InputLine("weapon_damage", Qt.AlignLeft, label="weapon_damage")
+        self.ap_value = InputLine("weapon_ap", Qt.AlignLeft, label="ap_value")
+        self.damage_type = LabelledComboBox(label="damage_type")
+        for damage_type in damage_types:
+            self.damage_type.addItem(damage_type)
+        self.damage_layout.addWidget(self.damage_value)
+        self.damage_layout.addWidget(self.damage_type)
+        self.damage_layout.addWidget(self.ap_value)
+
+        self.shot_layout = QHBoxLayout()
+        self.max_energy = InputLine("weapon_max_energy", Qt.AlignLeft, label="max_energy")
+        self.energy_per_shot = InputLine("weapon_shot_cost", Qt.AlignLeft, label="shot_cost")
+        self.shot_type = InputLine("weapon_mode", Qt.AlignLeft, label="weapon_fire_modes")
+        self.shot_layout.addWidget(self.max_energy)
+        self.shot_layout.addWidget(self.energy_per_shot)
+        self.shot_layout.addWidget(self.shot_type)
+
+        self.main_layout.addLayout(self.combo_layout)
+        self.main_layout.addLayout(self.damage_layout)
+        self.main_layout.addLayout(self.shot_layout)
+        self.fill_parameters()
+        self.show()
+
+    def fill_archetype_combobox(self):
+        for weapon_type in self.archetype_weapons:
+            for weapon in self.archetype_weapons[weapon_type]:
+                self.archetype_combobox.addItem(weapon)
+                self.archetype_names.append(weapon)
+        self.archetype_names.append("other")
+        self.archetype_combobox.addItem("other")
+
+    def fill_parameters(self, index=None):
+        index = self.archetype_combobox.currentIndex()
+        weapon_name = self.archetype_names[index]
+        if weapon_name == "other":
+            return
+        weapon_line = self.archetype_weapons["melee"][weapon_name]._line \
+            if weapon_name in self.archetype_weapons["melee"] \
+            else self.archetype_weapons["ranged"][weapon_name]._line
+        weapon = Weapon()
+        weapon.load_from_line(weapon_line)
+        self.damage_value.setText(str(weapon.damage))
+        self.ap_value.setText(str(weapon.ap))
+        self.damage_type.setCurrentIndex(damage_types.index(weapon.damage_type))
+        self.max_energy.setText(str(weapon.max_magazine))
+        self.energy_per_shot.setText(str(weapon.shot_cost))
+
+    def update_parameters(self, parameter, value):
+        pass
 

@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QPushButton, QWidget, QAction, QSpacerItem, QSizePolicy, QFrame,
                              QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, QFileDialog, QLineEdit, QTextEdit,
-                             QTabWidget, QCheckBox, QMenu)
+                             QTabWidget, QCheckBox, QMenu, QComboBox)
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIntValidator, QValidator, QColor
@@ -52,7 +52,6 @@ class ScrollContainer(QWidget):
     def add_widget(self):
         if self.popup is not None:
             print(self.parent)
-            # self.current_popup = self.popup(self, self.parent.character)
             self.current_popup = self.popup(self.parent.character)
             self.current_popup.popup_ok.connect(self._add_widget)
             self.current_popup.popup_cancel.connect(self.close_popup)
@@ -77,6 +76,7 @@ class View(QWidget):
         self.menu = QMenu(self)
         self.menu_actions = {"Usun": self.remove}
         self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.menu.addAction(QAction("Usun", self))
         self.customContextMenuRequested.connect(self.show_header_menu)
 
     def add_header_option(self, option, target):
@@ -84,7 +84,6 @@ class View(QWidget):
         self.menu_actions[option] = target
 
     def show_header_menu(self, point):
-        self.menu.addAction(QAction("Usun", self))
         self.menu.triggered[QAction].connect(self.resolve_action)
         self.menu.exec_(self.mapToGlobal(point))
 
@@ -101,7 +100,6 @@ class AbilityView(View):
 
     def __init__(self, ability, character):
         View.__init__(self)
-        # self.setMinimumHeight(20)
         self.name = ability["name"]
         layout = QVBoxLayout()
         self.display_name = ability["display"]
@@ -225,7 +223,6 @@ class SkillView(QWidget):
         super(QWidget, self).__init__()
         self.setFixedWidth(220)
         # color_widget(self)
-        # self.setFixedHeight(40)
         self.setContentsMargins(0, 0, 0, 0)
         self.name = name
         self.display_name = display_name if display_name is not None else name
@@ -386,7 +383,6 @@ class ArmorView(View):
         self.line2_layout = QHBoxLayout()
         self.line2_layout.setContentsMargins(0, 0, 0, 0)
         self.armor_name = InputLine("name", Qt.AlignLeft, label="Name")
-        # self.armor_name.setFixedWidth(150)
         self.line1_layout.addWidget(self.armor_name)
         self.armor_head = InputLine("Armor head", label="Head", maxwidth=30)
         self.line1_layout.addWidget(self.armor_head)
@@ -442,7 +438,6 @@ class MyIntValidator(QValidator):
         self.maximum = maximum
 
     def validate(self, a0, a1):
-        # print(a0, a1)
         if a1 == 0:
             return QValidator.Acceptable, "0", 1
         try:
@@ -458,3 +453,36 @@ class MyIntValidator(QValidator):
 #     p.setColor(widget.backgroundRole(), color)
 #     widget.setPalette(p)
 #     widget.setAutoFillBackground(True)
+
+
+class LabelledComboBox(QWidget):
+    currentIndexChanged = pyqtSignal(int)
+
+    def __init__(self, align_flag=Qt.AlignLeft, label=None, spacer=None):
+        QWidget.__init__(self)
+        self.layout = QVBoxLayout()
+        if label is not None:
+            self.label = QLabel(label)
+            self.label.setWordWrap(True)
+            self.label.setStyleSheet("font: 8px")
+            self.label.setContentsMargins(0, 0, 0, 0)
+            self.label.setAlignment(align_flag)
+            self.layout.addWidget(self.label)
+        self.box = QComboBox()
+        self.box.currentIndexChanged.connect(lambda x: self.currentIndexChanged.emit(x))
+        self.layout.addWidget(self.box)
+        if spacer == "lower":
+            self.layout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        if spacer == "upper":
+            self.layout.insertSpacerItem(0, QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(self.layout)
+
+    def currentIndex(self):
+        return self.box.currentIndex()
+
+    def setCurrentIndex(self, index):
+        self.box.setCurrentIndex(index)
+
+    def addItem(self, item):
+        self.box.addItem(item)

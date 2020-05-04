@@ -153,8 +153,8 @@ class MyWindowWidget(QWidget):
         self.fill_attributes(attributes_layout)
         # Set skills
 
-        abilities = ScrollContainer(translate_ui("abilities"), translate_ui("ability_add_button"), AbilityView, parent=self,
-                                    popup=AbilityPopup, target_function=self.handle_ability_widget)
+        abilities = ScrollContainer(translate_ui("abilities"), translate_ui("ability_add_button"), AbilityView,
+                                    parent=self, popup=AbilityPopup, target_function=self.handle_ability_widget)
         abilities_layout.addWidget(abilities)
         return tab1
 
@@ -165,7 +165,8 @@ class MyWindowWidget(QWidget):
         tab2.setLayout(page2)
         weapons_armor_layout = QVBoxLayout()
         weapons_layout = QVBoxLayout()
-        weapons_scroll = ScrollContainer(translate_ui("weapons"), translate_ui("weapons_add_button"), WeaponView, parent=self)
+        weapons_scroll = ScrollContainer(translate_ui("weapons"), translate_ui("weapons_add_button"), WeaponView,
+                                         popup=WeaponPopup, parent=self, target_function=self.handle_weapon_widget)
         weapons_layout.addWidget(weapons_scroll)
         weapons_armor_layout.addLayout(weapons_layout)
         armor_layout = QVBoxLayout()
@@ -256,7 +257,6 @@ class MyWindowWidget(QWidget):
         label_layout = QHBoxLayout()
         label = QLabel(translate_ui("armor"))
         label.setStyleSheet("font: bold 14px")
-        # label.setMaximumHeight(30)
         label.setContentsMargins(0, 0, 0, 0)
         label.setAlignment(Qt.AlignCenter)
         label_layout.addWidget(label)

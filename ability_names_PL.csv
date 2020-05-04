@@ -64,13 +64,14 @@ ability_influence5;Don¿uan/Femme Fatale;+10 do rzutów Charyzmy przy oddzia³ywani
 ability_persistence1;Nieugiêty;+10 do rzutów na odpornoœæ na interrogation
 ability_persistence2;Nieczu³y;Postaæ nie musi rzucaæ na persistence przy codziennych okropnoœciach
 ability_persistence3;Silny umys³;+20 do rzutów odpornoœci na Moce umys³u
-ability_resistence1;Mocna g³owa;+20 do Twardoœci podczas testów wytrzyma³oœci podczas spo¿ywania alkoholu lub narkotyków
+ability_resistance1;Mocna g³owa;+20 do Twardoœci podczas testów wytrzyma³oœci podczas spo¿ywania alkoholu lub narkotyków
 ability_security1;Znajomoœæ systemu;Postaæ otrzymuje +10 do prze³amywania konkretnego systemu zabezpieczeñ
 ability_security2;Szybki uczeñ;Determinacja daje +20 do ponownego podejœcia zamiast +10
 ability_security3;Ostro¿ne podejœcie;Alarm systemu zostanie wszczêty przy 5 pora¿kach zamiast 4
 ability_security4;K³ody pod nogi;Jeœli postaæ ma dostêp do systemu, mo¿e wykonaæ trudny test zabezpieczeñ w celu utrudnienia dostêpu innym u¿ytkownikom (modyfikator -30)
 ability_security5;Mistrz hakowania;Pozwala postaci na przejêcie systemów wroga (ochrona, drzwi i inne)
 ability_security6;Szybkie palce;Jeœli inna postaæ przeciwdzia³a postaci w hakowaniu, otrzymuje ona modyfikator -20 do przewagi zabezpieczeñ
+ability_security7;Archaiczne zamki;Pozwala postaci na próbê otwarcia zamków mechanicznych, przy dodatkowym modyfikatorze +10
 ability_dexterity1;Na cztery ³apy;Pozwala na upadek z  wy¿szych wysokoœci bez utraty punktów ¿ycia
 ability_dexterity2;Rakietowiec;Pozwala na u¿ycie plecaków rakietowych
 ability_willpower1;¯elazna wola;Pozwala na przerzut testów opartych na Sile Woli

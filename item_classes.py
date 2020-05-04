@@ -6,6 +6,8 @@ class Item:
         self.weight = None
         self.tooltip = None
         self.description = None
+        self.availability = None
+
 
 
 class Armor(Item):
@@ -32,25 +34,26 @@ class Weapon(Item):
 
     def __init__(self):
         Item.__init__(self)
-        self.modifications = {}
-        self.addons = {}
-        self.traits = {}
+        self.arch_name = None
+        self.modifications = []
+        self.addons = []
+        self.traits = []
         self.type = None
-        self.damage = None
+        self.damage = 0
         self.damage_type = None
         self.ap = 0
         self.power_magazine = 0
-        self.gas_storage = 0
+        self.max_magazine = 0
         self.shot_cost = 0
-        self.uses_gas = True
         self.equipped = False
         self.can_shoot = True
+        self.fire_modes = []
+        self.base_skill = None
+        self.hands = 0
+        self._line = None
 
     def update(self):
         if self.power_magazine < self.shot_cost:
-            self.can_shoot = False
-            return
-        if self.uses_gas and self.gas_storage < self.shot_cost:
             self.can_shoot = False
             return
         self.can_shoot = True
@@ -58,8 +61,32 @@ class Weapon(Item):
     def shoot(self):
         if not self.can_shoot:
             return
-        if self.uses_gas:
-            self.gas_storage -= self.shot_cost
         self.power_magazine -= self.shot_cost
         self.update()
+
+    def load_from_line(self, line):
+        name, availability, value, damage, damage_type, ap, max_clip, energy_per_shot, \
+        fire_mode, traits, mods, skill, hands, weight = line.strip().strip().split(";")
+        self.arch_name = name
+        self.name = name  # TODO: translate the weapon name
+        self.availability = availability
+        self.price = value
+        self.damage = damage
+        self.damage_type = damage_type
+        self.ap = ap
+        self.max_magazine = max_clip
+        self.shot_cost = energy_per_shot
+        self.fire_modes = fire_mode.split(",")
+        self.traits = traits.split(",")
+        self.mods = mods.split(",")
+        self.base_skill = skill
+        self.hands = hands
+        self.weight = weight
+        self._line = line
+
+
+def weapon_from_line(line):
+    weapon = Weapon()
+    weapon.load_from_line(line)
+    return weapon
 

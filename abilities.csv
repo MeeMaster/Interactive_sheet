@@ -1,81 +1,81 @@
-ability_analysis1;Przeszywaj¹ce spojrzenie;analysis 15;+10 do rzutów na rozpoznanie oszustwa;1
-ability_analysis2;Po³¹cz kropki;analysis 20;+10 do rzutów analizy przy szukaniu wzorca;2
-ability_analysis3;Naukowiec danych;analysis 15;+10 do rzutów na wyszukiwanie istotnych informacji;1
-ability_athletics1;Sprinter;athletics 15;2x d³u¿szy zasiêg ruchu podczas sprintu;1
-ability_athletics2;¯wawy p³ywak;athletics 15;Mo¿e p³ywaæ z podwójn¹ prêdkoœci¹ oraz zatrzymywaæ oddech na dwa razy d³u¿szy czas;1
-ability_cyber1;Konstrukcja uk³adów;cybernetics  10;Pozwala na konstruowanie prostych urz¹dzeñ elektronicznych i cybernetycznych;1
-ability_dipl1;Znajomoœæ kultury;diplomacy  10;Znajomoœæ konkretnej kultury u³atwia kontakt z jej przedstawicielami;1
-ability_commerce1;Weteran targu;commerce 15, charisma 15;+10 do rzutu na Commerce podczas targowania siê o cenê;1
-ability_commerce2;Towar spod lady;ability_commerce1, commerce 20;Wszystkie towary otrzymuj¹ +1 do poziomu dostêpnoœci;2
-ability_mech1;Z³ota r¹czka;mechanics 10;Pozwala na budowanie prostych urz¹dzeñ mechanicznych;1
-ability_mech2;Naprawa pojazdów;mechanics 15;Pozwala na analizê i naprawê prostych pojazdów (speedery);1
-ability_med1;Tria¿;medicine 10;Mo¿e wykonywaæ proste zabiegi medyczne w warunkach bojowych;1
-ability_med2;Wywiad medyczny;medicine 15;+10 do testów rozpoznania choroby;1
-ability_nav1;Wyczucie kierunku;navigation 15;+10 przy nawigacji w terenie;1
-ability_nav2;Astrograf;navigation 15;+10 do nawigacji w przestrzeni kosmicznej;1
-ability_nav3;Z nurtem ulicy;navigation 15;+10 do nawigacji w przestrzeni miejskiej;1
-ability_comp1;Nieustraszony;composition 15;+10 do rzutów na strach;1
-ability_comp2;Zaprawiony w boju;composition 15;+10 do rzutów przy ogniu zaporowym;1
-ability_comp3;Spokojny umys³;composition 20;+20 do rzutów odpornoœci na Moce umys³u;2
-ability_cheat1;Szuler;cheat 15, ability_dexterity1;+10 przy oszukiwaniu w grach;1
-ability_cheat2;Fa³szerz;cheat 15;+10 podczas podrabiania dokumentów / przedmiotów;1
-ability_cheat3;Klucznik;cheat 25, cybernetics  20, security 20;+20 do testu podrabiania kluczy dostêpu;3
-ability_cheat4;K³amstwo w ¿ywe oczy;cheat 10;+10 do próby ok³amania innej postaci;1
-ability_cheat5;Kim ty jesteœ?;cheat 15;+10 do próby podszywania siê;2
-ability_pilot1;As przestworzy;pilot_spaceships 20;+10 do pilota¿u podczas kierowania ma³ymi statkami kosmicznymi;1
-ability_pilot2;Œcigacz;pilot_speeders 10;+20 do pilota¿u podczas wyœcigów lub w warunkach przypominaj¹cych wyœcigi;2
-ability_inter1;Dobry glina, z³y glina;interrogation 15;Jeœli iloœæ ludzi przes³uchuj¹cych wynosi 2 lub wiêcej, +10 do przes³uchiwania;1
-ability_inter2;Kat;interrogation 15, composition 15;Pozwala na torturowanie przes³uchiwanych, gdzie testowana jest ich resistance i composition;2
-ability_inter3;Znane sztuczki;interrogation 10;Postaæ otrzymuje +10 do opanowania podczas bycia przes³uchiwan¹;1
-ability_perception1;Koci refleks;perception 15;+10 do testu zaskoczenia;1
-ability_perception2;Czu³e ucho;perception 10;+10 do testu pods³uchiwania;1
-#ability_ranged_light1;Strzelec wyborowy;ranged_light 15;Podwaja maksymaln¹ odleg³oœæ strza³u lekkimi blasterami;1
-ability_ranged_light2;Snajper;ranged_light 15;Podczas celowania nie otrzymujesz kar za celowanie w konkretn¹ czêœæ cia³a;1
-ability_ranged_light3;Naznaczony;ranged_light 20;Trafienie przeciwnika daje bonus +10 do kolejnego strza³u w tego samego przeciwnika;1
-ability_ranged_light4;Poprawka na wiatr;ranged_light 20;Podczas strzelania na d³ugie dystanse (modyfikator < 0), podczas strzelania do tego samego celu, ka¿dy kolejny strza³ daje modyfikator +10 do testu trafienia, maksymalnie 2 razy.;2
-ability_ranged_light5;Strza³ w biegu;ranged_light 20;+10 do testu trafienia podczas strzelania w biegu;2
-ability_ranged_light6;Szybki strza³;agility 15, ranged_light 20;W trakcie walki, podczas wyci¹gania blastera mo¿e wykonaæ pojedynczy strza³ za darmo;1
-ability_ranged_light7;Rewolwerowiec;ranged_light 30;Mo¿e u¿ywaæ dwóch blasterów naraz bez kary;3
-ability_ranged_light8;Praca na spuœcie;ranged_light 25;Pozwala na wystrzelenie wiêcej ni¿ jednego pocisku w trakcie tury;3
-ability_ranged_light9;Strza³ z biodra;ranged_light 25;Kara za strzelanie bez celowania wynosi -10 zamiast -30;3
-ability_ranged_light10;Wstrzymanie oddechu;ranged_light 20;+5 do strza³u na odleg³oœci dalekie;2
-ability_ranged_heavy1;Lob;ranged_heavy 15, agility 10;+10 do trafienia przy u¿yciu granatów (granatniki równie¿);1
-ability_ranged_heavy2;Ruchoma forteca;ranged_heavy 10, strength 20;Pozwala na wykonanie strza³u w trakcie ruchu z u¿yciem broni ciê¿kiej;2
-ability_ranged_heavy3;Skupienie ognia;ranged_heavy 20;Zwiêksza szansê na trafienie podczas u¿ywania ognia automatycznego o 5;1
-ability_ranged_heavy4;G³owy w dó³;ranged_heavy 15;Ogieñ zaporowy zwiêksza trudnoœæ testu opanowania o 1;1
-ability_ranged_heavy5;Czu³y punkt;ranged_heavy 20;Bezpoœrednie trafienie rakiet¹ otrzymuje dodatkowe 2 PP;2
-ability_ranged_stationary1;Mechaniczne ruchy;ranged_stationary 10;Czas potrzebny na rozstawienie i uruchomienie dzia³ka stacjonarnego skrócony do 2 rund;1
-ability_survival1;£owca;survival 10;+15 do spostrzegawczoœci podczas œledzenia zwierzyny;1
-ability_survival2;Kucharz;survival 10;Pozwala na stworzenie wytrzyma³ych racji ¿ywnoœciowych z podstawowego po¿ywienia;1
-ability_survival3;Traper;survival 15;Pozwala na zak³adanie trudnych do wykrycia pu³apek;2
-ability_survival4;Partyzant;survival 20;Pozwala na tworzenie materia³ów wybuchowych z powszechnie dostêpnych elementów;3
-ability_hide1;Zas³ona cienia;conceal 15;+10 do ukrywania siê jeœli postaæ ukrywa siê w miejscu;1
-ability_hide2;Ukryte kieszenie;conceal 15;Wykonaj test Zwinnych Palców, aby ukryæ ma³y przedmiot podczas przeszukiwania;1
-ability_evade1;Szybki zwód;dodge 15;Po udanym dodgeu postaæ mo¿e przemieœciæ siê do 2 metrów w dowolnym kierunku;1
-ability_melee_unarmed1;Rozbrojenie;agility 15, melee_unarmed 10;Wykonaj rzut Przewagi Zwinnoœci aby wytr¹ciæ broñ z r¹k przeciwnika;1
-ability_melee_unarmed2;Cios poni¿ej pasa;melee_unarmed 20;Mo¿e próbowaæ zadaæ cios wy³¹czaj¹cy przeciwnika z bójki. Test WW, 2+ sukcesów: Obrona: trudny dodge. Powalenie i og³uszenie. Mniej ni¿ 2 sukcesy: 0 Obr.;1
-ability_armed1;Celowane ciêcie;melee_armed 15;,Pozwala wykonaæ celowane ciêcie, z modyfikatorem 10 aby uzyskaæ 1PP;1
-ability_armed2;Zas³ona z ostrzy;melee_armed 20;Pozwala na dodatkowe parowanie w rundzie;2
-ability_influence1;Autorytet;influence 20;Pozwala zastraszaæ z u¿yciem Charyzmy zamiast Si³y;2
-ability_influence2;Pod w³os;influence 20;Pozwala zastraszaæ z u¿yciem Inteligencji zamiast Si³y;2
-ability_influence3;Filtrowanie informacji;influence 15;Pozwala plotkowaæ z u¿yciem Inteligencji zamiast Charyzmy;1
-ability_influence4;M¹dre s³ówka;influence 15;Pozwala przekonywaæ z u¿yciem Inteligencji zamiast Charyzmy;1
-ability_influence5;Don¿uan/Femme Fatale;charisma 15;+10 do rzutów Charyzmy przy oddzia³ywaniu z osobnikiem przeciwnej  p³ci (Rasa musi byæ zbie¿na);1
-ability_persistence1;Nieugiêty;persistence 15;+10 do rzutów na odpornoœæ na interrogation;1
-ability_persistence2;Nieczu³y;persistence 10;Postaæ nie musi rzucaæ na persistence przy codziennych okropnoœciach;1
-ability_persistence3;Silny umys³;persistence 20;+20 do rzutów odpornoœci na Moce umys³u;2
-ability_resistence1;Mocna g³owa;resistance 15;+20 do Twardoœci podczas testów wytrzyma³oœci podczas spo¿ywania alkoholu lub narkotyków;2
-ability_security1;Znajomoœæ systemu;security 10;Postaæ otrzymuje +10 do prze³amywania konkretnego systemu zabezpieczeñ;1
-ability_security2;Szybki uczeñ;security 15;Determinacja daje +20 do ponownego podejœcia zamiast +10;1
-ability_security3;Ostro¿ne podejœcie;security 15;Alarm systemu zostanie wszczêty przy 5 pora¿kach zamiast 4;2
-ability_security4;K³ody pod nogi;security 20;Jeœli postaæ ma dostêp do systemu, mo¿e wykonaæ trudny test zabezpieczeñ w celu utrudnienia dostêpu innym u¿ytkownikom (modyfikator -30);2
-ability_security5;Mistrz hakowania;security 30;Pozwala postaci na przejêcie systemów wroga (ochrona, drzwi i inne);3
-ability_security6;Szybkie palce;security 25;Jeœli inna postaæ przeciwdzia³a postaci w hakowaniu, otrzymuje ona modyfikator -20 do przewagi zabezpieczeñ;2
-ability_security7;Archaiczne zamki;security 15, ability_dexterity3;Pozwala postaci na próbê otwarcia zamków mechanicznych, przy dodatkowym modyfikatorze +10;2
-ability_dexterity1;Na cztery ³apy;dexterity 15;Pozwala na upadek z  wy¿szych wysokoœci bez utraty punktów ¿ycia;1
-ability_dexterity2;Rakietowiec;agility 15, dexterity 15;Pozwala na u¿ycie plecaków rakietowych;2
-ability_dexterity3;Zwinne palce;agility 20;Pozwala postaci na wykonywanie szybkich, zwinnych ruchów z u¿yciem r¹k;1
-ability_dexterity4;Niechciany prezent;ability_dexterity1;+10 jeœli postaæ próbuje podrzuciæ komuœ ma³y przedmiot;1
-ability_willpower1;¯elazna wola;willpower 25;Pozwala na przerzut testów opartych na Sile Woli;2
-ability_general1;Bombowy goœæ;;+10 do testów podczas pracy z materia³ami wybuchowymi;1
-ability_general2;Bieg³oœæ: He³my bojowe;;Pozwala na u¿ywanie he³mów z interfejsem bitewnym;1
+ability_analysis1;analysis 15;1
+ability_analysis2;analysis 20;2
+ability_analysis3;analysis 15;1
+ability_athletics1;athletics 15;1
+ability_athletics2;athletics 15;1
+ability_cyber1;cybernetics  10;1
+ability_dipl1;diplomacy  10;1
+ability_commerce1;commerce 15, charisma 15;1
+ability_commerce2;ability_commerce1, commerce 20;2
+ability_mech1;mechanics 10;1
+ability_mech2;mechanics 15;1
+ability_med1;medicine 10;1
+ability_med2;medicine 15;1
+ability_nav1;navigation 15;1
+ability_nav2;navigation 15;1
+ability_nav3;navigation 15;1
+ability_comp1;composition 15;1
+ability_comp2;composition 15;1
+ability_comp3;composition 20;2
+ability_cheat1;cheat 15, ability_dexterity1;1
+ability_cheat2;cheat 15;1
+ability_cheat3;cheat 25, cybernetics  20, security 20;3
+ability_cheat4;cheat 10;1
+ability_cheat5;cheat 15;2
+ability_pilot1;pilot_spaceships 20;1
+ability_pilot2;pilot_speeders 10;2
+ability_inter1;interrogation 15;1
+ability_inter2;interrogation 15, composition 15;2
+ability_inter3;interrogation 10;1
+ability_perception1;perception 15;1
+ability_perception2;perception 10;1
+#ability_ranged_light1;ranged_light 15;1
+ability_ranged_light2;ranged_light 15;1
+ability_ranged_light3;ranged_light 20;1
+ability_ranged_light4;ranged_light 20;2
+ability_ranged_light5;ranged_light 20;2
+ability_ranged_light6;agility 15, ranged_light 20;1
+ability_ranged_light7;ranged_light 30;3
+ability_ranged_light8;ranged_light 25;3
+ability_ranged_light9;ranged_light 25;3
+ability_ranged_light10;ranged_light 20;2
+ability_ranged_heavy1;ranged_heavy 15, agility 10;1
+ability_ranged_heavy2;ranged_heavy 10, strength 20;2
+ability_ranged_heavy3;ranged_heavy 20;1
+ability_ranged_heavy4;ranged_heavy 15;1
+ability_ranged_heavy5;ranged_heavy 20;2
+ability_ranged_stationary1;ranged_stationary 10;1
+ability_survival1;survival 10;1
+ability_survival2;survival 10;1
+ability_survival3;survival 15;2
+ability_survival4;survival 20;3
+ability_hide1;conceal 15;1
+ability_hide2;conceal 15;1
+ability_evade1;dodge 15;1
+ability_melee_unarmed1;agility 15, melee_unarmed 10;1
+ability_melee_unarmed2;melee_unarmed 20;1
+ability_armed1;melee_armed 15;1
+ability_armed2;melee_armed 20;2
+ability_influence1;influence 20;2
+ability_influence2;influence 20;2
+ability_influence3;influence 15;1
+ability_influence4;influence 15;1
+ability_influence5;charisma 15;1
+ability_persistence1;persistence 15;1
+ability_persistence2;persistence 10;1
+ability_persistence3;persistence 20;2
+ability_resistance1;resistance 15;2
+ability_security1;security 10;1
+ability_security2;security 15;1
+ability_security3;security 15;2
+ability_security4;security 20;2
+ability_security5;security 30;3
+ability_security6;security 25;2
+ability_security7;security 15, ability_dexterity3;2
+ability_dexterity1;dexterity 15;1
+ability_dexterity2;agility 15, dexterity 15;2
+ability_dexterity3;agility 20;1
+ability_dexterity4;ability_dexterity1;1
+ability_willpower1;willpower 25;2
+ability_general1;;1
+ability_general2;;1
