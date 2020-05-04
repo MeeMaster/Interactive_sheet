@@ -47,11 +47,11 @@ jobs:
     
     - name: Push result
       run: |
-        cp *_names_* dist/
-        cp abilities.csv dist/
-        zip dist/Karta.zip dist/*.csv dist/Karta.exe
+        cp *_names_* dist\
+        cp abilities.csv dist\
+        zip dist\Karta.zip dist\*.csv dist\Karta.exe
         git config --global user.email "krzysiek.firmowy.pan@gmail.com"
-        git add dist/Karta.zip
+        git add dist\Karta.zip
         git commit -m "Build -> Push"
         git push
         
