@@ -42,9 +42,13 @@ jobs:
     - name: Create package
       run: |
         pyinstaller --onefile --name Karta application.py
+        echo "Moving"
         mv dist\Karta.exe Karta.exe
+        echo "Removing old"
         rm Karta.zip
+        echo "Zipping"
         7z a Karta.zip images/ locales/ parameters/ Karta.exe
+        echo "Zipped"
         git config --global user.email "krzysiek.firmowy.pan@gmail.com"
         git add Karta.zip -f
         git commit -m "Build"
