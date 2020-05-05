@@ -45,7 +45,7 @@ jobs:
         echo "Moving"
         mv dist\Karta.exe Karta.exe
         echo "Removing old"
-        rm Karta.zip
+        rm Karta.zip -f
         echo "Zipping"
         7z a Karta.zip images/ locales/ parameters/ Karta.exe
         echo "Zipped"
