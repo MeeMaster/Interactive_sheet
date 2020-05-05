@@ -43,8 +43,9 @@ jobs:
       run: |
         pyinstaller --onefile --name Karta application.py
         mv dist\Karta.exe Karta.exe
+        rm Karta.zip
         7z a Karta.zip images/ locales/ parameters/ Karta.exe
         git config --global user.email "krzysiek.firmowy.pan@gmail.com"
-        git add Karta.zip
+        git add Karta.zip -f
         git commit -m "Build"
         git push -f
