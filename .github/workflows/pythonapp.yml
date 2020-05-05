@@ -38,8 +38,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
-        application.py
+        pytest application.py
     - name: Create package
       run: |
         pyinstaller --onefile --name Karta application.py
