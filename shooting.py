@@ -17,9 +17,11 @@ distance_types = {"param_distance_extreme": [">600"],
 
 
 class ShootingWidget(QWidget):
+    closed = pyqtSignal(bool)
 
     def __init__(self, parent=None, character=None, weapon=None):
         QWidget.__init__(self)
+        self.setWindowTitle(translate_ui("ui_shooting_app"))
         if parent is not None:
             self.setParent(parent)
         self.popup = None
@@ -259,7 +261,8 @@ class ShootingWidget(QWidget):
         self.popup = None
 
     def close_self(self):
-        self.parent().close()
+        self.closed.emit(True)
+        # self.close()
 
 
 class IconWidget(QWidget):

@@ -9,7 +9,7 @@ from popups import *
 from PyQt5.QtGui import QPixmap, QIntValidator
 from parameters import attribute_names, attribute_skill_dict, character_names, armor_names
 from parameters import translate_ability, translate_parameter, translate_ui
-
+from shooting import ShootingWidget
 
 colors = [Qt.white, Qt.black, Qt.red, Qt.darkRed, Qt.green, Qt.darkGreen, Qt.blue, Qt.darkBlue, Qt.cyan, Qt.darkCyan,
           Qt.magenta, Qt.darkMagenta, Qt.yellow, Qt.darkYellow, Qt.gray, Qt.darkGray, Qt.lightGray]
@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
         self.title = translate_ui("ui_window_name")
         self.setWindowTitle(self.title)
         self.current_file_path = None
+        self.popup = None
 
         # Add menu bar
         bar = self.menuBar()
@@ -35,6 +36,10 @@ class MainWindow(QMainWindow):
         save = QAction(translate_ui("ui_menu_save_sheet"), self)
         save.setShortcut("Ctrl+S")
         file.addAction(save)
+        file.addSeparator()
+        calc = QAction(translate_ui("ui_menu_open_calculator"), self)
+        file.addAction(calc)
+        file.addSeparator()
         save_as = QAction(translate_ui("ui_menu_save_sheet_as"), self)
         save_as.setShortcut("Ctrl+Shift+S")
         file.addAction(save_as)
@@ -45,6 +50,7 @@ class MainWindow(QMainWindow):
         # Add main widget
         self.window_widget = MyWindowWidget(self)
         self.setCentralWidget(self.window_widget)
+
         self.show()
         # self.statusBar().setSizeGripEnabled(False)
 
@@ -80,7 +86,17 @@ class MainWindow(QMainWindow):
             self.new_sheet.emit()
         if q.text() == translate_ui("ui_menu_quit"):
             self.exit.emit()
+        if q.text() == translate_ui("ui_menu_open_calculator"):
+            self.open_calculator()
 
+    def open_calculator(self):
+        self.popup = ShootingWidget()
+        self.popup.closed.connect(self.close_popup)
+        self.popup.show()
+
+    def close_popup(self):
+        self.popup.close()
+        self.popup = None
 
 class MyWindowWidget(QWidget):
     attribute_changed = pyqtSignal(str, str, int)
