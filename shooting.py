@@ -300,7 +300,7 @@ class OutcomeWidget(QWidget):
         QWidget.__init__(self)
         self.setWindowTitle(translate_ui("ui_outcome_widget_name"))
         layout = QVBoxLayout()
-        values_layout = QHBoxLayout()
+        values_layout = QVBoxLayout()
         ok_button_layout = QVBoxLayout()
         layout.addLayout(values_layout)
         layout.addLayout(ok_button_layout)
@@ -348,5 +348,5 @@ def get_shots(chance, num_shots, per_shot_modifier=-40, weapon_base_damage_thres
         if heat_roll > (weapon_base_damage_threshold - (n+2) * weapon_heat_rate):
             overheated = n+2
             break
-        hits += 1 if roll <= chance - per_shot_modifier or roll <= 5 else 0
+        hits += 1 if roll <= (chance + per_shot_modifier) or roll <= 5 else 0
     return hit_1, hits, overheated

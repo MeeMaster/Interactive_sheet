@@ -39,3 +39,8 @@ ui_shoot_series;Strzel seri¹
 ui_cancel;Anuluj
 ui_shooting_app;Kalkulator strza³ów
 ui_menu_open_calculator;Kalkulator strza³ów
+ui_outcome_widget_name;Wynik
+ui_num_shots_fired;Pocisków do wystrzelenia
+ui_num_successes_first;Iloœæ sukcesów pierwszego pocisku
+ui_num_successes_remaining;Iloœæ trafieñ pozosta³ych pocisków
+ui_overheated_on;Broñ przegrzana przys strzale
