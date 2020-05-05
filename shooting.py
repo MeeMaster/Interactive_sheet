@@ -5,7 +5,7 @@ from parameters import translate_ui, translate_parameter
 from layout_classes import InputLine
 import random
 from os import path
-base_path = path.split(path.abspath(__file__))[0]
+#base_path = path.split(path.abspath(__file__))[0]
 
 
 modifier_ranges = list(range(-50, 50, 10))
@@ -77,7 +77,7 @@ class ShootingWidget(QWidget):
         distance_view_internal_layout = QHBoxLayout()
         internal_widget.setLayout(distance_view_internal_layout)
         distance_view_internal_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        self.icon = IconWidget(QPixmap(path.join(base_path, "Images", "Silhouette.png")))
+        self.icon = IconWidget(QPixmap(path.join("Images", "Silhouette.png")))
         distance_view_internal_layout.addWidget(self.icon)
         distance_view_internal_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         distance_view_layout.addWidget(internal_widget)

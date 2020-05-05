@@ -8,6 +8,7 @@ from parameters import load_abilities, translate_parameter, translate_ui, transl
 from item_classes import Weapon
 from layout_classes import InputLine, LabelledComboBox
 
+
 class BasePopup(QWidget):
     popup_cancel = pyqtSignal(bool)
     popup_ok = pyqtSignal(str)

@@ -131,3 +131,5 @@ dmypy.json
 test.py
 window_old.py
 Karta.zip
+.idea/
+dist/
