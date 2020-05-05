@@ -42,7 +42,8 @@ jobs:
     - name: Create package
       run: |
         pyinstaller --onefile --name Karta application.py
-        7z a Karta.zip *_names_*.csv abilities.csv dist\Karta.exe
+        mv dist\Karta.exe Karta.exe
+        7z a Karta.zip *_names_*.csv abilities.csv Karta.exe
         git config --global user.email "krzysiek.firmowy.pan@gmail.com"
         git add Karta.zip
         git commit -m "Build"

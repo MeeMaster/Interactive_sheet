@@ -141,7 +141,6 @@ class Application:
                 continue
             for armor_slot in armor_names:
                 armor[armor_slot] += armor_item[armor_slot]
-        print(armor)
         self.update_armor(armor)
 
     def update_armor(self, armor_dict):

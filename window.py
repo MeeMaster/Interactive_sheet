@@ -25,6 +25,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.title = translate_ui("window_name")
         self.setWindowTitle(self.title)
+        self.current_file_path = None
 
         # Add menu bar
         bar = self.menuBar()
@@ -62,13 +63,17 @@ class MainWindow(QMainWindow):
                                                    "Character files (*.cht)", options=options)
         if not filepath[0]:
             return
+        self.current_file_path = filepath[0]
         self.directory_signal.emit(filepath[0], pop_type)
 
     def process_trigger(self, q):
         if q.text() == translate_ui("menu_load_sheet"):
             self.open_file_name_dialog("open")
         if q.text() == translate_ui("menu_save_sheet"):
-            self.save_signal.emit()
+            if self.current_file_path is None:
+                self.open_file_name_dialog("save")
+            else:
+                self.save_signal.emit()
         if q.text() == translate_ui("menu_save_sheet_as"):
             self.open_file_name_dialog("save")
         if q.text() == translate_ui("new_sheet"):

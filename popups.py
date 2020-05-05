@@ -102,7 +102,7 @@ class AbilityPopup(BasePopup):
                 if isinstance(value, dict):
                     item = TableRequirementItem(value, self.character)
                     table.setCellWidget(row, column, item)
-                    row_enabled = item.fulfilled
+                    row_enabled *= item.fulfilled
                 elif column == 3:
                     item = TableDescriptionItem(value, 400)
                     table.setCellWidget(row, column, item)
@@ -163,7 +163,8 @@ class AbilityPopup(BasePopup):
             if counter == index:
                 self.selected_ability = item.cellWidget(self.current_row, 0).text()
                 requirement = item.cellWidget(self.current_row, 2)
-                self.ability_is_valid = requirement.fulfilled
+                self.ability_is_valid = requirement.fulfilled \
+                    if self.selected_ability not in self.character.abilities else False
                 self.update_button()
             if counter != index:
                 item.clearSelection()
@@ -238,30 +239,37 @@ class WeaponPopup(BasePopup):
     def __init__(self, character=None):
         BasePopup.__init__(self)
         self.archetype_weapons = load_weapons()
-
+        self.current_weapon = None
         self.combo_layout = QHBoxLayout()
         self.archetype_combobox = LabelledComboBox(label="weapon_archetype")
         self.archetype_names = []
         self.fill_archetype_combobox()
         self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
         self.weapon_name = InputLine("weapon_name", Qt.AlignLeft, label="weapon_name")
+        self.weapon_name.value_changed.connect(self.update_parameters)
         self.combo_layout.addWidget(self.archetype_combobox)
         self.combo_layout.addWidget(self.weapon_name)
 
         self.damage_layout = QHBoxLayout()
-        self.damage_value = InputLine("weapon_damage", Qt.AlignLeft, label="weapon_damage")
-        self.ap_value = InputLine("weapon_ap", Qt.AlignLeft, label="ap_value")
+        self.damage_value = InputLine("weapon_damage", Qt.AlignLeft, dtype="int", label="weapon_damage")
+        self.damage_value.value_changed.connect(self.update_parameters)
+        self.ap_value = InputLine("weapon_ap", Qt.AlignLeft, dtype="int", label="ap_value")
+        self.ap_value.value_changed.connect(self.update_parameters)
         self.damage_type = LabelledComboBox(label="damage_type")
         for damage_type in damage_types:
             self.damage_type.addItem(damage_type)
+        self.damage_type.currentIndexChanged.connect(lambda x: self.update_parameters("damage_type", damage_types[x]))
         self.damage_layout.addWidget(self.damage_value)
         self.damage_layout.addWidget(self.damage_type)
         self.damage_layout.addWidget(self.ap_value)
 
         self.shot_layout = QHBoxLayout()
-        self.max_energy = InputLine("weapon_max_energy", Qt.AlignLeft, label="max_energy")
-        self.energy_per_shot = InputLine("weapon_shot_cost", Qt.AlignLeft, label="shot_cost")
+        self.max_energy = InputLine("weapon_max_energy", Qt.AlignLeft, dtype="int", label="max_energy")
+        self.max_energy.value_changed.connect(self.update_parameters)
+        self.energy_per_shot = InputLine("weapon_shot_cost", Qt.AlignLeft, dtype="int", label="shot_cost")
+        self.energy_per_shot.value_changed.connect(self.update_parameters)
         self.shot_type = InputLine("weapon_mode", Qt.AlignLeft, label="weapon_fire_modes")
+        self.shot_type.value_changed.connect(self.update_parameters)
         self.shot_layout.addWidget(self.max_energy)
         self.shot_layout.addWidget(self.energy_per_shot)
         self.shot_layout.addWidget(self.shot_type)
@@ -290,12 +298,27 @@ class WeaponPopup(BasePopup):
             else self.archetype_weapons["ranged"][weapon_name]._line
         weapon = Weapon()
         weapon.load_from_line(weapon_line)
+
         self.damage_value.setText(str(weapon.damage))
         self.ap_value.setText(str(weapon.ap))
         self.damage_type.setCurrentIndex(damage_types.index(weapon.damage_type))
         self.max_energy.setText(str(weapon.max_magazine))
         self.energy_per_shot.setText(str(weapon.shot_cost))
+        self.shot_type.setText("/".join(weapon.fire_modes))
+        self.current_weapon = weapon
 
     def update_parameters(self, parameter, value):
-        pass
-
+        if parameter == "weapon_name":
+            self.current_weapon.name = value
+        if parameter == "weapon_damage":
+            self.current_weapon.damage = value
+        if parameter == "weapon_ap":
+            self.current_weapon.ap = value
+        if parameter == "damage_type":
+            self.current_weapon.damage_type = value
+        if parameter == "weapon_max_energy":
+            self.current_weapon.max_magazine = value
+        if parameter == "weapon_shot_cost":
+            self.current_weapon.shot_cost = value
+        if parameter == "weapon_mode":
+            self.current_weapon.fire_modes = value.split("/")

@@ -1,6 +1,8 @@
 import codecs
 import os
 from item_classes import weapon_from_line
+base_path = os.path.split(os.path.abspath(__file__))[0]
+
 
 attribute_names = ["strength", "agility", "intelligence", "toughness", "willpower", "charisma"]
 damage_types = ["e", "p", "x", "el", "i", "ammo"]
@@ -34,7 +36,7 @@ attribute_skill_dict = {"athletics": ["strength"],
                         "survival": ["intelligence", "agility"],
                         "cybernetics": ["intelligence"],
                         "mechanics": ["intelligence"],
-                        "security": ["agility"],
+                        "security": ["intelligence"],
                         "navigation": ["intelligence"],
                         "medicine": ["intelligence"],
                         "pilot_speeders": ["agility"],
@@ -45,7 +47,7 @@ attribute_skill_dict = {"athletics": ["strength"],
 
 def load_abilities():
     abilities = {}
-    with codecs.open("abilities.csv", "r", encoding="windows-1250", errors='ignore') as infile:
+    with codecs.open(os.path.join(base_path, "parameters", "abilities.csv"), "r", encoding="windows-1250", errors='ignore') as infile:
         for line in infile:
             if not line.strip():
                 continue
@@ -71,10 +73,10 @@ def load_abilities():
 
 
 def translate_ability(name, locale="PL"):
-    locale_file = "ability_names_{}.csv".format(locale)
+    locale_file = os.path.join(base_path, "locales", "ability_names_{}.csv".format(locale))
     if not os.path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = "ability_names_{}.csv".format("EN")
+        locale_file = os.path.join(base_path, "locales", "ability_names_{}.csv".format("EN"))
         if not os.path.exists(locale_file):
             return name, ""
     with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
@@ -88,10 +90,10 @@ def translate_ability(name, locale="PL"):
 
 
 def translate_parameter(name, locale="PL"):
-    locale_file = "parameter_names_{}.csv".format(locale)
+    locale_file = os.path.join(base_path, "locales", "parameter_names_{}.csv".format(locale))
     if not os.path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = "parameter_names_{}.csv".format("EN")
+        locale_file = os.path.join(base_path, "locales", "parameter_names_{}.csv".format("EN"))
         if not os.path.exists(locale_file):
             return name
     with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
@@ -105,10 +107,10 @@ def translate_parameter(name, locale="PL"):
 
 
 def translate_ui(name, locale="PL"):
-    locale_file = "ui_names_{}.csv".format(locale)
+    locale_file = os.path.join(base_path, "locales", "ui_names_{}.csv".format(locale))
     if not os.path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = "ui_names_{}.csv".format("EN")
+        locale_file = os.path.join(base_path, "locales", "ui_names_{}.csv".format("EN"))
         if not os.path.exists(locale_file):
             return name
     with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
@@ -125,7 +127,8 @@ def load_weapons():
     weapons = {"ranged": {},
                "melee": {}
                }
-    with codecs.open("weapons.csv", "r", encoding="windows-1250", errors='ignore') as infile:
+    with codecs.open(os.path.join(base_path, "parameters", "weapons.csv"), "r",
+                     encoding="windows-1250", errors='ignore') as infile:
         for line in infile:
             if not line.strip():
                 continue
