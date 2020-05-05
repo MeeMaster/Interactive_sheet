@@ -5,8 +5,6 @@ from parameters import translate_ui, translate_parameter
 from layout_classes import InputLine
 import random
 from os import path
-#base_path = path.split(path.abspath(__file__))[0]
-
 
 modifier_ranges = list(range(-50, 50, 10))
 distances = [">600", "300-600", "200-300", "100-200", "80-100", "50-80", "30-50", "20-30", "10-20", "0-10"]
@@ -144,7 +142,7 @@ class ShootingWidget(QWidget):
         cover_view_internal_layout = QHBoxLayout()
         cover_internal_widget.setLayout(cover_view_internal_layout)
         cover_view_internal_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        self.trooper_icon = CoverIconWidget(QPixmap(path.join(base_path, "Images", "Stormtrooper.png")))
+        self.trooper_icon = CoverIconWidget(QPixmap(path.join("Images", "Stormtrooper.png")))
         cover_view_internal_layout.addWidget(self.trooper_icon)
         cover_view_internal_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         icon_layout.addWidget(cover_internal_widget)
