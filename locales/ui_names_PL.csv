@@ -1,24 +1,40 @@
-armor;Pancerz
-equipment;Wyposa¿enie
-skills;Umiejêtnoœci
-abilities;Zdolnoœci
-character_tab;Postaæ
-equipment_tab;Ekwipunek
-misc_tab;Pozosta³e
-ability_add_button;Dodaj zdolnoœæ
-weapons;Broñ
-weapons_add_button;Dodaj broñ
-armor_list;Pancerz
-armor_add_button;Dodaj pancerz
-menu_file;Plik
-new_sheet;Nowa
-menu_load_sheet;Otwórz
-menu_save_sheet;Zapisz
-menu_save_sheet_as;Zapisz jako
-menu_quit;WyjdŸ
-window_name;Karta postaci
-load_sheet_window_title;Wczytaj kartê
-save_sheet_window_title;Zapisz kartê
-ability_display_name;Nazwa
-ability_requirements;Wymagania
-ability_description;Opis
+ui_armor;Pancerz
+ui_equipment;Wyposa¿enie
+ui_skills;Umiejêtnoœci
+ui_abilities;Zdolnoœci
+ui_character_tab;Postaæ
+ui_equipment_tab;Ekwipunek
+ui_misc_tab;Pozosta³e
+ui_ability_add_button;Dodaj zdolnoœæ
+ui_weapons;Broñ
+ui_weapons_add_button;Dodaj broñ
+ui_armor_list;Pancerz
+ui_armor_add_button;Dodaj pancerz
+ui_menu_file;Plik
+ui_new_sheet;Nowa
+ui_menu_load_sheet;Otwórz
+ui_menu_save_sheet;Zapisz
+ui_menu_save_sheet_as;Zapisz jako
+ui_menu_quit;WyjdŸ
+ui_window_name;Karta postaci
+ui_load_sheet_window_title;Wczytaj kartê
+ui_save_sheet_window_title;Zapisz kartê
+ui_ability_display_name;Nazwa
+ui_ability_requirements;Wymagania
+ui_ability_description;Opis
+ui_ranged_skill_value;Umiejêtnoœæ strzelecka
+ui_gm_modifier;Modyfikator MG
+ui_break_chance;Szansa przegrzania
+ui_break_increment;Wzrost szansy pzregrzania/strza³
+ui_distance_value;Odleg³oœci
+ui_distance_type;Grupa odleg³oœci
+ui_distance_modifier;Modyfikator odleg³oœci
+ui_size_name;Rozmiar
+ui_size_mod;Modyfikator
+ui_cover_name;Stopieñ zas³oniêcia
+ui_cover_mod;Modyfikator
+ui_hit_chance;Szansa na trafienie
+ui_shoot_once;Strzel pojedynczo
+ui_shoot_series;Strzel seri¹
+ui_cancel;Anuluj
+ui_shooting_app;Kalkulator strza³ów

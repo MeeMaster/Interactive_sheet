@@ -1,61 +1,71 @@
-strength;Si³a
-agility;Zrêcznoœæ
-intelligence;Inteligencja
-toughness;Twardoœæ
-willpower;Si³a Woli
-charisma;Charyzma
-athletics;Atletyka
-melee_unarmed;Walka nieuzbrojona
-melee_armed;Broñ bia³a
-ranged_light;Broñ lekka
-ranged_heavy;Broñ ciê¿ka
-ranged_stationary;Broñ stacjonarna
-dodge;Unik
-dexterity;Zwinnoœæ
-perception;Percepcja
-analysis;Analiza
-composition;Opanowanie
-persistence;Wytrwa³oœæ
-resistance;Odpornoœæ
-conceal;Ukrycie
-diplomacy;Dyplomacja
-cheat;Oszustwo
-commerce;Handel
-interrogation;Przes³uchiwanie
-survival;Sztuka przetrwania
-cybernetics;Cybernetyka
-mechanics;Mechanika
-security;Zabezpieczenia
-navigation;Nawigacja
-medicine;Medycyna
-pilot_speeders;Speedery
-pilot_walkers;Maszyny krocz¹ce
-pilot_spaceships;Statki kosmiczne
-influence;Wp³yw
-encumbrance_low;Lekkie
-encumbrance_med;Komfortowe
-encumbrance_high;Maksymalne
-speed_low;Wolny
-speed_med;Normalny
-speed_high;Sprint
-reputation_bad;Negatywna
-reputation_good;Pozytywna
-hp_max;P¯ maks
-hp_current;P¯ obecne
-pp_total;PP ca³kowite
-pp_curr;PP obecne
-fatigue;Zmêczenie
-xp_total;XP wykorzystane
-xp_free;XP wolne
-armor_head;G³owa
-armor_rh;Prawa rêka
-armor_chest;Korpus
-armor_lh;Lewa rêka
-armor_rl;Prawa noga
-armor_ll;Lewa noga
-name;Imiê
-race;Rasa
-planet;Planeta
-age;Wiek
-traits;Cechy szczególne
-profession;Zawód
+param_strength;Si³a
+param_agility;Zrêcznoœæ
+param_intelligence;Inteligencja
+param_toughness;Twardoœæ
+param_willpower;Si³a Woli
+param_charisma;Charyzma
+param_athletics;Atletyka
+param_melee_unarmed;Walka nieuzbrojona
+param_melee_armed;Broñ bia³a
+param_ranged_light;Broñ lekka
+param_ranged_heavy;Broñ ciê¿ka
+param_ranged_stationary;Broñ stacjonarna
+param_dodge;Unik
+param_dexterity;Zwinnoœæ
+param_perception;Percepcja
+param_analysis;Analiza
+param_composition;Opanowanie
+param_persistence;Wytrwa³oœæ
+param_resistance;Odpornoœæ
+param_conceal;Ukrycie
+param_diplomacy;Dyplomacja
+param_cheat;Oszustwo
+param_commerce;Handel
+param_interrogation;Przes³uchiwanie
+param_survival;Sztuka przetrwania
+param_cybernetics;Cybernetyka
+param_mechanics;Mechanika
+param_security;Zabezpieczenia
+param_navigation;Nawigacja
+param_medicine;Medycyna
+param_pilot_speeders;Speedery
+param_pilot_walkers;Maszyny krocz¹ce
+param_pilot_spaceships;Statki kosmiczne
+param_influence;Wp³yw
+param_encumbrance_low;Lekkie
+param_encumbrance_med;Komfortowe
+param_encumbrance_high;Maksymalne
+param_speed_low;Wolny
+param_speed_med;Normalny
+param_speed_high;Sprint
+param_reputation_bad;Negatywna
+param_reputation_good;Pozytywna
+param_hp_max;P¯ maks
+param_hp_current;P¯ obecne
+param_pp_total;PP ca³kowite
+param_pp_curr;PP obecne
+param_fatigue;Zmêczenie
+param_xp_total;XP wykorzystane
+param_xp_free;XP wolne
+param_armor_head;G³owa
+param_armor_rh;Prawa rêka
+param_armor_chest;Korpus
+param_armor_lh;Lewa rêka
+param_armor_rl;Prawa noga
+param_armor_ll;Lewa noga
+param_name;Imiê
+param_race;Rasa
+param_planet;Planeta
+param_age;Wiek
+param_traits;Cechy szczególne
+param_profession;Zawód
+param_size_tiny;Bardzo ma³y
+param_size_small;Ma³y
+param_size_normal;Normalny
+param_size_large;Du¿y
+param_size_giant;Ogromny
+param_size_enormous;Gargantuiczny
+param_distance_extreme;Ekstremalna
+param_distance_far;Daleka
+param_distance_mid;Œrednia
+param_distance_close;Bliska

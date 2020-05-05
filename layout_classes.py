@@ -139,7 +139,7 @@ class InputLine(QWidget):
         if maxwidth is not None:
             self.setMaximumWidth(maxwidth)
         if self.dtype == "int":
-            self.line.setValidator(MyIntValidator(0, 10000))
+            self.line.setValidator(MyIntValidator(-100, 10000))
         self.register_field(val_dict=val_dict)
         self.layout.addWidget(self.line)
         if spacer == "lower":

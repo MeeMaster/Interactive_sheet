@@ -23,22 +23,22 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.title = translate_ui("window_name")
+        self.title = translate_ui("ui_window_name")
         self.setWindowTitle(self.title)
         self.current_file_path = None
 
         # Add menu bar
         bar = self.menuBar()
-        file = bar.addMenu(translate_ui("menu_file"))
-        file.addAction(translate_ui("new_sheet"))
-        file.addAction(translate_ui("menu_load_sheet"))
-        save = QAction(translate_ui("menu_save_sheet"), self)
+        file = bar.addMenu(translate_ui("ui_menu_file"))
+        file.addAction(translate_ui("ui_new_sheet"))
+        file.addAction(translate_ui("ui_menu_load_sheet"))
+        save = QAction(translate_ui("ui_menu_save_sheet"), self)
         save.setShortcut("Ctrl+S")
         file.addAction(save)
-        save_as = QAction(translate_ui("menu_save_sheet_as"), self)
+        save_as = QAction(translate_ui("ui_menu_save_sheet_as"), self)
         save_as.setShortcut("Ctrl+Shift+S")
         file.addAction(save_as)
-        exit_action = QAction(translate_ui("menu_quit"), self)
+        exit_action = QAction(translate_ui("ui_menu_quit"), self)
         file.addAction(exit_action)
         file.triggered[QAction].connect(self.process_trigger)
 
@@ -55,11 +55,11 @@ class MainWindow(QMainWindow):
         # options |= QFileDialog.DontUseNativeDialog
         filepath = ""
         if pop_type == "open":
-            filepath = file_dialog.getOpenFileName(self, translate_ui("load_sheet_window_title"), os.getcwd(),
+            filepath = file_dialog.getOpenFileName(self, translate_ui("ui_load_sheet_window_title"), os.getcwd(),
                                                    "Character files (*.cht)", options=options)
 
         if pop_type == "save":
-            filepath = file_dialog.getSaveFileName(self, translate_ui("save_sheet_window_title"), os.getcwd(),
+            filepath = file_dialog.getSaveFileName(self, translate_ui("ui_save_sheet_window_title"), os.getcwd(),
                                                    "Character files (*.cht)", options=options)
         if not filepath[0]:
             return
@@ -67,18 +67,18 @@ class MainWindow(QMainWindow):
         self.directory_signal.emit(filepath[0], pop_type)
 
     def process_trigger(self, q):
-        if q.text() == translate_ui("menu_load_sheet"):
+        if q.text() == translate_ui("ui_menu_load_sheet"):
             self.open_file_name_dialog("open")
-        if q.text() == translate_ui("menu_save_sheet"):
+        if q.text() == translate_ui("ui_menu_save_sheet"):
             if self.current_file_path is None:
                 self.open_file_name_dialog("save")
             else:
                 self.save_signal.emit()
-        if q.text() == translate_ui("menu_save_sheet_as"):
+        if q.text() == translate_ui("ui_menu_save_sheet_as"):
             self.open_file_name_dialog("save")
-        if q.text() == translate_ui("new_sheet"):
+        if q.text() == translate_ui("ui_new_sheet"):
             self.new_sheet.emit()
-        if q.text() == translate_ui("menu_quit"):
+        if q.text() == translate_ui("ui_menu_quit"):
             self.exit.emit()
 
 
@@ -120,9 +120,9 @@ class MyWindowWidget(QWidget):
         self.tab1 = self.get_tab1()
         self.tab2 = self.get_tab2()
         self.tab3 = QWidget()
-        self.tabs.addTab(self.tab1, translate_ui("character_tab"))
-        self.tabs.addTab(self.tab2, translate_ui("equipment_tab"))
-        self.tabs.addTab(self.tab3, translate_ui("misc_tab"))
+        self.tabs.addTab(self.tab1, translate_ui("ui_character_tab"))
+        self.tabs.addTab(self.tab2, translate_ui("ui_equipment_tab"))
+        self.tabs.addTab(self.tab3, translate_ui("ui_misc_tab"))
 
     def get_tab1(self):
         tab1 = QWidget()
@@ -158,7 +158,7 @@ class MyWindowWidget(QWidget):
         self.fill_attributes(attributes_layout)
         # Set skills
 
-        abilities = ScrollContainer(translate_ui("abilities"), translate_ui("ability_add_button"), AbilityView,
+        abilities = ScrollContainer(translate_ui("ui_abilities"), translate_ui("ui_ability_add_button"), AbilityView,
                                     parent=self, popup=AbilityPopup, target_function=self.handle_ability_widget)
         abilities_layout.addWidget(abilities)
         return tab1
@@ -170,12 +170,13 @@ class MyWindowWidget(QWidget):
         tab2.setLayout(page2)
         weapons_armor_layout = QVBoxLayout()
         weapons_layout = QVBoxLayout()
-        weapons_scroll = ScrollContainer(translate_ui("weapons"), translate_ui("weapons_add_button"), WeaponView,
+        weapons_scroll = ScrollContainer(translate_ui("ui_weapons"), translate_ui("ui_weapons_add_button"), WeaponView,
                                          popup=WeaponPopup, parent=self, target_function=self.handle_weapon_widget)
         weapons_layout.addWidget(weapons_scroll)
         weapons_armor_layout.addLayout(weapons_layout)
         armor_layout = QVBoxLayout()
-        armor_scroll = ScrollContainer(translate_ui("armor_list"), translate_ui("armor_add_button"), EquipmentView)
+        armor_scroll = ScrollContainer(translate_ui("ui_armor_list"),
+                                       translate_ui("ui_armor_add_button"), EquipmentView)
         armor_layout.addWidget(armor_scroll)
         weapons_armor_layout.addLayout(armor_layout)
         weapons_armor_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -206,7 +207,7 @@ class MyWindowWidget(QWidget):
     def fill_skills(self):
         skills1_layout = QVBoxLayout()
         skills2_layout = QVBoxLayout()
-        label = QLabel(translate_ui("skills"))
+        label = QLabel(translate_ui("ui_skills"))
         label.setStyleSheet("font: bold 14px")
         skills1_layout.addWidget(label)
         label = QLabel(" ")
@@ -242,9 +243,9 @@ class MyWindowWidget(QWidget):
             else:
                 layout_2.addWidget(na)
         total_xp = InputLine("xp_total", dtype="int", val_dict=self.params_dict,
-                             label=translate_parameter("xp_total"), maxwidth=60)
+                             label=translate_parameter("param_xp_total"), maxwidth=60)
         free_xp = InputLine("xp_free", dtype="int", val_dict=self.params_dict,
-                            label=translate_parameter("xp_free"), maxwidth=60)
+                            label=translate_parameter("param_xp_free"), maxwidth=60)
         layout_3.addWidget(total_xp)
         layout_3.addWidget(free_xp)
         return inner_names_layout
@@ -260,7 +261,7 @@ class MyWindowWidget(QWidget):
         life = QHBoxLayout()
         life.setContentsMargins(0, 0, 0, 0)
         label_layout = QHBoxLayout()
-        label = QLabel(translate_ui("armor"))
+        label = QLabel(translate_ui("ui_armor"))
         label.setStyleSheet("font: bold 14px")
         label.setContentsMargins(0, 0, 0, 0)
         label.setAlignment(Qt.AlignCenter)
@@ -272,15 +273,15 @@ class MyWindowWidget(QWidget):
         inner_armor_layout.addLayout(legs, 2)
         inner_armor_layout.addLayout(life, 1)
         total_hp = InputLine("hp_max", val_dict=self.params_dict,
-                             label=translate_parameter("hp_max"), maxwidth=35, spacer="upper")
+                             label=translate_parameter("param_hp_max"), maxwidth=35, spacer="upper")
         current_hp = InputLine("hp_current", val_dict=self.params_dict,
-                               label=translate_parameter("hp_current"), maxwidth=35, spacer="upper")
+                               label=translate_parameter("param_hp_current"), maxwidth=35, spacer="upper")
         total_pp = InputLine("pp_total", val_dict=self.params_dict,
-                             label=translate_parameter("pp_total"), maxwidth=35, spacer="upper")
+                             label=translate_parameter("param_pp_total"), maxwidth=35, spacer="upper")
         current_pp = InputLine("pp_curr", val_dict=self.params_dict,
-                               label=translate_parameter("pp_curr"), maxwidth=35, spacer="upper")
+                               label=translate_parameter("param_pp_curr"), maxwidth=35, spacer="upper")
         fatigue = InputLine("fatigue", val_dict=self.params_dict,
-                            label=translate_parameter("fatigue"), maxwidth=35, spacer="upper")
+                            label=translate_parameter("param_fatigue"), maxwidth=35, spacer="upper")
         life.addWidget(total_hp)
         life.addWidget(current_hp)
         life.addWidget(total_pp)

@@ -20,7 +20,7 @@ class BasePopup(QWidget):
         self.button_layout = QHBoxLayout()
         self._layout.addLayout(self.button_layout)
         self.ok_button = QPushButton("OK")
-        self.cancel_button = QPushButton("Cancel")
+        self.cancel_button = QPushButton(translate_ui("ui_cancel"))
         self.ok_button.clicked.connect(self.ok_pressed)
         self.cancel_button.clicked.connect(self.cancel_pressed)
         self.button_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
@@ -134,9 +134,9 @@ class AbilityPopup(BasePopup):
         table.verticalHeader().setVisible(False)
         table.klik.connect(self.selected)
         table.currentCellChanged.connect(self.cell_changed)
-        table.setHorizontalHeaderLabels([translate_ui("ability_name"), translate_ui("ability_display_name"),
-                                         translate_ui("ability_requirements"), translate_ui("ability_description"),
-                                         translate_ui("ability_tier")])
+        table.setHorizontalHeaderLabels([translate_ui("ui_ability_name"), translate_ui("ui_ability_display_name"),
+                                         translate_ui("ui_ability_requirements"), translate_ui("ui_ability_description"),
+                                         translate_ui("ui_ability_tier")])
         return table
 
     def translate_abilities(self, locale="PL"):
