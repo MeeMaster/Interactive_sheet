@@ -22,8 +22,8 @@ ability_cheat2;param_cheat 15;1
 ability_cheat3;param_cheat 25, param_cybernetics  20, param_security 20;3
 ability_cheat4;param_cheat 10;1
 ability_cheat5;param_cheat 15;2
-ability_pilot1;pilot_spaceships 20;1
-ability_pilot2;pilot_speeders 10;2
+ability_pilot1;param_pilot_spaceships 20;1
+ability_pilot2;param_pilot_speeders 10;2
 ability_inter1;param_interrogation 15;1
 ability_inter2;param_interrogation 15, param_composition 15;2
 ability_inter3;param_interrogation 10;1
