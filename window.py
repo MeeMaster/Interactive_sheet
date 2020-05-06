@@ -56,9 +56,7 @@ class MainWindow(QMainWindow):
 
     def open_file_name_dialog(self, pop_type):
         file_dialog = QFileDialog()
-        # file_dialog.setFileMode()
         options = QFileDialog.Options()
-        # options |= QFileDialog.DontUseNativeDialog
         filepath = ""
         if pop_type == "open":
             filepath = file_dialog.getOpenFileName(self, translate_ui("ui_load_sheet_window_title"), os.getcwd(),
@@ -79,7 +77,7 @@ class MainWindow(QMainWindow):
             if self.current_file_path is None:
                 self.open_file_name_dialog("save")
             else:
-                self.save_signal.emit()
+                self.directory_signal.emit(self.current_file_path, "save")
         if q.text() == translate_ui("ui_menu_save_sheet_as"):
             self.open_file_name_dialog("save")
         if q.text() == translate_ui("ui_new_sheet"):
@@ -100,6 +98,7 @@ class MainWindow(QMainWindow):
 
 class MyWindowWidget(QWidget):
     attribute_changed = pyqtSignal(str, str, int)
+    armor_changed = pyqtSignal(bool)
 
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
@@ -131,7 +130,7 @@ class MyWindowWidget(QWidget):
         self.weapons_dict = {}
         self.skills_dict = {}
         self.attribute_dict = {}
-        self.abilities = {}
+        self.scrolls = {}
 
         self.tab1 = self.get_tab1()
         self.tab2 = self.get_tab2()
@@ -176,6 +175,7 @@ class MyWindowWidget(QWidget):
 
         abilities = ScrollContainer(translate_ui("ui_abilities"), translate_ui("ui_ability_add_button"), AbilityView,
                                     parent=self, popup=AbilityPopup, target_function=self.handle_ability_widget)
+        self.scrolls["abilities"] = abilities
         abilities_layout.addWidget(abilities)
         return tab1
 
@@ -188,11 +188,13 @@ class MyWindowWidget(QWidget):
         weapons_layout = QVBoxLayout()
         weapons_scroll = ScrollContainer(translate_ui("ui_weapons"), translate_ui("ui_weapons_add_button"), WeaponView,
                                          popup=WeaponPopup, parent=self, target_function=self.handle_weapon_widget)
+        self.scrolls["weapons"] = weapons_scroll
         weapons_layout.addWidget(weapons_scroll)
         weapons_armor_layout.addLayout(weapons_layout)
         armor_layout = QVBoxLayout()
-        armor_scroll = ScrollContainer(translate_ui("ui_armor_list"),
-                                       translate_ui("ui_armor_add_button"), EquipmentView)
+        armor_scroll = ScrollContainer(translate_ui("ui_armors"), translate_ui("ui_armor_add_button"), ArmorView,
+                                       popup=ArmorPopup, parent=self, target_function=self.handle_armor_widget)
+        armor_scroll.item_equipped.connect(lambda: self.armor_changed.emit(True))
         armor_layout.addWidget(armor_scroll)
         weapons_armor_layout.addLayout(armor_layout)
         weapons_armor_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -208,14 +210,27 @@ class MyWindowWidget(QWidget):
         wealth_and_knowledge_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         return tab2
 
-    def handle_ability_widget(self, action, name):
-        pass
+    def handle_ability_widget(self, action, ability):
+        status = False
+        if action == "add":
+            status = self.character.add_ability(ability)
+        if action == "remove":
+            status = self.character.remove_ability(ability.name)
+        return status
 
     def handle_weapon_widget(self, action, weapon):
-        pass
+        if action == "add":
+            status = self.character.add_weapon(weapon)
+        if action == "remove":
+            status = self.character.remove_weapon(weapon.weapon)
+        return status
 
     def handle_armor_widget(self, action, armor):
-        pass
+        if action == "add":
+            status = self.character.add_armor(armor)
+        if action == "remove":
+            status = self.character.add_armor(armor.armor)
+        return status
 
     def handle_equipment_widget(self, action, item):
         pass

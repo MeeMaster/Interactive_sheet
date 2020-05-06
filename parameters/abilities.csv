@@ -1,81 +1,81 @@
-ability_analysis1;analysis 15;1
-ability_analysis2;analysis 20;2
-ability_analysis3;analysis 15;1
-ability_athletics1;athletics 15;1
-ability_athletics2;athletics 15;1
-ability_cyber1;cybernetics  10;1
-ability_dipl1;diplomacy  10;1
-ability_commerce1;commerce 15, charisma 15;1
-ability_commerce2;ability_commerce1, commerce 20;2
-ability_mech1;mechanics 10;1
-ability_mech2;mechanics 15;1
-ability_med1;medicine 10;1
-ability_med2;medicine 15;1
-ability_nav1;navigation 15;1
-ability_nav2;navigation 15;1
-ability_nav3;navigation 15;1
-ability_comp1;composition 15;1
-ability_comp2;composition 15;1
-ability_comp3;composition 20;2
-ability_cheat1;cheat 15, ability_dexterity1;1
-ability_cheat2;cheat 15;1
-ability_cheat3;cheat 25, cybernetics  20, security 20;3
-ability_cheat4;cheat 10;1
-ability_cheat5;cheat 15;2
+ability_analysis1;param_analysis 15;1
+ability_analysis2;param_analysis 20;2
+ability_analysis3;param_analysis 15;1
+ability_athletics1;param_athletics 15;1
+ability_athletics2;param_athletics 15;1
+ability_cyber1;param_cybernetics  10;1
+ability_dipl1;param_diplomacy  10;1
+ability_commerce1;param_commerce 15, param_charisma 15;1
+ability_commerce2;ability_commerce1, param_commerce 20;2
+ability_mech1;param_mechanics 10;1
+ability_mech2;param_mechanics 15;1
+ability_med1;param_medicine 10;1
+ability_med2;param_medicine 15;1
+ability_nav1;param_navigation 15;1
+ability_nav2;param_navigation 15;1
+ability_nav3;param_navigation 15;1
+ability_comp1;param_composition 15;1
+ability_comp2;param_composition 15;1
+ability_comp3;param_composition 20;2
+ability_cheat1;param_cheat 15, ability_dexterity1;1
+ability_cheat2;param_cheat 15;1
+ability_cheat3;param_cheat 25, param_cybernetics  20, param_security 20;3
+ability_cheat4;param_cheat 10;1
+ability_cheat5;param_cheat 15;2
 ability_pilot1;pilot_spaceships 20;1
 ability_pilot2;pilot_speeders 10;2
-ability_inter1;interrogation 15;1
-ability_inter2;interrogation 15, composition 15;2
-ability_inter3;interrogation 10;1
-ability_perception1;perception 15;1
-ability_perception2;perception 10;1
-#ability_ranged_light1;ranged_light 15;1
-ability_ranged_light2;ranged_light 15;1
-ability_ranged_light3;ranged_light 20;1
-ability_ranged_light4;ranged_light 20;2
-ability_ranged_light5;ranged_light 20;2
-ability_ranged_light6;agility 15, ranged_light 20;1
-ability_ranged_light7;ranged_light 30;3
-ability_ranged_light8;ranged_light 25;3
-ability_ranged_light9;ranged_light 25;3
-ability_ranged_light10;ranged_light 20;2
-ability_ranged_heavy1;ranged_heavy 15, agility 10;1
-ability_ranged_heavy2;ranged_heavy 10, strength 20;2
-ability_ranged_heavy3;ranged_heavy 20;1
-ability_ranged_heavy4;ranged_heavy 15;1
-ability_ranged_heavy5;ranged_heavy 20;2
-ability_ranged_stationary1;ranged_stationary 10;1
-ability_survival1;survival 10;1
-ability_survival2;survival 10;1
-ability_survival3;survival 15;2
-ability_survival4;survival 20;3
-ability_hide1;conceal 15;1
-ability_hide2;conceal 15;1
-ability_evade1;dodge 15;1
-ability_melee_unarmed1;agility 15, melee_unarmed 10;1
-ability_melee_unarmed2;melee_unarmed 20;1
-ability_armed1;melee_armed 15;1
-ability_armed2;melee_armed 20;2
-ability_influence1;influence 20;2
-ability_influence2;influence 20;2
-ability_influence3;influence 15;1
-ability_influence4;influence 15;1
-ability_influence5;charisma 15;1
-ability_persistence1;persistence 15;1
-ability_persistence2;persistence 10;1
-ability_persistence3;persistence 20;2
-ability_resistance1;resistance 15;2
-ability_security1;security 10;1
-ability_security2;security 15;1
-ability_security3;security 15;2
-ability_security4;security 20;2
-ability_security5;security 30;3
-ability_security6;security 25;2
-ability_security7;security 15, ability_dexterity3;2
-ability_dexterity1;dexterity 15;1
-ability_dexterity2;agility 15, dexterity 15;2
-ability_dexterity3;agility 20;1
+ability_inter1;param_interrogation 15;1
+ability_inter2;param_interrogation 15, param_composition 15;2
+ability_inter3;param_interrogation 10;1
+ability_perception1;param_perception 15;1
+ability_perception2;param_perception 10;1
+#ability_ranged_light1;param_ranged_light 15;1
+ability_ranged_light2;param_ranged_light 15;1
+ability_ranged_light3;param_ranged_light 20;1
+ability_ranged_light4;param_ranged_light 20;2
+ability_ranged_light5;param_ranged_light 20;2
+ability_ranged_light6;param_agility 15, param_ranged_light 20;1
+ability_ranged_light7;param_ranged_light 30;3
+ability_ranged_light8;param_ranged_light 25;3
+ability_ranged_light9;param_ranged_light 25;3
+ability_ranged_light10;param_ranged_light 20;2
+ability_ranged_heavy1;param_ranged_heavy 15, param_agility 10;1
+ability_ranged_heavy2;param_ranged_heavy 10, param_strength 20;2
+ability_ranged_heavy3;param_ranged_heavy 20;1
+ability_ranged_heavy4;param_ranged_heavy 15;1
+ability_ranged_heavy5;param_ranged_heavy 20;2
+ability_ranged_stationary1;param_ranged_stationary 10;1
+ability_survival1;param_survival 10;1
+ability_survival2;param_survival 10;1
+ability_survival3;param_survival 15;2
+ability_survival4;param_survival 20;3
+ability_hide1;param_conceal 15;1
+ability_hide2;param_conceal 15;1
+ability_evade1;param_dodge 15;1
+ability_melee_unarmed1;param_agility 15, param_melee_unarmed 10;1
+ability_melee_unarmed2;param_melee_unarmed 20;1
+ability_armed1;param_melee_armed 15;1
+ability_armed2;param_melee_armed 20;2
+ability_influence1;param_influence 20;2
+ability_influence2;param_influence 20;2
+ability_influence3;param_influence 15;1
+ability_influence4;param_influence 15;1
+ability_influence5;param_charisma 15;1
+ability_persistence1;param_persistence 15;1
+ability_persistence2;param_persistence 10;1
+ability_persistence3;param_persistence 20;2
+ability_resistance1;param_resistance 15;2
+ability_security1;param_security 10;1
+ability_security2;param_security 15;1
+ability_security3;param_security 15;2
+ability_security4;param_security 20;2
+ability_security5;param_security 30;3
+ability_security6;param_security 25;2
+ability_security7;param_security 15, ability_dexterity3;2
+ability_dexterity1;param_dexterity 15;1
+ability_dexterity2;param_agility 15, param_dexterity 15;2
+ability_dexterity3;param_agility 20;1
 ability_dexterity4;ability_dexterity1;1
-ability_willpower1;willpower 25;2
+ability_willpower1;param_willpower 25;2
 ability_general1;;1
 ability_general2;;1

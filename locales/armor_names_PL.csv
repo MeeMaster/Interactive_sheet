@@ -1,0 +1,45 @@
+#Wewnętrzna nazwa;Wyświetlana nazwa
+tact_vest;Kamizelka taktyczna
+bh_armor;Zbroja łowcy nagród
+ball_vest;Kamizelka balistyczna
+ball_helm;Hełm balistyczny
+storm_armor;Zbroja szturmowca
+lamel_armor;Zbroja laminatowa
+;
+#Metalowe części zbroi:;
+#Korpus/Ręce/Nogi;
+#Durastal;
+dust_vest;Napierśnik durastalowy
+dust_rh;Prawa rękawica durastalowa
+dust_lh;Lewa rękawica durastalowa
+dust_legs;Nogawice durastalowe
+;
+#Duraplast;
+dupl_vest;Napierśnik duraplastowy
+dupl_rh;Prawa rękawica duraplastowa
+dupl_lh;Lewa rękawica duraplastowa
+dupl_legs;Nogawice duraplastowe
+dupl_helm;Hełm duraplastowy
+;
+#DuraPancerz;
+duar_vest;Napierśnik durapancerzowy
+duar_rh;Prawa rękawica durapancerzowa
+duar_lh;Lewa rękawica durapancerzowa
+duar_legs;Nogawice durapancerzowe
+duar_helm;Hełm durapancerzowy
+;
+#Beskar;
+besk_vest;Napierśnik beskarowy
+besk_rh;Prawa rękawica beskarowa
+besk_lh;Lewa rękawica beskarowa
+besk_legs;Nogawice beskarowe
+besk_helm;Hełm beskarowy
+;
+#Wzmacniane ubranie;
+cloth_shirt;Wzmacniana koszula
+cloth_legs;Wzmacniane spodnie
+;
+#Tarcza osobista;
+#Czarnorynkowa;
+#20000;
+#25 punktów;

@@ -1,3 +1,12 @@
+import string
+import random
+from parameters import armor_names
+
+def random_word(length):
+   letters = string.ascii_lowercase
+   return ''.join(random.choice(letters) for i in range(length))
+
+
 class Item:
 
     def __init__(self):
@@ -9,21 +18,33 @@ class Item:
         self.availability = None
 
 
-
 class Armor(Item):
 
     def __init__(self):
         Item.__init__(self)
-        self.chest = 0
-        self.head = 0
-        self.lh = 0
-        self.rh = 0
-        self.ll = 0
-        self.rl = 0
+        self.arch_name = None
+        self.ID = random_word(12)
+        self.armor = {}
+        for armor_param in armor_names:
+            self.armor[armor_param] = 0
         self.modifications = {}
         self.addons = {}
         self.traits = {}
         self.equipped = False
+        self._line = None
+
+    def load_from_line(self, line):
+        name, availability, value, armor, weight, other, traits = line.strip().split(";")
+        self.arch_name = name
+        self.name = name  # TODO: translate the armor name
+        self.availability = availability
+        self.price = value
+        self.traits = traits.split(",")
+        self.weight = weight
+        self._line = line
+        for part in armor.split(","):
+            part, value = part.split()
+            self.armor[part] = int(value)
 
     # def calculate_armor_values(self):
     #     for mod_name in self.modifications:
@@ -35,6 +56,7 @@ class Weapon(Item):
     def __init__(self):
         Item.__init__(self)
         self.arch_name = None
+        self.ID = random_word(15)
         self.modifications = []
         self.addons = []
         self.traits = []
@@ -89,4 +111,10 @@ def weapon_from_line(line):
     weapon = Weapon()
     weapon.load_from_line(line)
     return weapon
+
+
+def armor_from_line(line):
+    armor = Armor()
+    armor.load_from_line(line)
+    return armor
 

@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QPushButton, QWidget, QAction, QSpacerItem, QSizePolicy, QFrame,
-                             QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, QFileDialog, QLineEdit, QTextEdit,
-                             QTabWidget, QCheckBox, QMenu, QComboBox)
+from PyQt5.QtWidgets import (QPushButton, QWidget, QAction, QSpacerItem, QSizePolicy, QVBoxLayout, QHBoxLayout, QLabel,
+                             QScrollArea, QLineEdit, QCheckBox, QMenu, QComboBox)
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QIntValidator, QValidator, QColor
+from PyQt5.QtGui import QValidator, QColor
+from parameters import translate_ability, translate_ui, armor_names, translate_parameter
 
 
 line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-width: 0px;\
@@ -11,6 +11,7 @@ line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-widt
 
 
 class ScrollContainer(QWidget):
+    item_equipped = pyqtSignal(bool)
 
     def __init__(self, name, button_text, content_widget, parent=None, popup=None, target_function=None, **kwargs):
         QWidget.__init__(self)
@@ -35,6 +36,7 @@ class ScrollContainer(QWidget):
         self.scroll_widget.setLayout(self.scroll_layout)
         self.scroll_widget.setContentsMargins(0, 0, 0, 0)
         self.scroll.setWidget(self.scroll_widget)
+        self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.target_function = target_function
 
     def remove_widget(self, name):
@@ -46,8 +48,9 @@ class ScrollContainer(QWidget):
             if child is None:
                 continue
             if child.name == name:
+                status = self.target_function("remove", child)
+                print(status)
                 child.setParent(None)
-                self.target_function("remove", name)  # TODO create a "handle widget" function in window
 
     def add_widget(self):
         if self.popup is not None:
@@ -61,58 +64,15 @@ class ScrollContainer(QWidget):
     def close_popup(self):
         self.current_popup = None
 
-    def _add_widget(self, widget_params):
-        widget = self.content_widget(widget_params, self.parent.character)
+    def _add_widget(self, widget_params, filling=False):
+        print(widget_params)
+        widget = self.content_widget(widget_params)
         widget.delete.connect(self.remove_widget)
-        self.scroll_widget.layout().addWidget(widget)
+        widget.item_equipped.connect(lambda x: self.item_equipped.emit(x))
+        status = self.target_function("add", widget_params)
+        if status or filling:
+            self.scroll_layout.insertWidget(-2, widget)
         self.current_popup = None
-
-
-class View(QWidget):
-    delete = pyqtSignal(str)
-
-    def __init__(self):
-        QWidget.__init__(self)
-        self.menu = QMenu(self)
-        self.menu_actions = {"Usun": self.remove}
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.menu.addAction(QAction("Usun", self))
-        self.customContextMenuRequested.connect(self.show_header_menu)
-
-    def add_header_option(self, option, target):
-        self.menu.addAction(QAction(option, self))
-        self.menu_actions[option] = target
-
-    def show_header_menu(self, point):
-        self.menu.triggered[QAction].connect(self.resolve_action)
-        self.menu.exec_(self.mapToGlobal(point))
-
-    def resolve_action(self, action):
-        if action.text() not in self.menu_actions:
-            return
-        self.menu_actions[action.text()]()
-
-    def remove(self):
-        self.delete.emit(self.name)
-
-
-class AbilityView(View):
-
-    def __init__(self, ability, character):
-        View.__init__(self)
-        self.name = ability["name"]
-        layout = QVBoxLayout()
-        self.display_name = ability["display"]
-        self.requirements = ability["requirements"]
-        self.description = ability["description"]
-        self.setToolTip(self.description)
-        self.display = QLineEdit()
-        layout.addWidget(self.display)
-        self.display.setText(self.display_name)
-        self.display.setEnabled(False)
-        self.setLayout(layout)
-        self.layout().setContentsMargins(0, 0, 0, 0)
-        character.abilities.append(self.name)
 
 
 class InputLine(QWidget):
@@ -156,7 +116,7 @@ class InputLine(QWidget):
         return self.line.text()
 
     def setText(self, value):
-        self.line.setText(value)
+        self.line.setText(str(value))
 
     def register_field(self, val_dict):
         if val_dict is None:
@@ -302,112 +262,208 @@ class NameView(QWidget):
         val_dict[self.name] = self
 
 
+class View(QWidget):
+    delete = pyqtSignal(str)
+    item_equipped = pyqtSignal(bool)
+
+    def __init__(self):
+        QWidget.__init__(self)
+        self.menu = QMenu(self)
+        self.menu_actions = {"Usun": self.remove}
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.menu.addAction(QAction("Usun", self))
+        self.customContextMenuRequested.connect(self.show_header_menu)
+
+    def add_header_option(self, option, target):
+        self.menu.addAction(QAction(option, self))
+        self.menu_actions[option] = target
+
+    def show_header_menu(self, point):
+        self.menu.triggered[QAction].connect(self.resolve_action)
+        self.menu.exec_(self.mapToGlobal(point))
+
+    def resolve_action(self, action):
+        if action.text() not in self.menu_actions:
+            return
+        self.menu_actions[action.text()]()
+
+    def remove(self):
+        self.delete.emit(self.name)
+
+
+class AbilityView(View):
+
+    def __init__(self, ability):
+        View.__init__(self)
+        # abilities = load_abilities()
+        # self.name = ability["name"]
+        self.name = ability
+        layout = QVBoxLayout()
+        display, desc = translate_ability(ability)
+        self.display_name = display
+        # self.requirements = ability["requirements"]
+        self.description = desc
+        self.setToolTip(self.description)
+        self.display = QLineEdit()
+        layout.addWidget(self.display)
+        self.display.setText(self.display_name)
+        self.display.setEnabled(False)
+        self.setLayout(layout)
+        self.layout().setContentsMargins(0, 0, 0, 0)
+
+
 class WeaponView(View):
 
-    def __init__(self, name="", display_name=None, val_dict=None):
+    def __init__(self, weapon):
         View.__init__(self)
-        self.display_name = display_name if display_name is not None else name
-
+        self.weapon = weapon
+        self.name = weapon.ID
         p = self.palette()
         p.setColor(self.backgroundRole(), QColor(240, 240, 240))
         self.setPalette(p)
         self.setAutoFillBackground(True)
-
-        self.name = name
-        self.val_dict = val_dict
         self.layout = QVBoxLayout()
         self.line1_layout = QHBoxLayout()
         self.line2_layout = QHBoxLayout()
         self.line3_layout = QHBoxLayout()
-        self.weapon_name = InputLine("name", Qt.AlignLeft, label="Name")
+        self.weapon_name = InputLine("weapon_name", Qt.AlignLeft, label=translate_ui("ui_item_name"))
+        self.weapon_name.value_changed.connect(self.update_parameters)
         self.weapon_name.setFixedWidth(200)
         self.line1_layout.addWidget(self.weapon_name, stretch=0)
-        self.weapon_type = InputLine("type", Qt.AlignLeft, label="Type")
+        self.weapon_type = InputLine("type", Qt.AlignLeft, label=translate_ui("ui_weapon_type"))
+        self.weapon_type.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_type, stretch=0)
-        self.weapon_damage = InputLine("damage", label="Damage")
+        self.weapon_damage = InputLine("weapon_damage", label=translate_ui("ui_weapon_damage"))
+        self.weapon_damage.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_damage, stretch=0)
-        self.weapon_pp = InputLine("pp", dtype="int", label="AP")
+        self.weapon_pp = InputLine("weapon_ap", dtype="int", label=translate_ui("ui_weapon_ap"))
+        self.weapon_pp.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_pp, stretch=0)
-        self.weapon_damage_type = InputLine("damage_type", Qt.AlignLeft, label="Dmg type")
+        self.weapon_damage_type = InputLine("damage_type", Qt.AlignLeft, label=translate_ui("ui_weapon_damage_type"))
+        self.weapon_damage_type.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_damage_type, stretch=0)
-        self.weapon_ammo_cost = InputLine("shoot_cost", dtype="int", label="Cost")
+        self.weapon_ammo_cost = InputLine("weapon_shot_cost", dtype="int", label=translate_ui("ui_weapon_shotcost"))
+        self.weapon_ammo_cost.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_ammo_cost, stretch=0)
-        self.weapon_current_power = InputLine("battery", dtype="int", label="Power")
+        self.weapon_current_power = InputLine("current_battery", dtype="int", label=translate_ui("ui_weapon_magazine"))
+        self.weapon_current_power.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_current_power, stretch=0)
-        self.weapon_current_gas = InputLine("gas", dtype="int", label="Gas")
-        self.line1_layout.addWidget(self.weapon_current_gas, stretch=0)
-        self.weapon_traits = InputLine("traits", Qt.AlignLeft, label="Traits")
+        # self.weapon_current_gas = InputLine("gas", dtype="int", label="Gas")
+        # self.line1_layout.addWidget(self.weapon_current_gas, stretch=0)
+        self.weapon_traits = InputLine("weapon_traits", Qt.AlignLeft, label=translate_ui("ui_item_traits"))
+        self.weapon_traits.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.weapon_traits, stretch=0)
-        self.weapon_value = InputLine("value", dtype="int", label="Value", maxwidth=40)
+        self.weapon_value = InputLine("weapon_value", dtype="int", label=translate_ui("ui_item_price"), maxwidth=40)
+        self.weapon_value.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.weapon_value, stretch=0)
-        self.weapon_weight = InputLine("weight", dtype="int", label="Weight")
+        self.weapon_weight = InputLine("weapon_weight", dtype="int", label=translate_ui("ui_item_weight"))
+        self.weapon_weight.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.weapon_weight, stretch=0)
         self.equipped_checkbox = EquippedCheckbox()
+        self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
         self.line2_layout.addWidget(self.equipped_checkbox)
         self.layout.addLayout(self.line1_layout, stretch=0)
         self.layout.addLayout(self.line2_layout, stretch=0)
         self.layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.layout.setContentsMargins(0, 0, 0, 0)
+        self.fill_values()
         self.setLayout(self.layout)
 
+    def update_parameters(self, parameter, value):
+        if parameter == "weapon_name":
+            self.weapon.name = value
+        if parameter == "weapon_damage":
+            self.weapon.damage = value
+        if parameter == "weapon_ap":
+            self.weapon.ap = value
+        if parameter == "damage_type":
+            self.weapon.damage_type = value
+        if parameter == "current_battery":
+            self.weapon.power_magazine = value
+        if parameter == "weapon_shot_cost":
+            self.weapon.shot_cost = value
+        if parameter == "weapon_mode":
+            self.weapon.fire_modes = value.split("/")
+        # if parameter == "weapon_traits":
+        #     self.current_weapon.traits = value
+        if parameter == "weapon_value":
+            self.weapon.price = value
+        if parameter == "weapon_weight":
+            self.weapon.weight = value
+        if parameter == "equipped":
+            self.weapon.equipped = value
+        # if parameter == "weapon_shot_cost":
+        #     self.current_weapon.shot_cost = value
 
-class EquippedCheckbox(QWidget):
-
-    def __init__(self):
-        QWidget.__init__(self)
-        self.layout = QVBoxLayout()
-        self.label = QLabel("Equipped")
-        self.label.setStyleSheet("font: 8px")
-        self.label.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(self.label)
-        self.checkbox = QCheckBox()
-        self.checkbox.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(self.checkbox)
-        self.layout.addItem(QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(self.layout)
+    def fill_values(self):
+        self.weapon_name.setText(self.weapon.name)
+        self.weapon_damage.setText(self.weapon.damage)
+        self.weapon_damage_type.setText(self.weapon.damage_type)
+        self.weapon_pp.setText(self.weapon.ap)
+        self.weapon_ammo_cost.setText(self.weapon.shot_cost)
+        self.weapon_current_power.setText(self.weapon.power_magazine)
+        self.weapon_value.setText(self.weapon.price)
+        self.weapon_weight.setText(self.weapon.weight)
 
 
 class ArmorView(View):
 
-    def __init__(self, name="", display_name=None, val_dict=None):
+    def __init__(self, armor):
         View.__init__(self)
-        self.display_name = display_name if display_name is not None else name
-        self.name = name
-        self.val_dict = val_dict
-
+        self.name = armor.ID
+        self.armor = armor
         self.setFixedWidth(400)
         self.layout = QVBoxLayout()
         self.line1_layout = QHBoxLayout()
         self.line1_layout.setContentsMargins(0, 0, 0, 0)
         self.line2_layout = QHBoxLayout()
         self.line2_layout.setContentsMargins(0, 0, 0, 0)
-        self.armor_name = InputLine("name", Qt.AlignLeft, label="Name")
+        self.armor_name = InputLine("armor_name", Qt.AlignLeft, label="Name")
+        self.armor_name.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.armor_name)
-        self.armor_head = InputLine("Armor head", label="Head", maxwidth=30)
-        self.line1_layout.addWidget(self.armor_head)
-        self.armor_chest = InputLine("Armor chest", label="Chest", maxwidth=30)
-        self.line1_layout.addWidget(self.armor_chest)
-        self.armor_lh = InputLine("Armor lh", label="LH", maxwidth=30)
-        self.line1_layout.addWidget(self.armor_lh)
-        self.armor_rh = InputLine("Armor rh", label="RH", maxwidth=30)
-        self.line1_layout.addWidget(self.armor_rh)
-        self.armor_ll = InputLine("Armor ll", label="LL", maxwidth=30)
-        self.line1_layout.addWidget(self.armor_ll)
-        self.armor_rl = InputLine("Armor rl", label="RL", maxwidth=30)
-        self.line1_layout.addWidget(self.armor_rl)
-        self.weight = InputLine("weight", dtype="int", label="Weight", maxwidth=30)
+        self.armor_parts = {}
+        for armor_name in armor_names:
+            armor_piece = InputLine(armor_name, label=translate_parameter(armor_name), maxwidth=30)
+            armor_piece.value_changed.connect(self.update_parameters)
+            self.armor_parts[armor_name] = armor_piece
+            self.line1_layout.addWidget(armor_piece)
+        self.weight = InputLine("armor_weight", dtype="int", label=translate_ui("ui_item_weight"), maxwidth=30)
+        self.weight.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.weight)
-        self.value = InputLine("value", dtype="int", label="Value", maxwidth=30)
+        self.value = InputLine("armor_value", dtype="int", label=translate_ui("ui_item_price"), maxwidth=30)
+        self.value.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.value)
-        self.traits = InputLine("traits", Qt.AlignLeft, label="Traits")
+        self.traits = InputLine("armor_traits", Qt.AlignLeft, label=translate_ui("ui_item_traits"))
+        self.traits.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.traits)
         self.equipped_checkbox = EquippedCheckbox()
+        self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
         self.line2_layout.addWidget(self.equipped_checkbox)
         self.layout.addLayout(self.line1_layout)
         self.layout.addLayout(self.line2_layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
+        self.fill_values()
         self.setLayout(self.layout)
+
+    def update_parameters(self, parameter, value):
+        if parameter in armor_names:
+            self.armor.armor[parameter] = value
+        if parameter == "armor_name":
+            self.armor.name = value
+        if parameter == "equipped":
+            self.armor.equipped = value
+            self.item_equipped.emit(value)
+        if parameter == "armor_value":
+            self.armor.price = value
+        if parameter == "armor_weight":
+            self.armor.weight = value
+
+    def fill_values(self):
+        self.armor_name.setText(self.armor.name)
+        for armor_name in armor_names:
+            self.armor_parts[armor_name].setText(self.armor.armor[armor_name])
+        self.value.setText(self.armor.price)
+        self.weight.setText(self.armor.weight)
 
 
 class EquipmentView(QWidget):
@@ -427,6 +483,25 @@ class EquipmentView(QWidget):
         self.layout.addWidget(self.weight)
         self.layout.addWidget(self.price)
         self.layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(self.layout)
+
+
+class EquippedCheckbox(QWidget):
+    stateChanged = pyqtSignal(bool)
+
+    def __init__(self):
+        QWidget.__init__(self)
+        self.layout = QVBoxLayout()
+        self.label = QLabel(translate_ui("ui_item_equipped"))
+        self.label.setStyleSheet("font: 8px")
+        self.label.setContentsMargins(0, 0, 0, 0)
+        self.layout.addWidget(self.label)
+        self.checkbox = QCheckBox()
+        self.checkbox.setContentsMargins(0, 0, 0, 0)
+        self.layout.addWidget(self.checkbox)
+        self.layout.addItem(QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.checkbox.stateChanged.connect(lambda: self.stateChanged.emit(self.checkbox.isChecked()))
         self.setLayout(self.layout)
 
 

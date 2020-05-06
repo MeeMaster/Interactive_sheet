@@ -8,7 +8,7 @@ ui_misc_tab;Pozosta³e
 ui_ability_add_button;Dodaj zdolnoœæ
 ui_weapons;Broñ
 ui_weapons_add_button;Dodaj broñ
-ui_armor_list;Pancerz
+ui_armors;Pancerz
 ui_armor_add_button;Dodaj pancerz
 ui_menu_file;Plik
 ui_new_sheet;Nowa
@@ -44,3 +44,22 @@ ui_num_shots_fired;Pocisków do wystrzelenia
 ui_num_successes_first;Iloœæ sukcesów pierwszego pocisku
 ui_num_successes_remaining;Iloœæ trafieñ pozosta³ych pocisków
 ui_overheated_on;Broñ przegrzana przys strzale
+ui_weapon_type;Typ
+ui_weapon_damage;Obra¿enia
+ui_weapon_ap;PP
+ui_weapon_damage_type;Rodzaj obra¿eñ
+ui_weapon_shotcost;Energia/strza³
+ui_weapon_magazine;Stan baterii
+ui_weapon_max_magazine;Pojemnoœæ baterii
+ui_weapon_fire_mode;Tryb strza³u
+ui_weapon_ap;PP
+ui_weapon_ap;PP
+ui_weapon_ap;PP
+
+ui_item_archetype;Archetyp
+ui_item_name;Nazwa
+ui_item_traits;Cechy
+ui_item_price;Cena
+ui_item_weight;Waga
+ui_item_equipped;W u¿yciu
+

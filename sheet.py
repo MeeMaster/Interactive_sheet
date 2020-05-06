@@ -31,14 +31,14 @@ class Character:
         for name in character_names:
             self.parameters[name] = ""
 
-        self.armor = {}
-        self.weapons = {}
+        self.armor = set()
+        self.weapons = set()
         self.items = {}
         self.notes = ""
         self.knowledge = ""
         self.contacts = ""
 
-        self.abilities = []
+        self.abilities = set()
         self.implants = []
         self.free_XP = 0
         self.spent_XP = 0
@@ -62,14 +62,57 @@ class Character:
         return att_value
 
     def calculate_armor(self):
-        armor = {}
+        armor_dict = {}
         for armor_slot in armor_names:
-            armor[armor_slot] = self.attributes["param_toughness"] // 10
-        for armor_name in self.armor:
-            armor_item = self.armor[armor_name]
-            if not armor_item["Equipped"]:
+            armor_dict[armor_slot] = self.attributes["param_toughness"] // 10
+        for armor in self.armor:
+            if not armor.equipped:
                 continue
             for armor_slot in armor_names:
-                armor[armor_slot] += armor_item[armor_slot]
-        return armor
+                armor_dict[armor_slot] += armor.armor[armor_slot]
+        return armor_dict
+
+    def add_ability(self, ability):
+        if ability in self.abilities:
+            return False
+        self.abilities.add(ability)
+        return True
+
+    def remove_ability(self, ability):
+        if ability not in self.abilities:
+            return False
+        self.abilities.remove(ability)
+        return True
+
+    def add_weapon(self, weapon):
+        if weapon in self.weapons:
+            return False
+        self.weapons.add(weapon)
+        return True
+
+    def remove_weapon(self, weapon_ID):
+        found = False
+        for weapon in self.weapons:
+            if weapon_ID == weapon.ID:
+                found = True
+                break
+        if found:
+            self.weapons.remove(weapon)
+        return found
+
+    def add_armor(self, armor):
+        if armor in self.armor:
+            return False
+        self.armor.add(armor)
+        return True
+
+    def remove_armor(self, armor_ID):
+        found = False
+        for armor in self.armor:
+            if armor_ID == armor.ID:
+                found = True
+                break
+        if found:
+            self.armor.remove(armor)
+        return found
 

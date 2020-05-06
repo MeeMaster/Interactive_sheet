@@ -1,6 +1,6 @@
 import codecs
 from os import path
-from item_classes import weapon_from_line
+
 #base_path = path.split(path.abspath(__file__))[0]
 
 
@@ -127,6 +127,7 @@ def translate_ui(name, locale="PL"):
 
 
 def load_weapons():
+    from item_classes import weapon_from_line
     weapons = {"ranged": {},
                "melee": {}
                }
@@ -146,3 +147,18 @@ def load_weapons():
                 continue
             weapons["ranged"][weapon.arch_name] = weapon
     return weapons
+
+
+def load_armors():
+    from item_classes import armor_from_line
+    armors = {}
+    with codecs.open(path.join("parameters", "armors.csv"), "r",
+                     encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.strip():
+                continue
+            if line.startswith("#") or line.startswith(";"):
+                continue
+            armor = armor_from_line(line)
+            armors[armor.arch_name] = armor
+    return armors

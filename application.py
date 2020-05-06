@@ -16,6 +16,7 @@ class Application:
         self.main_widget = self.main_window.window_widget
         self.sheet = Character()
         self.main_window.directory_signal.connect(self.file_IO)
+        self.main_widget.armor_changed.connect(lambda: self.update_armor())
 
         # Register attributes
         for attribute in self.main_widget.attribute_dict:
@@ -44,12 +45,10 @@ class Application:
 
     def read_character(self, path):
         self.sheet = pickle.load(open(path, "rb"))
-        # self.sheet.load_character(path)
         self.fill_form()
 
     def save_character(self, path):
         pickle.dump(self.sheet, open(path, "wb"))
-        # self.sheet.save_character(path)
 
     def change_attribute(self, name, val_type, value):
         if val_type == "base":
@@ -113,12 +112,22 @@ class Application:
             self.main_widget.params_dict[parameter].setText(str(val))
             self.update_parameter(parameter, val)
 
+    def fill_abilities(self):
+        for ability in self.sheet.abilities:
+            self.main_widget.scrolls["abilities"]._add_widget(ability, filling=True)
+
+    def fill_weapons(self):
+        for weapon in self.sheet.weapons:
+            print(weapon)
+            self.main_widget.scrolls["weapons"]._add_widget(weapon, filling=True)
+
     def update_armor(self):
         armor_dict = self.sheet.calculate_armor()
         for armor_slot in armor_dict:
             self.main_widget.params_dict[armor_slot].setText(str(armor_dict[armor_slot]))
 
     def fill_form(self):
+        self.main_widget.character = self.sheet
         # Attributes
         self.fill_attributes()
         # Skills
@@ -127,8 +136,11 @@ class Application:
         self.fill_parameters()
         # Armor
         self.update_armor()
+        # Abilities
+        self.fill_abilities()
+        # Weapons
+        self.fill_weapons()
 
-        self.main_widget.character = self.sheet
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
