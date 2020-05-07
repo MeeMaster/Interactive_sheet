@@ -49,12 +49,10 @@ class ScrollContainer(QWidget):
                 continue
             if child.name == name:
                 status = self.target_function("remove", child)
-                print(status)
                 child.setParent(None)
 
     def add_widget(self):
         if self.popup is not None:
-            print(self.parent)
             self.current_popup = self.popup(self.parent.character)
             self.current_popup.popup_ok.connect(self._add_widget)
             self.current_popup.popup_cancel.connect(self.close_popup)
@@ -65,7 +63,6 @@ class ScrollContainer(QWidget):
         self.current_popup = None
 
     def _add_widget(self, widget_params, filling=False):
-        print(widget_params)
         widget = self.content_widget(widget_params)
         widget.delete.connect(self.remove_widget)
         widget.item_equipped.connect(lambda x: self.item_equipped.emit(x))
@@ -404,6 +401,7 @@ class WeaponView(View):
         self.weapon_current_power.setText(self.weapon.power_magazine)
         self.weapon_value.setText(self.weapon.price)
         self.weapon_weight.setText(self.weapon.weight)
+        self.equipped_checkbox.setChecked(self.weapon.equipped)
 
 
 class ArmorView(View):
@@ -464,6 +462,7 @@ class ArmorView(View):
             self.armor_parts[armor_name].setText(self.armor.armor[armor_name])
         self.value.setText(self.armor.price)
         self.weight.setText(self.armor.weight)
+        self.equipped_checkbox.setChecked(self.armor.equipped)
 
 
 class EquipmentView(QWidget):
@@ -503,6 +502,9 @@ class EquippedCheckbox(QWidget):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.checkbox.stateChanged.connect(lambda: self.stateChanged.emit(self.checkbox.isChecked()))
         self.setLayout(self.layout)
+
+    def setChecked(self, value):
+        self.checkbox.setChecked(value)
 
 
 class MyIntValidator(QValidator):

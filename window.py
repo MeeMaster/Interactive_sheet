@@ -194,6 +194,7 @@ class MyWindowWidget(QWidget):
         armor_layout = QVBoxLayout()
         armor_scroll = ScrollContainer(translate_ui("ui_armors"), translate_ui("ui_armor_add_button"), ArmorView,
                                        popup=ArmorPopup, parent=self, target_function=self.handle_armor_widget)
+        self.scrolls["armor"] = armor_scroll
         armor_scroll.item_equipped.connect(lambda: self.armor_changed.emit(True))
         armor_layout.addWidget(armor_scroll)
         weapons_armor_layout.addLayout(armor_layout)
@@ -222,14 +223,14 @@ class MyWindowWidget(QWidget):
         if action == "add":
             status = self.character.add_weapon(weapon)
         if action == "remove":
-            status = self.character.remove_weapon(weapon.weapon)
+            status = self.character.remove_weapon(weapon.weapon.ID)
         return status
 
     def handle_armor_widget(self, action, armor):
         if action == "add":
             status = self.character.add_armor(armor)
         if action == "remove":
-            status = self.character.add_armor(armor.armor)
+            status = self.character.remove_armor(armor.armor.ID)
         return status
 
     def handle_equipment_widget(self, action, item):

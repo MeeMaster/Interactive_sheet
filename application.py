@@ -118,8 +118,11 @@ class Application:
 
     def fill_weapons(self):
         for weapon in self.sheet.weapons:
-            print(weapon)
             self.main_widget.scrolls["weapons"]._add_widget(weapon, filling=True)
+
+    def fill_armor(self):
+        for armor in self.sheet.armor:
+            self.main_widget.scrolls["armor"]._add_widget(armor, filling=True)
 
     def update_armor(self):
         armor_dict = self.sheet.calculate_armor()
@@ -140,6 +143,8 @@ class Application:
         self.fill_abilities()
         # Weapons
         self.fill_weapons()
+        # Armor
+        self.fill_armor()
 
 
 if __name__ == '__main__':
