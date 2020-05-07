@@ -103,8 +103,9 @@ def translate_parameter(name, locale="PL"):
         for line in infile:
             if not line.startswith(name):
                 continue
-            name, translation = line.strip().split(";")
-            return translation
+            read_name, translation = line.strip().split(";")
+            if read_name == name:
+                return translation
         print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
         return name
 
@@ -120,17 +121,34 @@ def translate_ui(name, locale="PL"):
         for line in infile:
             if not line.startswith(name):
                 continue
-            name, translation = line.strip().split(";")
-            return translation
+            read_name, translation = line.strip().split(";")
+            if read_name == name:
+                return translation
+        print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
+        return name
+
+
+def translate_item(name, locale="PL"):
+    locale_file = path.join("locales", "item_names_{}.csv".format(locale))
+    if not path.exists(locale_file):
+        print("Could not localize locale file '{}'".format(locale_file))
+        locale_file = path.join("locales", "item_names_{}.csv".format("EN"))
+        if not path.exists(locale_file):
+            return name
+    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.startswith(name):
+                continue
+            read_name, translation = line.strip().split(";")
+            if read_name == name:
+                return translation
         print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
         return name
 
 
 def load_weapons():
     from item_classes import weapon_from_line
-    weapons = {"ranged": {},
-               "melee": {}
-               }
+    weapons = {}
     with codecs.open(path.join("parameters", "weapons.csv"), "r",
                      encoding="windows-1250", errors='ignore') as infile:
         for line in infile:
@@ -142,10 +160,7 @@ def load_weapons():
             if weapon.arch_name in weapons:
                 print("Weapon '{}' already defined, check the config files!".format(weapon.arch_name))
                 continue
-            if "melee" in weapon.base_skill:
-                weapons["melee"][weapon.arch_name] = weapon
-                continue
-            weapons["ranged"][weapon.arch_name] = weapon
+            weapons[weapon.arch_name] = weapon
     return weapons
 
 

@@ -32,7 +32,8 @@ class MainWindow(QMainWindow):
         bar = self.menuBar()
         file = bar.addMenu(translate_ui("ui_menu_file"))
         file.addAction(translate_ui("ui_new_sheet"))
-        file.addAction(translate_ui("ui_menu_load_sheet"))
+        open_file = file.addAction(translate_ui("ui_menu_load_sheet"))
+        open_file.setShortcut("Ctrl+O")
         save = QAction(translate_ui("ui_menu_save_sheet"), self)
         save.setShortcut("Ctrl+S")
         file.addAction(save)
@@ -50,9 +51,7 @@ class MainWindow(QMainWindow):
         # Add main widget
         self.window_widget = MyWindowWidget(self)
         self.setCentralWidget(self.window_widget)
-
         self.show()
-        # self.statusBar().setSizeGripEnabled(False)
 
     def open_file_name_dialog(self, pop_type):
         file_dialog = QFileDialog()

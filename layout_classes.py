@@ -39,6 +39,18 @@ class ScrollContainer(QWidget):
         self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.target_function = target_function
 
+    def clear(self):
+        for child_index in reversed(list(range(self.scroll_layout.count()))):
+            child = self.scroll_layout.itemAt(child_index)
+            if child is None:
+                continue
+            child = child.widget()
+            if child is None:
+                continue
+            child.deleteLater()
+            child.setParent(None)
+
+
     def remove_widget(self, name):
         for child_index in range(self.scroll_layout.count()):
             child = self.scroll_layout.itemAt(child_index)
@@ -292,13 +304,10 @@ class AbilityView(View):
 
     def __init__(self, ability):
         View.__init__(self)
-        # abilities = load_abilities()
-        # self.name = ability["name"]
         self.name = ability
         layout = QVBoxLayout()
         display, desc = translate_ability(ability)
         self.display_name = display
-        # self.requirements = ability["requirements"]
         self.description = desc
         self.setToolTip(self.description)
         self.display = QLineEdit()
@@ -345,8 +354,6 @@ class WeaponView(View):
         self.weapon_current_power = InputLine("current_battery", dtype="int", label=translate_ui("ui_weapon_magazine"))
         self.weapon_current_power.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_current_power, stretch=0)
-        # self.weapon_current_gas = InputLine("gas", dtype="int", label="Gas")
-        # self.line1_layout.addWidget(self.weapon_current_gas, stretch=0)
         self.weapon_traits = InputLine("weapon_traits", Qt.AlignLeft, label=translate_ui("ui_item_traits"))
         self.weapon_traits.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.weapon_traits, stretch=0)
@@ -402,6 +409,7 @@ class WeaponView(View):
         self.weapon_value.setText(self.weapon.price)
         self.weapon_weight.setText(self.weapon.weight)
         self.equipped_checkbox.setChecked(self.weapon.equipped)
+        self.weapon_type.setText(translate_parameter(self.weapon.weapon_type))
 
 
 class ArmorView(View):
@@ -421,7 +429,7 @@ class ArmorView(View):
         self.line1_layout.addWidget(self.armor_name)
         self.armor_parts = {}
         for armor_name in armor_names:
-            armor_piece = InputLine(armor_name, label=translate_parameter(armor_name), maxwidth=30)
+            armor_piece = InputLine(armor_name, dtype="int", label=translate_parameter(armor_name), maxwidth=30)
             armor_piece.value_changed.connect(self.update_parameters)
             self.armor_parts[armor_name] = armor_piece
             self.line1_layout.addWidget(armor_piece)
@@ -445,7 +453,7 @@ class ArmorView(View):
 
     def update_parameters(self, parameter, value):
         if parameter in armor_names:
-            self.armor.armor[parameter] = value
+            self.armor.armor[parameter] = int(value)
         if parameter == "armor_name":
             self.armor.name = value
         if parameter == "equipped":
@@ -455,8 +463,10 @@ class ArmorView(View):
             self.armor.price = value
         if parameter == "armor_weight":
             self.armor.weight = value
+        self.item_equipped.emit(True)
 
     def fill_values(self):
+        print(self.armor.name)
         self.armor_name.setText(self.armor.name)
         for armor_name in armor_names:
             self.armor_parts[armor_name].setText(self.armor.armor[armor_name])

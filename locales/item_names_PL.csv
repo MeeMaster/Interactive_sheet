@@ -1,0 +1,81 @@
+#Wewnêtrzna nazwa;Wyœwietlana nazwa
+armor_tact_vest;Kamizelka taktyczna
+armor_bh_armor;Zbroja ³owcy nagród
+armor_ball_vest;Kamizelka balistyczna
+armor_ball_helm;He³m balistyczny
+armor_storm_armor;Zbroja szturmowca
+armor_lamel_armor;Zbroja laminatowa
+;
+#Metalowe czêœci zbroi:;
+#Korpus/Rêce/Nogi;
+#Durastal;
+armor_dust_vest;Napierœnik durastalowy
+armor_dust_rh;Prawa rêkawica durastalowa
+armor_dust_lh;Lewa rêkawica durastalowa
+armor_dust_legs;Nogawice durastalowe
+;
+#Duraplast;
+armor_dupl_vest;Napierœnik duraplastowy
+armor_dupl_rh;Prawa rêkawica duraplastowa
+armor_dupl_lh;Lewa rêkawica duraplastowa
+armor_dupl_legs;Nogawice duraplastowe
+armor_dupl_helm;He³m duraplastowy
+;
+#DuraPancerz;
+armor_duar_vest;Napierœnik durapancerzowy
+armor_duar_rh;Prawa rêkawica durapancerzowa
+armor_duar_lh;Lewa rêkawica durapancerzowa
+armor_duar_legs;Nogawice durapancerzowe
+armor_duar_helm;He³m durapancerzowy
+;
+#Beskar;
+armor_besk_vest;Napierœnik beskarowy
+armor_besk_rh;Prawa rêkawica beskarowa
+armor_besk_lh;Lewa rêkawica beskarowa
+armor_besk_legs;Nogawice beskarowe
+armor_besk_helm;He³m beskarowy
+;
+#Wzmacniane ubranie;
+armor_cloth_shirt;Wzmacniana koszula
+armor_cloth_legs;Wzmacniane spodnie
+;
+armor_other;Inna
+;
+#Broñ;
+weapon_holdout_blaster;Blaster podrêczny
+weapon_blaster;Blaster
+weapon_heavy_blaster;Ciê¿ki blaster
+weapon_blaster_rifle;Karabin blasterowy
+weapon_blaster_carbine;Karabinek blasterowy
+weapon_cartridge_rifle;Karabin ³adunkowy
+weapon_stun_rifle;Karabin og³uszaj¹cy
+weapon_ion_rifle;Karabinek jonowy
+weapon_blaster_chaingun;Powtarzacz blasterowy
+weapon_blaster_cannon;Dzia³o blasterowe
+weapon_portable_launcher;Wyrzutnia rakiet
+weapon_blaster_sniper;Blasterowy karabin snajperski
+weapon_blaster_shotgun;Czyœciciel pok³adów
+weapon_flamer;Miotacz ognia
+weapon_sound_rifle;Karabin dŸwiêkowy
+weapon_disintegrator_rifle;Karabin dezintegracyjny
+weapon_fletchette_rifle;Karabin kasetkowy
+weapon_imperial_repeater;Powtarzacz imperialny
+;
+#Broñ rêczna;
+weapon_dagger;Nó¿
+weapon_vibroblade;Wibronó¿
+weapon_sword;Miecz
+weapon_vibrosword;Wibromiecz
+weapon_lightsaber;Miecz œwietlny
+weapon_offhand_lightsaber;Krótki miecz œwietlny
+weapon_vibrolance;Wibrolanca
+weapon_vibroaxe;Wibrotopór
+weapon_forcepike;Pika mocy
+weapon_electrostaff;Elektrolaska
+weapon_stun_baton;Pa³ka og³uszaj¹ca
+weapon_stun_gloves;Rêkawice og³uszaj¹ce
+weapon_vibro_knuckles;Wibrokastet
+weapon_vibro_doublesword;Wibromiecz podwójny
+weapon_light_doublesaber;Podwójny miecz œwietlny
+weapon_ryyk_blade;Ostrze Ryyk
+weapon_other;Inna

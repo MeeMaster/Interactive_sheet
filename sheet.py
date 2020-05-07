@@ -64,7 +64,7 @@ class Character:
     def calculate_armor(self):
         armor_dict = {}
         for armor_slot in armor_names:
-            armor_dict[armor_slot] = self.attributes["param_toughness"] // 10
+            armor_dict[armor_slot] = self.calculate_attribute("param_toughness") // 10
         for armor in self.armor:
             if not armor.equipped:
                 continue

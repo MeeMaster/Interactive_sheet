@@ -1,6 +1,6 @@
 import string
 import random
-from parameters import armor_names
+from parameters import armor_names, translate_item
 
 def random_word(length):
    letters = string.ascii_lowercase
@@ -11,8 +11,8 @@ class Item:
 
     def __init__(self):
         self.name = None
-        self.price = None
-        self.weight = None
+        self.price = 0
+        self.weight = 0
         self.tooltip = None
         self.description = None
         self.availability = None
@@ -36,7 +36,7 @@ class Armor(Item):
     def load_from_line(self, line):
         name, availability, value, armor, weight, other, traits = line.strip().split(";")
         self.arch_name = name
-        self.name = name  # TODO: translate the armor name
+        self.name = translate_item(name)
         self.availability = availability
         self.price = value
         self.traits = traits.split(",")
@@ -73,6 +73,7 @@ class Weapon(Item):
         self.base_skill = None
         self.hands = 0
         self._line = None
+        self.weapon_type = None
 
     def update(self):
         if self.power_magazine < self.shot_cost:
@@ -88,9 +89,9 @@ class Weapon(Item):
 
     def load_from_line(self, line):
         name, availability, value, damage, damage_type, ap, max_clip, energy_per_shot, \
-        fire_mode, traits, mods, skill, hands, weight = line.strip().strip().split(";")
+        fire_mode, traits, mods, skill, hands, weight, weapon_type = line.strip().strip().split(";")
         self.arch_name = name
-        self.name = name  # TODO: translate the weapon name
+        self.name = translate_item(name)
         self.availability = availability
         self.price = value
         self.damage = damage
@@ -104,6 +105,7 @@ class Weapon(Item):
         self.base_skill = skill
         self.hands = hands
         self.weight = weight
+        self.weapon_type = weapon_type
         self._line = line
 
 

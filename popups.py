@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
 from parameters import (load_abilities, translate_parameter, translate_ui, translate_ability, load_weapons,
-                        damage_types, armor_names, load_armors)
+                        damage_types, armor_names, load_armors, translate_item)
 from item_classes import Weapon, Armor
 from layout_classes import InputLine, LabelledComboBox
 
@@ -286,23 +286,23 @@ class WeaponPopup(BasePopup):
         self.show()
 
     def fill_archetype_combobox(self):
-        for weapon_type in self.archetype_weapons:
-            for weapon in self.archetype_weapons[weapon_type]:
-                self.archetype_combobox.addItem(weapon)
-                self.archetype_names.append(weapon)
-        self.archetype_names.append("other")
-        self.archetype_combobox.addItem("other")
+        for weapon in self.archetype_weapons:
+            self.archetype_combobox.addItem(translate_item(weapon))
+            self.archetype_names.append(weapon)
+        self.archetype_names.append("weapon_other")
+        self.archetype_combobox.addItem(translate_item("weapon_other"))
 
     def fill_parameters(self, index=None):
         index = self.archetype_combobox.currentIndex()
         weapon_name = self.archetype_names[index]
-        if weapon_name == "other":
-            return
-        weapon_line = self.archetype_weapons["melee"][weapon_name]._line \
-            if weapon_name in self.archetype_weapons["melee"] \
-            else self.archetype_weapons["ranged"][weapon_name]._line
         weapon = Weapon()
+        self.weapon_name.setText(translate_item(weapon_name))
+        if weapon_name == "weapon_other":
+            self.current_weapon = weapon
+            return
+        weapon_line = self.archetype_weapons[weapon_name]._line
         weapon.load_from_line(weapon_line)
+
 
         self.damage_value.setText(str(weapon.damage))
         self.ap_value.setText(str(weapon.ap))
@@ -316,15 +316,15 @@ class WeaponPopup(BasePopup):
         if parameter == "weapon_name":
             self.current_weapon.name = value
         if parameter == "weapon_damage":
-            self.current_weapon.damage = value
+            self.current_weapon.damage = int(value)
         if parameter == "weapon_ap":
-            self.current_weapon.ap = value
+            self.current_weapon.ap = int(value)
         if parameter == "damage_type":
             self.current_weapon.damage_type = value
         if parameter == "weapon_max_energy":
-            self.current_weapon.max_magazine = value
+            self.current_weapon.max_magazine = int(value)
         if parameter == "weapon_shot_cost":
-            self.current_weapon.shot_cost = value
+            self.current_weapon.shot_cost = int(value)
         if parameter == "weapon_mode":
             self.current_weapon.fire_modes = value.split("/")
 
@@ -361,24 +361,27 @@ class ArmorPopup(BasePopup):
 
         self.main_layout.addLayout(self.combo_layout)
         self.main_layout.addLayout(self.armor_layout)
-        # self.main_layout.addLayout(self.shot_layout)
         self.fill_parameters()
         self.show()
 
     def fill_archetype_combobox(self):
-        for weapon in self.archetype_armor:
-            self.archetype_combobox.addItem(weapon)
-            self.archetype_names.append(weapon)
-        self.archetype_names.append("other")
-        self.archetype_combobox.addItem("other")
+        for armor in self.archetype_armor:
+            self.archetype_combobox.addItem(translate_item(armor))
+            self.archetype_names.append(armor)
+        self.archetype_names.append("armor_other")
+        self.archetype_combobox.addItem(translate_item("armor_other"))
 
     def fill_parameters(self, index=None):
         index = self.archetype_combobox.currentIndex()
         armor_name = self.archetype_names[index]
-        if armor_name == "other":
+        self.armor_name.setText(translate_item(armor_name))
+        armor = Armor()
+        if armor_name == "armor_other":
+            for armor_name in armor_names:
+                self.armors[armor_name].setText(armor.armor[armor_name])
+            self.current_armor = armor
             return
         armor_line = self.archetype_armor[armor_name]._line
-        armor = Armor()
         armor.load_from_line(armor_line)
         for armor_name in armor_names:
             self.armors[armor_name].setText(armor.armor[armor_name])
@@ -388,7 +391,7 @@ class ArmorPopup(BasePopup):
         if parameter == "armor_name":
             self.current_armor.name = value
         if parameter in armor_names:
-            self.current_armor.armor[parameter] = value
+            self.current_armor.armor[parameter] = int(value)
 
     def ok_pressed(self):
         self.popup_ok.emit(self.current_armor)

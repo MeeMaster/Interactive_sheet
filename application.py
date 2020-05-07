@@ -113,15 +113,18 @@ class Application:
             self.update_parameter(parameter, val)
 
     def fill_abilities(self):
+        self.main_widget.scrolls["abilities"].clear()
         for ability in self.sheet.abilities:
             self.main_widget.scrolls["abilities"]._add_widget(ability, filling=True)
 
     def fill_weapons(self):
         for weapon in self.sheet.weapons:
+            self.main_widget.scrolls["weapons"].clear()
             self.main_widget.scrolls["weapons"]._add_widget(weapon, filling=True)
 
     def fill_armor(self):
         for armor in self.sheet.armor:
+            self.main_widget.scrolls["armor"].clear()
             self.main_widget.scrolls["armor"]._add_widget(armor, filling=True)
 
     def update_armor(self):
