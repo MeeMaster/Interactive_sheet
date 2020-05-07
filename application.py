@@ -118,13 +118,13 @@ class Application:
             self.main_widget.scrolls["abilities"]._add_widget(ability, filling=True)
 
     def fill_weapons(self):
+        self.main_widget.scrolls["weapons"].clear()
         for weapon in self.sheet.weapons:
-            self.main_widget.scrolls["weapons"].clear()
             self.main_widget.scrolls["weapons"]._add_widget(weapon, filling=True)
 
     def fill_armor(self):
+        self.main_widget.scrolls["armor"].clear()
         for armor in self.sheet.armor:
-            self.main_widget.scrolls["armor"].clear()
             self.main_widget.scrolls["armor"]._add_widget(armor, filling=True)
 
     def update_armor(self):
