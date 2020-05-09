@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import (QPushButton, QWidget, QAction, QSpacerItem, QSizePolicy, QVBoxLayout, QHBoxLayout, QLabel,
-                             QScrollArea, QLineEdit, QCheckBox, QMenu, QComboBox)
-from PyQt5.QtCore import pyqtSignal
+                             QScrollArea, QLineEdit, QCheckBox, QMenu, QComboBox, QTextEdit, QTableWidget, QTableView)
+from PyQt5.QtCore import pyqtSignal, QAbstractTableModel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QValidator, QColor
 from parameters import translate_ability, translate_ui, armor_names, translate_parameter
-
+from item_classes import Item
 
 line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-width: 0px;\
  alternate-background-color: rgba(200,200,200,50); font: bold 10px; margin: 0px;}"
@@ -50,7 +50,6 @@ class ScrollContainer(QWidget):
             child.deleteLater()
             child.setParent(None)
 
-
     def remove_widget(self, name):
         for child_index in range(self.scroll_layout.count()):
             child = self.scroll_layout.itemAt(child_index)
@@ -87,7 +86,7 @@ class ScrollContainer(QWidget):
 class InputLine(QWidget):
     value_changed = pyqtSignal(str, str)
 
-    def __init__(self, name, align_flag=Qt.AlignCenter, enabled=True, val_dict=None,
+    def __init__(self, name, align_flag=Qt.AlignCenter, enabled=True, val_dict=None, min_val=None, max_val=None,
                  dtype="str", maxwidth=None, label=None, spacer=None):
         QWidget.__init__(self)
         self.dtype = dtype
@@ -108,7 +107,7 @@ class InputLine(QWidget):
         if maxwidth is not None:
             self.setMaximumWidth(maxwidth)
         if self.dtype == "int":
-            self.line.setValidator(MyIntValidator(-100, 10000))
+            self.line.setValidator(MyIntValidator(min_val, max_val))
         self.register_field(val_dict=val_dict)
         self.layout.addWidget(self.line)
         if spacer == "lower":
@@ -519,7 +518,7 @@ class EquippedCheckbox(QWidget):
 
 class MyIntValidator(QValidator):
 
-    def __init__(self, minimum, maximum):
+    def __init__(self, minimum=None, maximum=None):
         QValidator.__init__(self)
         self.minimum = minimum
         self.maximum = maximum
@@ -528,8 +527,14 @@ class MyIntValidator(QValidator):
         if a1 == 0:
             return QValidator.Acceptable, "0", 1
         try:
-            int(a0)
-            return QValidator.Acceptable, str(int(a0)), a1
+            val = int(a0)
+            if self.minimum is not None:
+                if val < self.minimum:
+                    return QValidator.Intermediate, str(val), a1
+            if self.maximum is not None:
+                if val > self.maximum:
+                    return QValidator.Acceptable, str(self.maximum), a1
+            return QValidator.Acceptable, str(val), a1
         except:
             return QValidator.Invalid, a0, a1
 
@@ -573,3 +578,245 @@ class LabelledComboBox(QWidget):
 
     def addItem(self, item):
         self.box.addItem(item)
+
+
+class LabelledTextEdit(QWidget):
+    text_changed = pyqtSignal(str, str)
+
+    def __init__(self, name, align_flag=Qt.AlignLeft, label=None, spacer=None):
+        QWidget.__init__(self)
+        self.layout = QVBoxLayout()
+        self.name = name
+        if label is not None:
+            self.label = QLabel(label)
+            self.label.setWordWrap(True)
+            self.label.setStyleSheet("font: bold 14px")
+            self.label.setContentsMargins(0, 0, 0, 0)
+            self.label.setAlignment(align_flag)
+            self.layout.addWidget(self.label)
+        self.text_edit = QTextEdit()
+        self.text_edit.textChanged.connect(lambda: self.text_changed.emit(self.name, self.get_text()))
+        self.layout.addWidget(self.text_edit)
+        if spacer == "lower":
+            self.layout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        if spacer == "upper":
+            self.layout.insertSpacerItem(0, QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(self.layout)
+
+    def get_text(self):
+        return self.text_edit.toPlainText()
+
+    def set_text(self, text):
+        self.text_edit.setText(text)
+
+
+class EquipmentWidget(QWidget):
+    item_qty_changed = pyqtSignal(bool, str, int, bool)
+    item_create = pyqtSignal(Item)
+    move_item = pyqtSignal(str, int, bool)
+
+    def __init__(self, popup=None, transfer_popup=None):
+        QWidget.__init__(self)
+        layout = QHBoxLayout()
+        self.popup = popup
+        self.current_popup = None
+        self.transfer_popup = transfer_popup
+        self.equipped_table = ItemTable(equipped=True)
+        self.equipped_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.equipped_table.item_qty_changed.connect(self.signal_forward)
+        equipped_table_layout = QVBoxLayout()
+        # equipped_table_layout.setContentsMargins(0, 0, 0, 0)
+        equipped_table_layout.addWidget(self.equipped_table)
+        self.stash_table = ItemTable(equipped=False)
+        self.stash_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.stash_table.item_qty_changed.connect(self.signal_forward)
+        stash_table_layout = QVBoxLayout()
+        # stash_table_layout.setContentsMargins(0, 0, 0, 0)
+        stash_table_layout.addWidget(self.stash_table)
+        button_left = QPushButton("<<<")
+        button_left.clicked.connect(lambda: self.open_transfer_popup(True))
+        button_left.setFixedWidth(40)
+        button_right = QPushButton(">>>")
+        button_right.clicked.connect(lambda: self.open_transfer_popup(False))
+        button_right.setFixedWidth(40)
+        button_add = QPushButton(translate_ui("ui_add_item_button"))
+        button_add.clicked.connect(self.open_popup)
+        button_add.setFixedWidth(60)
+        buttons_layout = QVBoxLayout()
+        buttons_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        buttons_layout.addWidget(button_left)
+        buttons_layout.addWidget(button_right)
+        buttons_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        buttons_layout.addWidget(button_add)
+        layout.addLayout(equipped_table_layout, 10)
+        layout.addLayout(buttons_layout, 1)
+        layout.addLayout(stash_table_layout, 10)
+        # layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+
+    def open_popup(self):
+        if self.current_popup is not None:
+            return
+        self.current_popup = self.popup()
+        self.current_popup.popup_ok.connect(self.add_item)
+        self.current_popup.popup_cancel.connect(self.close_popup)
+
+    def open_transfer_popup(self, equip=True):
+        if self.current_popup is not None:
+            return
+        source_table = self.stash_table if equip else self.equipped_table
+        current_row = source_table.table.currentRow()
+        if current_row == -1:
+            return
+        print(current_row)
+        current_item_id = source_table.table.cellWidget(current_row, 0).text()
+        current_item = source_table.items[current_item_id]
+        self.current_popup = self.transfer_popup(current_item)
+        self.current_popup.popup_ok.connect(lambda _id, value: self.move_item_func(_id, value, equip))
+        self.current_popup.popup_cancel.connect(self.close_popup)
+
+    def add_item(self, item):
+        self.item_create.emit(item)
+        self.close_popup()
+
+    def move_item_func(self, _id, value, equip):
+        if value:
+            self.move_item.emit(_id, value, equip)
+        self.close_popup()
+
+    def close_popup(self):
+        self.current_popup.close()
+        self.current_popup = None
+
+    def set_item_tables(self, stashed_items, equipped_items):
+        self.stash_table.items = stashed_items
+        self.equipped_table.items = equipped_items
+        self.update_item_tables()
+
+    def signal_forward(self, *args):
+        self.item_qty_changed.emit(*args)
+
+    def update_item_tables(self):
+        self.equipped_table.fill_table()
+        self.stash_table.fill_table()
+
+
+class ItemCounter(QWidget):
+    value_changed = pyqtSignal(str, int, bool)
+
+    def __init__(self, name):
+        QWidget.__init__(self)
+        self.name = name
+        self.current_count = 0
+        edit_layout = QVBoxLayout()
+        layout = QHBoxLayout()
+        button_layout = QVBoxLayout()
+        button_layout.setContentsMargins(0, 0, 0, 0)
+        layout.addLayout(button_layout)
+        layout.addLayout(edit_layout)
+        button_add = QPushButton("+")
+        button_add.setContentsMargins(0, 0, 0, 0)
+        button_add.setFixedWidth(16)
+        button_add.setFixedHeight(16)
+        button_remove = QPushButton("-")
+        button_remove.setFixedWidth(16)
+        button_remove.setFixedHeight(16)
+        button_remove.setContentsMargins(0, 0, 0, 0)
+        button_layout.addWidget(button_add)
+        button_layout.addWidget(button_remove)
+        button_add.clicked.connect(self.increase)
+        button_remove.clicked.connect(self.decrease)
+        self.edit = InputLine("ui_item_count", enabled=True, maxwidth=30, dtype="int")
+        self.edit.value_changed.connect(self.value_set)
+        edit_layout.addWidget(self.edit)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+
+    def increase(self):
+        print("increase")
+        self.value_changed.emit(self.name, 1, True)
+
+    def decrease(self):
+        self.value_changed.emit(self.name, -1, True)
+
+    def value_set(self):
+        print("setting")
+        self.value_changed.emit(self.name, int(self.edit.text()), False)
+
+    def set_value(self, value):
+        self.edit.setText(value)
+
+    def get_value(self, value):
+        return int(self.edit.text())
+
+
+class ItemTable(QWidget):
+    item_qty_changed = pyqtSignal(bool, str, int, bool)
+
+    def __init__(self, equipped=True, current_items={}):
+        QWidget.__init__(self)
+        self.equipped = equipped
+        self.table = None
+        self.items = current_items
+        self.get_table()
+
+    def get_table(self):
+        self.table = QTableWidget(self)
+        self.table.setColumnCount(5)
+        self.table.setFixedWidth(300)
+        self.table.setSelectionBehavior(1)
+        self.table.setHorizontalScrollBarPolicy(1)
+        self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.table.setColumnHidden(0, True)
+        self.table.verticalHeader().setVisible(False)
+        # self.table.currentCellChanged.connect(self.cell_changed)
+        self.table.setHorizontalHeaderLabels([translate_ui("ui_item_name"), translate_ui("ui_item_quantity"),
+                                              translate_ui("ui_item_name"),
+                                              translate_ui("ui_item_weight"),
+                                              translate_ui("ui_item_total_weight")])
+
+    def fill_table(self):
+        self.table.setRowCount(len(self.items))
+        print("here")
+        for index, item in enumerate(self.items):
+            item_class = self.items[item]
+            self.table.setCellWidget(index, 0, QLabel(item))
+            counter_widget = ItemCounter(item)
+            counter_widget.set_value(str(item_class.quantity))
+            counter_widget.value_changed.connect(self.item_changed)
+            self.table.setCellWidget(index, 1, counter_widget)
+            name_label = QLabel(item_class.name)
+            name_label.setAlignment(Qt.AlignCenter)
+            name_label.setToolTip(item_class.description)
+            self.table.setCellWidget(index, 2, name_label)
+            weight_label = QLabel(str(item_class.weight))
+            weight_label.setAlignment(Qt.AlignCenter)
+            self.table.setCellWidget(index, 3, weight_label)
+            total_weight_label = QLabel(str(item_class.weight * item_class.quantity))
+            total_weight_label.setAlignment(Qt.AlignCenter)
+            self.table.setCellWidget(index, 4, total_weight_label)
+        for n in range(5):
+            self.table.setColumnWidth(n, 60)
+        self.table.setColumnWidth(2, 120)
+        self.table.resizeRowsToContents()
+        self.table.show()
+
+    def item_changed(self, _id, value, change=True):
+        self.item_qty_changed.emit(self.equipped, _id, value, change)
+        self.update_values(_id)
+
+    def update_values(self, item_id):
+        for row in range(self.table.rowCount()):
+            id_cell = self.table.cellWidget(row, 0)
+            if id_cell.text() != item_id:
+                continue
+            item = self.items[item_id]
+            self.table.cellWidget(row, 1).set_value(item.quantity)
+            self.table.cellWidget(row, 2).setText(item.name)
+            self.table.cellWidget(row, 3).setText(str(item.weight))
+            self.table.cellWidget(row, 4).setText(str(item.weight * item.quantity))
+
+
+
+

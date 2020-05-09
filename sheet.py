@@ -1,10 +1,11 @@
 import pickle
-from parameters import armor_names, attribute_names, attribute_skill_dict, character_names, parameter_names
+from parameters import armor_names, attribute_names, attribute_skill_dict, character_names, parameter_names, notes_names
 
 
 class Character:
 
-    def __init__(self):
+    def __init__(self, is_robot):
+        self.is_robot = is_robot
         self.name = None
         self.age = None
         self.planet = None
@@ -33,10 +34,11 @@ class Character:
 
         self.armor = set()
         self.weapons = set()
-        self.items = {}
-        self.notes = ""
-        self.knowledge = ""
-        self.contacts = ""
+        self.items_equipped = {}
+        self.items_stashed = {}
+        self.notes = {}
+        for note in notes_names:
+            self.notes[note] = ""
 
         self.abilities = set()
         self.implants = []

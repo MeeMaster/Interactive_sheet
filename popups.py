@@ -6,7 +6,7 @@ from PyQt5.QtGui import QColor
 
 from parameters import (load_abilities, translate_parameter, translate_ui, translate_ability, load_weapons,
                         damage_types, armor_names, load_armors, translate_item)
-from item_classes import Weapon, Armor
+from item_classes import Weapon, Armor, Item
 from layout_classes import InputLine, LabelledComboBox
 
 
@@ -66,7 +66,6 @@ class AbilityPopup(BasePopup):
         self.setWindowTitle(translate_ui("ui_ability_add_button"))
         self.ability_layout = QVBoxLayout()
         scroll_widget.setLayout(self.ability_layout)
-        # scroll_widget.setLayout(self.ability_layout)
         self.ability_is_valid = False
         self.current_row = None
         self.current_column = None
@@ -302,8 +301,6 @@ class WeaponPopup(BasePopup):
             return
         weapon_line = self.archetype_weapons[weapon_name]._line
         weapon.load_from_line(weapon_line)
-
-
         self.damage_value.setText(str(weapon.damage))
         self.ap_value.setText(str(weapon.ap))
         self.damage_type.setCurrentIndex(damage_types.index(weapon.damage_type))
@@ -398,3 +395,70 @@ class ArmorPopup(BasePopup):
         self.close()
 
 
+class ItemPopup(BasePopup):
+    popup_ok = pyqtSignal(Item)
+
+    def __init__(self):
+        BasePopup.__init__(self)
+        layout = QVBoxLayout()
+        line1 = QHBoxLayout()
+        line2 = QVBoxLayout()
+        layout.addLayout(line1)
+        layout.addLayout(line2)
+
+        self.quantity = InputLine("quantity", dtype="int", label=translate_ui("ui_item_quantity"))
+        self.quantity.setText("0")
+        self.name = InputLine("name", dtype="str", label=translate_ui("ui_item_name"))
+        self.weight = InputLine("weight", dtype="float", label=translate_ui("ui_item_weight"))
+        self.weight.setText("0")
+        line1.addWidget(self.quantity, 1)
+        line1.addWidget(self.name, 4)
+        line1.addWidget(self.weight, 1)
+        label = QLabel(translate_ui("ui_item_description"))
+        self.description = QTextEdit()
+        line2.addWidget(label)
+        line2.addWidget(self.description)
+        self.main_layout.addLayout(layout)
+        self.show()
+
+    def ok_pressed(self):
+        if not self.name.text().strip():
+            return
+        item = Item()
+        item.quantity = int(self.quantity.text())
+        item.name = self.name.text()
+        item.weight = int(self.weight.text())
+        item.description = self.description.toPlainText()
+        self.popup_ok.emit(item)
+        self.close()
+
+
+class ItemMovePopup(BasePopup):
+    popup_ok = pyqtSignal(str, int)
+
+    def __init__(self, item):
+        BasePopup.__init__(self)
+        layout = QVBoxLayout()
+        self.item = item
+        label_layout = QVBoxLayout()
+        label = QLabel("{}: {}".format(translate_ui("ui_item_transfer_dialog"), item.name))
+        label_layout.addWidget(label)
+        layout.addLayout(label_layout)
+
+        values_layout = QHBoxLayout()
+        self.equipment_value = InputLine("max", dtype="int", enabled=False, label=translate_ui("ui_items_in_inventory"))
+        self.equipment_value.setText(item.quantity)
+        self.transfer_value = InputLine("transfer", dtype="int", min_val=0, max_val=item.quantity,
+                                        label=translate_ui("ui_items_to_transfer"))
+
+        values_layout.addWidget(self.transfer_value)
+        values_layout.addWidget(self.equipment_value)
+
+        layout.addLayout(values_layout)
+        self.main_layout.addLayout(layout)
+        self.show()
+
+    def ok_pressed(self):
+        value = int(self.transfer_value.text())
+        self.popup_ok.emit(self.item.ID, value)
+        self.close()

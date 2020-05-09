@@ -52,14 +52,20 @@ ui_weapon_shotcost;Energia/strza³
 ui_weapon_magazine;Stan baterii
 ui_weapon_max_magazine;Pojemnoœæ baterii
 ui_weapon_fire_mode;Tryb strza³u
-ui_weapon_ap;PP
-ui_weapon_ap;PP
-ui_weapon_ap;PP
-
+ui_notes;Notatki
+ui_contacts;Kontakty
+ui_knowledge;Wiedza
+;
 ui_item_archetype;Archetyp
 ui_item_name;Nazwa
 ui_item_traits;Cechy
 ui_item_price;Cena
 ui_item_weight;Waga
 ui_item_equipped;W u¿yciu
-
+ui_item_quantity;Iloœæ
+ui_item_description;Opis
+ui_item_total_weight;Ca³kowita
+ui_item_transfer_dialog;Przenosisz przedmiot
+ui_items_in_inventory;Dostêpna iloœæ
+ui_items_to_transfer;Do przeniesienia
+ui_add_item_button;Dodaj przedmiot

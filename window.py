@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt
 from layout_classes import *
 from popups import *
 from PyQt5.QtGui import QPixmap, QIntValidator
-from parameters import attribute_names, attribute_skill_dict, character_names, armor_names
+from parameters import attribute_names, attribute_skill_dict, character_names, armor_names, notes_names
 from parameters import translate_ability, translate_parameter, translate_ui
 from shooting import ShootingWidget
 
@@ -130,10 +130,12 @@ class MyWindowWidget(QWidget):
         self.skills_dict = {}
         self.attribute_dict = {}
         self.scrolls = {}
+        self.notes_dict = {}
+        self.equipment_tables = None
 
         self.tab1 = self.get_tab1()
         self.tab2 = self.get_tab2()
-        self.tab3 = QWidget()
+        self.tab3 = self.get_tab3()
         self.tabs.addTab(self.tab1, translate_ui("ui_character_tab"))
         self.tabs.addTab(self.tab2, translate_ui("ui_equipment_tab"))
         self.tabs.addTab(self.tab3, translate_ui("ui_misc_tab"))
@@ -180,35 +182,39 @@ class MyWindowWidget(QWidget):
 
     def get_tab2(self):
         tab2 = QWidget()
-        page2 = QHBoxLayout()
+        page2 = QVBoxLayout()
         # Equipment panel
-        tab2.setLayout(page2)
-        weapons_armor_layout = QVBoxLayout()
-        weapons_layout = QVBoxLayout()
+        # weapons_armor_layout = QVBoxLayout()
+        # weapons_layout = QVBoxLayout()
         weapons_scroll = ScrollContainer(translate_ui("ui_weapons"), translate_ui("ui_weapons_add_button"), WeaponView,
                                          popup=WeaponPopup, parent=self, target_function=self.handle_weapon_widget)
         self.scrolls["weapons"] = weapons_scroll
-        weapons_layout.addWidget(weapons_scroll)
-        weapons_armor_layout.addLayout(weapons_layout)
-        armor_layout = QVBoxLayout()
+        page2.addWidget(weapons_scroll)
+        # page2.addLayout(weapons_layout)
+        # armor_layout = QVBoxLayout()
         armor_scroll = ScrollContainer(translate_ui("ui_armors"), translate_ui("ui_armor_add_button"), ArmorView,
                                        popup=ArmorPopup, parent=self, target_function=self.handle_armor_widget)
         self.scrolls["armor"] = armor_scroll
         armor_scroll.item_equipped.connect(lambda: self.armor_changed.emit(True))
-        armor_layout.addWidget(armor_scroll)
-        weapons_armor_layout.addLayout(armor_layout)
-        weapons_armor_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        page2.addLayout(weapons_armor_layout, stretch=4)
-        wealth_and_knowledge_layout = QVBoxLayout()
-        page2.addLayout(wealth_and_knowledge_layout)
-        knowledge_layout = QVBoxLayout()
-        wealth_layout = QVBoxLayout()
-        contacts_layout = QVBoxLayout()
-        wealth_and_knowledge_layout.addLayout(knowledge_layout)
-        wealth_and_knowledge_layout.addLayout(contacts_layout)
-        wealth_and_knowledge_layout.addLayout(wealth_layout)
-        wealth_and_knowledge_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        page2.addWidget(armor_scroll)
+        # page2.addLayout(armor_layout)
+
+        # armo
+        self.equipment_tables = EquipmentWidget(ItemPopup, ItemMovePopup)
+        page2.addWidget(self.equipment_tables)
+        # weapons_armor_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        tab2.setLayout(page2)
         return tab2
+
+    def get_tab3(self):
+        tab3 = QWidget()
+        page3 = QVBoxLayout()
+        for name in notes_names:
+            field = LabelledTextEdit(name, label=translate_ui("ui_{}".format(name)))
+            self.notes_dict[name] = field
+            page3.addWidget(field)
+        tab3.setLayout(page3)
+        return tab3
 
     def handle_ability_widget(self, action, ability):
         status = False
@@ -232,8 +238,8 @@ class MyWindowWidget(QWidget):
             status = self.character.remove_armor(armor.armor.ID)
         return status
 
-    def handle_equipment_widget(self, action, item):
-        pass
+    # def handle_item_widget(self, action, item):
+    #     pass
 
     def fill_skills(self):
         skills1_layout = QVBoxLayout()

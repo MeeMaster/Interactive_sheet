@@ -3,6 +3,7 @@ from os import path
 
 #base_path = path.split(path.abspath(__file__))[0]
 
+notes_names = ["notes", "contacts", "knowledge"]
 
 attribute_names = ["param_strength", "param_agility", "param_intelligence", 
                    "param_toughness", "param_willpower", "param_charisma"]

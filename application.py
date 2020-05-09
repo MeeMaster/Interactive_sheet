@@ -7,7 +7,7 @@ import pickle
 from sheet import Character
 from window import MainWindow
 from parameters import attribute_skill_dict, armor_names
-
+from item_classes import Item
 
 class Application:
 
@@ -32,6 +32,16 @@ class Application:
         for parameter in self.main_widget.params_dict:
             param_class = self.main_widget.params_dict[parameter]
             param_class.value_changed.connect(self.change_parameter)
+
+        # Register notes
+        for notebook in self.main_widget.notes_dict:
+            note_class = self.main_widget.notes_dict[notebook]
+            note_class.text_changed.connect(self.change_notes)
+
+        # Register equipment
+        self.main_widget.equipment_tables.item_create.connect(self.add_equipment)
+        self.main_widget.equipment_tables.item_qty_changed.connect(self.change_item_quantity)
+        self.main_widget.equipment_tables.move_item.connect(self.move_item)
 
         self.fill_form()
 
@@ -86,6 +96,12 @@ class Application:
     def change_armor(self, slot, armor_dict):
         self.sheet.armor[slot] = armor_dict
 
+    def change_notes(self, name, value):
+        self.sheet.notes[name] = value
+
+    def update_notes(self, name, value):
+        self.main_widget.notes_dict[name].set_text(str(value))
+
     def fill_attributes(self):
         for attribute in self.sheet.attributes:
             val = self.sheet.attributes[attribute]
@@ -127,10 +143,48 @@ class Application:
         for armor in self.sheet.armor:
             self.main_widget.scrolls["armor"]._add_widget(armor, filling=True)
 
+    def fill_notes(self):
+        for note_name in self.sheet.notes:
+            text = self.sheet.notes[note_name]
+            self.main_widget.notes_dict[note_name].set_text(text)
+
     def update_armor(self):
         armor_dict = self.sheet.calculate_armor()
         for armor_slot in armor_dict:
             self.main_widget.params_dict[armor_slot].setText(str(armor_dict[armor_slot]))
+
+    def add_equipment(self, item):
+        self.sheet.items_stashed[item.ID] = item
+        self.main_widget.equipment_tables.set_item_tables(self.sheet.items_stashed, self.sheet.items_equipped)
+
+    def change_item_quantity(self, equipped, _id, value, change):
+        target_dict = self.sheet.items_equipped if equipped else self.sheet.items_stashed
+        if _id not in target_dict:
+            return
+        print("changing", value, change)
+        if change:
+            target_dict[_id].quantity += value
+        else:
+            target_dict[_id].quantity = value
+        if target_dict[_id].quantity < 0:
+            target_dict[_id].quantity = 0
+
+    def move_item(self, _id, value, equip):
+        source = self.sheet.items_stashed if equip else self.sheet.items_equipped
+        target = self.sheet.items_equipped if equip else self.sheet.items_stashed
+        if _id not in source:
+            print("Error while transfering")
+            return
+        source[_id].quantity -= value
+        if _id not in target:
+            item = Item()
+            item.__dict__ = dict(source[_id].__dict__)
+            item.quantity = 0
+            target[_id] = item
+        target[_id].quantity += value
+        if source[_id].quantity <= 0:
+            del source[_id]
+        self.main_widget.equipment_tables.update_item_tables()
 
     def fill_form(self):
         self.main_widget.character = self.sheet
@@ -148,6 +202,8 @@ class Application:
         self.fill_weapons()
         # Armor
         self.fill_armor()
+        # Notes
+        self.fill_notes()
 
 
 if __name__ == '__main__':

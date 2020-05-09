@@ -16,6 +16,8 @@ class Item:
         self.tooltip = None
         self.description = None
         self.availability = None
+        self.quantity = None
+        self.ID = random_word(16)
 
 
 class Armor(Item):
@@ -23,7 +25,6 @@ class Armor(Item):
     def __init__(self):
         Item.__init__(self)
         self.arch_name = None
-        self.ID = random_word(12)
         self.armor = {}
         for armor_param in armor_names:
             self.armor[armor_param] = 0
@@ -56,7 +57,6 @@ class Weapon(Item):
     def __init__(self):
         Item.__init__(self)
         self.arch_name = None
-        self.ID = random_word(15)
         self.modifications = []
         self.addons = []
         self.traits = []
