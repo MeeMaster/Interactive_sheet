@@ -1,9 +1,15 @@
 from PyQt5.QtWidgets import (QPushButton, QWidget, QAction, QSpacerItem, QSizePolicy, QVBoxLayout, QHBoxLayout, QLabel,
-                             QScrollArea, QLineEdit, QCheckBox, QMenu, QComboBox, QTextEdit, QTableWidget, QTableView)
-from PyQt5.QtCore import pyqtSignal, QAbstractTableModel
+                             QScrollArea, QLineEdit, QCheckBox, QMenu, QComboBox, QTextEdit, QTableWidget)
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QValidator, QColor
-from parameters import translate_ability, translate_ui, armor_names, translate_parameter
+from PyQt5.QtGui import QValidator, QColor, QDoubleValidator
+from parameters import translate_ability, translate_ui, translate_parameter
+from parameters import load_parameters
+
+param_dict = load_parameters()
+armor_names = param_dict["armor"]
+
+
 from item_classes import Item
 
 line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-width: 0px;\
@@ -11,11 +17,13 @@ line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-widt
 
 
 class ScrollContainer(QWidget):
-    item_equipped = pyqtSignal(bool)
+    item_created = pyqtSignal(object)
+    item_equipped = pyqtSignal(object, bool)
+    item_removed = pyqtSignal(object)
 
-    def __init__(self, name, button_text, content_widget, parent=None, popup=None, target_function=None, **kwargs):
+    def __init__(self, name, button_text, content_widget, parent=None, popup=None, **kwargs):
         QWidget.__init__(self)
-        self.parent=parent
+        self.parent = parent
         self.kwargs = kwargs
         self.layout = QVBoxLayout()
         self.label = QLabel(name)
@@ -25,7 +33,7 @@ class ScrollContainer(QWidget):
         self.scroll.setWidgetResizable(True)
         self.layout.addWidget(self.scroll)
         self.button = QPushButton(button_text)
-        self.button.clicked.connect(self.add_widget)
+        self.button.clicked.connect(self.open_popup)
         self.layout.addWidget(self.button)
         self.setLayout(self.layout)
         self.popup = popup
@@ -37,21 +45,37 @@ class ScrollContainer(QWidget):
         self.scroll_widget.setContentsMargins(0, 0, 0, 0)
         self.scroll.setWidget(self.scroll_widget)
         self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        self.target_function = target_function
 
-    def clear(self):
-        for child_index in reversed(list(range(self.scroll_layout.count()))):
+    def open_popup(self):
+        if self.popup is not None:
+            self.current_popup = self.popup(self.parent.character)
+            self.current_popup.popup_ok.connect(self.ok_clicked)
+            self.current_popup.popup_cancel.connect(self.close_popup)
+
+    def ok_clicked(self, obj):
+        self.item_created.emit(obj)
+        self.close_popup()
+
+    def close_popup(self):
+        self.current_popup.close()
+        self.current_popup = None
+
+    def get_children(self):
+        children = []
+        for child_index in reversed(range(self.scroll_layout.count())):
             child = self.scroll_layout.itemAt(child_index)
             if child is None:
                 continue
             child = child.widget()
             if child is None:
                 continue
-            child.deleteLater()
-            child.setParent(None)
+            if not isinstance(child, self.content_widget):
+                continue
+            children.append(child)
+        return children
 
-    def remove_widget(self, name):
-        for child_index in range(self.scroll_layout.count()):
+    def find_child_index(self, name):
+        for child_index in reversed(range(self.scroll_layout.count())):
             child = self.scroll_layout.itemAt(child_index)
             if child is None:
                 continue
@@ -59,28 +83,34 @@ class ScrollContainer(QWidget):
             if child is None:
                 continue
             if child.name == name:
-                status = self.target_function("remove", child)
-                child.setParent(None)
+                return child_index
+        return None
 
-    def add_widget(self):
-        if self.popup is not None:
-            self.current_popup = self.popup(self.parent.character)
-            self.current_popup.popup_ok.connect(self._add_widget)
-            self.current_popup.popup_cancel.connect(self.close_popup)
-        else:
-            self._add_widget("None")
+    def find_child(self, name):
+        child_index = self.find_child_index(name)
+        if child_index is None:
+            return None
+        return self.scroll_layout.itemAt(child_index).widget()
 
-    def close_popup(self):
-        self.current_popup = None
-
-    def _add_widget(self, widget_params, filling=False):
+    def add_widget(self, widget_params):
         widget = self.content_widget(widget_params)
-        widget.delete.connect(self.remove_widget)
-        widget.item_equipped.connect(lambda x: self.item_equipped.emit(x))
-        status = self.target_function("add", widget_params)
-        if status or filling:
-            self.scroll_layout.insertWidget(-2, widget)
-        self.current_popup = None
+        child_index = self.find_child_index(widget)
+        if child_index is not None:
+            return
+        widget.delete.connect(lambda x: self.item_removed.emit(x))
+        widget.item_equipped.connect(lambda x, y: self.item_equipped.emit(x, y))
+        self.scroll_layout.insertWidget(-2, widget)
+
+    def remove_widget(self, name):
+        child = self.find_child(name)
+        child.deleteLater()
+        child.setParent(None)
+
+    def clear(self):
+        children = self.get_children()
+        for child in children:
+            child.deleteLater()
+            child.setParent(None)
 
 
 class InputLine(QWidget):
@@ -108,6 +138,8 @@ class InputLine(QWidget):
             self.setMaximumWidth(maxwidth)
         if self.dtype == "int":
             self.line.setValidator(MyIntValidator(min_val, max_val))
+        if self.dtype == "float":
+            self.line.setValidator(MyFloatValidator(min_val, max_val))
         self.register_field(val_dict=val_dict)
         self.layout.addWidget(self.line)
         if spacer == "lower":
@@ -131,11 +163,14 @@ class InputLine(QWidget):
             return
         val_dict[self.name] = self
 
+    def set_enabled(self, enabled):
+        self.line.setEnabled(enabled)
+
 
 class AttributeView(QWidget):
     attribute_changed = pyqtSignal(str, str, int)
 
-    def __init__(self, name="", display_name=None, val_dict=None):
+    def __init__(self, name="", display_name=None, val_dict=None, alternative=False):
         QWidget.__init__(self, parent=None)
         self.name = name
         self.setFixedWidth(80)
@@ -153,12 +188,15 @@ class AttributeView(QWidget):
         self.label.setStyleSheet("font: bold 12px")
 
         self.name_layout.addWidget(self.label)
+
         self.base = InputLine("base", dtype="int")
         self.base.value_changed.connect(self.emit_changed)
-        self.input_layout.addWidget(self.base)
+
         self.advancement = InputLine("adv", dtype="int")
         self.advancement.value_changed.connect(self.emit_changed)
-        self.input_layout.addWidget(self.advancement)
+        if not alternative:
+            self.input_layout.addWidget(self.base)
+            self.input_layout.addWidget(self.advancement)
         self.total_value = InputLine("total", dtype="int", enabled=False)
         self.total_layout.addWidget(self.total_value)
         self.setLayout(self.layout)
@@ -187,7 +225,7 @@ class AttributeView(QWidget):
 class SkillView(QWidget):
     skill_changed = pyqtSignal(str, str, int)
 
-    def __init__(self, name="", display_name=None, val_dict=None):
+    def __init__(self, name="", display_name=None, val_dict=None, alternative=False):
         super(QWidget, self).__init__()
         self.setFixedWidth(220)
         # color_widget(self)
@@ -195,24 +233,43 @@ class SkillView(QWidget):
         self.name = name
         self.display_name = display_name if display_name is not None else name
         self.layout = QHBoxLayout()
+        label_layout = QVBoxLayout()
+        label_layout.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(self.display_name)
         self.label.setContentsMargins(0, 0, 0, 0)
         self.label.setFixedWidth(120)
-        self.layout.addWidget(self.label)
+        label_layout.addWidget(self.label)
+        self.layout.addLayout(label_layout)
+
+        advancement_layout = QVBoxLayout()
+        advancement_layout.setContentsMargins(0, 0, 0, 0)
         self.advancement = InputLine("adv", dtype="int")
         self.advancement.value_changed.connect(self.emit_changed)
         self.advancement.setFixedWidth(30)
         self.advancement.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(self.advancement)
-        self.bonus = InputLine("bonus", dtype="int")
+        advancement_layout.addWidget(self.advancement)
+        self.layout.addLayout(advancement_layout)
+        bonuses_layout = QVBoxLayout()
+        self.bonus = InputLine("bonus", dtype="int", enabled=not alternative)
         self.bonus.value_changed.connect(self.emit_changed)
         self.bonus.setFixedWidth(30)
         self.bonus.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(self.bonus)
+        bonuses_layout.addWidget(self.bonus)
+        self.bonus2 = InputLine("bonus2", dtype="int", enabled=not alternative)
+        self.bonus2.value_changed.connect(self.emit_changed)
+        self.bonus2.setFixedWidth(30)
+        self.bonus2.setContentsMargins(0, 0, 0, 0)
+        if alternative:
+            bonuses_layout.addWidget(self.bonus2)
+        self.layout.addLayout(bonuses_layout)
+
+        totals_layout = QVBoxLayout()
+        totals_layout.setContentsMargins(0, 0, 0, 0)
         self.total = InputLine("total", dtype="str", enabled=False)
         self.total.setFixedWidth(40)
         self.total.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(self.total)
+        totals_layout.addWidget(self.total)
+        self.layout.addLayout(totals_layout)
         self.register_field(val_dict)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
@@ -232,11 +289,15 @@ class SkillView(QWidget):
     def set_total(self, value):
         self.total.setText(str(value))
 
-    def set_bonus(self, value):
+    def set_bonus(self, value, value2=0):
         self.bonus.setText(str(value))
+        self.bonus2.setText(str(value2))
 
     def set_advancement(self, value):
         self.advancement.setText(str(value))
+
+    def set_enabled(self, enabled):
+        self.advancement.set_enabled(enabled)
 
 
 class NameView(QWidget):
@@ -271,8 +332,8 @@ class NameView(QWidget):
 
 
 class View(QWidget):
-    delete = pyqtSignal(str)
-    item_equipped = pyqtSignal(bool)
+    delete = pyqtSignal(object)
+    item_equipped = pyqtSignal(object, bool)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -281,6 +342,7 @@ class View(QWidget):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.menu.addAction(QAction("Usun", self))
         self.customContextMenuRequested.connect(self.show_header_menu)
+        self.item = None
 
     def add_header_option(self, option, target):
         self.menu.addAction(QAction(option, self))
@@ -296,7 +358,7 @@ class View(QWidget):
         self.menu_actions[action.text()]()
 
     def remove(self):
-        self.delete.emit(self.name)
+        self.delete.emit(self.item)
 
 
 class AbilityView(View):
@@ -314,6 +376,7 @@ class AbilityView(View):
         self.display.setText(self.display_name)
         self.display.setEnabled(False)
         self.setLayout(layout)
+        self.item = self.name
         self.layout().setContentsMargins(0, 0, 0, 0)
 
 
@@ -321,7 +384,7 @@ class WeaponView(View):
 
     def __init__(self, weapon):
         View.__init__(self)
-        self.weapon = weapon
+        self.item = weapon
         self.name = weapon.ID
         p = self.palette()
         p.setColor(self.backgroundRole(), QColor(240, 240, 240))
@@ -363,6 +426,7 @@ class WeaponView(View):
         self.weapon_weight.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.weapon_weight, stretch=0)
         self.equipped_checkbox = EquippedCheckbox()
+        self.equipped_checkbox.setChecked(self.item.equipped)
         self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
         self.line2_layout.addWidget(self.equipped_checkbox)
         self.layout.addLayout(self.line1_layout, stretch=0)
@@ -374,41 +438,41 @@ class WeaponView(View):
 
     def update_parameters(self, parameter, value):
         if parameter == "weapon_name":
-            self.weapon.name = value
+            self.item.name = value
         if parameter == "weapon_damage":
-            self.weapon.damage = value
+            self.item.damage = value
         if parameter == "weapon_ap":
-            self.weapon.ap = value
+            self.item.ap = value
         if parameter == "damage_type":
-            self.weapon.damage_type = value
+            self.item.damage_type = value
         if parameter == "current_battery":
-            self.weapon.power_magazine = value
+            self.item.power_magazine = value
         if parameter == "weapon_shot_cost":
-            self.weapon.shot_cost = value
+            self.item.shot_cost = value
         if parameter == "weapon_mode":
-            self.weapon.fire_modes = value.split("/")
+            self.item.fire_modes = value.split("/")
         # if parameter == "weapon_traits":
         #     self.current_weapon.traits = value
         if parameter == "weapon_value":
-            self.weapon.price = value
+            self.item.price = value
         if parameter == "weapon_weight":
-            self.weapon.weight = value
+            self.item.weight = value
         if parameter == "equipped":
-            self.weapon.equipped = value
+            self.item.equipped = value
         # if parameter == "weapon_shot_cost":
         #     self.current_weapon.shot_cost = value
 
     def fill_values(self):
-        self.weapon_name.setText(self.weapon.name)
-        self.weapon_damage.setText(self.weapon.damage)
-        self.weapon_damage_type.setText(self.weapon.damage_type)
-        self.weapon_pp.setText(self.weapon.ap)
-        self.weapon_ammo_cost.setText(self.weapon.shot_cost)
-        self.weapon_current_power.setText(self.weapon.power_magazine)
-        self.weapon_value.setText(self.weapon.price)
-        self.weapon_weight.setText(self.weapon.weight)
-        self.equipped_checkbox.setChecked(self.weapon.equipped)
-        self.weapon_type.setText(translate_parameter(self.weapon.weapon_type))
+        self.weapon_name.setText(self.item.name)
+        self.weapon_damage.setText(self.item.damage)
+        self.weapon_damage_type.setText(self.item.damage_type)
+        self.weapon_pp.setText(self.item.ap)
+        self.weapon_ammo_cost.setText(self.item.shot_cost)
+        self.weapon_current_power.setText(self.item.power_magazine)
+        self.weapon_value.setText(self.item.price)
+        self.weapon_weight.setText(self.item.weight)
+        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.weapon_type.setText(translate_parameter(self.item.weapon_type))
 
 
 class ArmorView(View):
@@ -416,7 +480,7 @@ class ArmorView(View):
     def __init__(self, armor):
         View.__init__(self)
         self.name = armor.ID
-        self.armor = armor
+        self.item = armor
         self.setFixedWidth(400)
         self.layout = QVBoxLayout()
         self.line1_layout = QHBoxLayout()
@@ -442,6 +506,7 @@ class ArmorView(View):
         self.traits.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.traits)
         self.equipped_checkbox = EquippedCheckbox()
+        self.equipped_checkbox.setChecked(self.item.equipped)
         self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
         self.line2_layout.addWidget(self.equipped_checkbox)
         self.layout.addLayout(self.line1_layout)
@@ -452,26 +517,24 @@ class ArmorView(View):
 
     def update_parameters(self, parameter, value):
         if parameter in armor_names:
-            self.armor.armor[parameter] = int(value)
+            self.item.armor[parameter] = int(value)
         if parameter == "armor_name":
-            self.armor.name = value
+            self.item.name = value
         if parameter == "equipped":
-            self.armor.equipped = value
-            self.item_equipped.emit(value)
+            self.item.equipped = value
         if parameter == "armor_value":
-            self.armor.price = value
+            self.item.price = value
         if parameter == "armor_weight":
-            self.armor.weight = value
-        self.item_equipped.emit(True)
+            self.item.weight = value
+        self.item_equipped.emit(self.item, self.item.equipped)
 
     def fill_values(self):
-        print(self.armor.name)
-        self.armor_name.setText(self.armor.name)
+        self.armor_name.setText(self.item.name)
         for armor_name in armor_names:
-            self.armor_parts[armor_name].setText(self.armor.armor[armor_name])
-        self.value.setText(self.armor.price)
-        self.weight.setText(self.armor.weight)
-        self.equipped_checkbox.setChecked(self.armor.equipped)
+            self.armor_parts[armor_name].setText(self.item.armor[armor_name])
+        self.value.setText(self.item.price)
+        self.weight.setText(self.item.weight)
+        self.equipped_checkbox.setChecked(self.item.equipped)
 
 
 class EquipmentView(QWidget):
@@ -528,6 +591,29 @@ class MyIntValidator(QValidator):
             return QValidator.Acceptable, "0", 1
         try:
             val = int(a0)
+            if self.minimum is not None:
+                if val < self.minimum:
+                    return QValidator.Intermediate, str(val), a1
+            if self.maximum is not None:
+                if val > self.maximum:
+                    return QValidator.Acceptable, str(self.maximum), a1
+            return QValidator.Acceptable, str(val), a1
+        except:
+            return QValidator.Invalid, a0, a1
+
+
+class MyFloatValidator(QValidator):
+
+    def __init__(self, minimum=None, maximum=None):
+        QValidator.__init__(self)
+        self.minimum = minimum
+        self.maximum = maximum
+
+    def validate(self, a0, a1):
+        if a1 == 0:
+            return QValidator.Acceptable, "0", 1
+        try:
+            val = round(float(a0), 1)
             if self.minimum is not None:
                 if val < self.minimum:
                     return QValidator.Intermediate, str(val), a1
@@ -626,13 +712,19 @@ class EquipmentWidget(QWidget):
         self.equipped_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.equipped_table.item_qty_changed.connect(self.signal_forward)
         equipped_table_layout = QVBoxLayout()
-        # equipped_table_layout.setContentsMargins(0, 0, 0, 0)
+        label = QLabel(translate_ui("ui_equipped_items"))
+        label.setStyleSheet("font: bold 12px")
+        label.setAlignment(Qt.AlignCenter)
+        equipped_table_layout.addWidget(label)
         equipped_table_layout.addWidget(self.equipped_table)
         self.stash_table = ItemTable(equipped=False)
         self.stash_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.stash_table.item_qty_changed.connect(self.signal_forward)
         stash_table_layout = QVBoxLayout()
-        # stash_table_layout.setContentsMargins(0, 0, 0, 0)
+        label = QLabel(translate_ui("ui_stashed_items"))
+        label.setStyleSheet("font: bold 12px")
+        label.setAlignment(Qt.AlignCenter)
+        stash_table_layout.addWidget(label)
         stash_table_layout.addWidget(self.stash_table)
         button_left = QPushButton("<<<")
         button_left.clicked.connect(lambda: self.open_transfer_popup(True))
@@ -652,7 +744,6 @@ class EquipmentWidget(QWidget):
         layout.addLayout(equipped_table_layout, 10)
         layout.addLayout(buttons_layout, 1)
         layout.addLayout(stash_table_layout, 10)
-        # layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
 
     def open_popup(self):
@@ -669,7 +760,6 @@ class EquipmentWidget(QWidget):
         current_row = source_table.table.currentRow()
         if current_row == -1:
             return
-        print(current_row)
         current_item_id = source_table.table.cellWidget(current_row, 0).text()
         current_item = source_table.items[current_item_id]
         self.current_popup = self.transfer_popup(current_item)
@@ -734,14 +824,12 @@ class ItemCounter(QWidget):
         self.setLayout(layout)
 
     def increase(self):
-        print("increase")
         self.value_changed.emit(self.name, 1, True)
 
     def decrease(self):
         self.value_changed.emit(self.name, -1, True)
 
     def value_set(self):
-        print("setting")
         self.value_changed.emit(self.name, int(self.edit.text()), False)
 
     def set_value(self, value):
@@ -770,7 +858,6 @@ class ItemTable(QWidget):
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.table.setColumnHidden(0, True)
         self.table.verticalHeader().setVisible(False)
-        # self.table.currentCellChanged.connect(self.cell_changed)
         self.table.setHorizontalHeaderLabels([translate_ui("ui_item_name"), translate_ui("ui_item_quantity"),
                                               translate_ui("ui_item_name"),
                                               translate_ui("ui_item_weight"),
@@ -778,7 +865,6 @@ class ItemTable(QWidget):
 
     def fill_table(self):
         self.table.setRowCount(len(self.items))
-        print("here")
         for index, item in enumerate(self.items):
             item_class = self.items[item]
             self.table.setCellWidget(index, 0, QLabel(item))
@@ -793,7 +879,7 @@ class ItemTable(QWidget):
             weight_label = QLabel(str(item_class.weight))
             weight_label.setAlignment(Qt.AlignCenter)
             self.table.setCellWidget(index, 3, weight_label)
-            total_weight_label = QLabel(str(item_class.weight * item_class.quantity))
+            total_weight_label = QLabel("{:.1f}".format(item_class.weight * item_class.quantity))
             total_weight_label.setAlignment(Qt.AlignCenter)
             self.table.setCellWidget(index, 4, total_weight_label)
         for n in range(5):
@@ -818,5 +904,49 @@ class ItemTable(QWidget):
             self.table.cellWidget(row, 4).setText(str(item.weight * item.quantity))
 
 
+class ModifierItemView(View):
 
+    def __init__(self, equipment_item):
+        View.__init__(self)
+        layout = QHBoxLayout()
+        self.item = equipment_item
+        self.name = equipment_item.ID
+        name_layout = QVBoxLayout()
+        name = QLabel(equipment_item.name)
+        name_layout.addWidget(name)
+        self.values_layout = QVBoxLayout()
+        cost_layout = QVBoxLayout()
+        cost = QLabel("TODO COST")
+        cost_layout.addWidget(cost)
+        layout.addLayout(name_layout)
+        layout.addLayout(self.values_layout)
+        layout.addLayout(cost_layout)
+        checkbox_layout = QVBoxLayout()
+        self.equipped_checkbox = QCheckBox()
+        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
+        checkbox_layout.addWidget(self.equipped_checkbox)
+        layout.addLayout(checkbox_layout)
+        self.setLayout(layout)
+        for bonus in self.item.bonuses:
+            view = PropertyView(bonus, self.item.bonuses[bonus])
+            self.values_layout.addWidget(view)
+        self.setLayout(layout)
+
+    def update_parameters(self, parameter, value):
+        if parameter == "equipped":
+            self.item_equipped.emit(self.item, value)
+
+
+class PropertyView(QWidget):
+
+    def __init__(self, name="", value=0):
+        QWidget.__init__(self)
+        layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.label = QLabel(translate_parameter(name))
+        self.value = QLabel(str(value))
+        layout.addWidget(self.label)
+        layout.addWidget(self.value)
+        self.setLayout(layout)
 

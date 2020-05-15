@@ -57,6 +57,9 @@ class ShootingWidget(QWidget):
         self.break_increment = InputLine("break_increment", enabled=True, dtype="int", spacer="upper",
                                          maxwidth=80, label=translate_ui("ui_break_increment"))
         self.break_increment.setText("0")
+        self.num_shots = InputLine("num_shots", enabled=True, dtype="int", spacer="upper",
+                                         maxwidth=80, label=translate_ui("ui_num_shots"))
+        self.num_shots.setText("10")
         if weapon is not None:
             skill = weapon.base_skill
             if character is not None:
@@ -67,6 +70,7 @@ class ShootingWidget(QWidget):
         parameters_layout.addWidget(self.gm_modifier)
         parameters_layout.addWidget(self.break_chance)
         parameters_layout.addWidget(self.break_increment)
+        parameters_layout.addWidget(self.num_shots)
         parameters_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
 
         # Icon
@@ -250,9 +254,10 @@ class ShootingWidget(QWidget):
         chance = self.sum_modifiers()
         break_chance = 100 - int(self.break_chance.text())
         heat_increment = int(self.break_increment.text())
-        hit, hits, broken = get_shots(chance, 10,
+        num_shots = int(self.num_shots.text())
+        hit, hits, broken = get_shots(chance, num_shots,
                                       weapon_base_damage_threshold=break_chance, weapon_heat_rate=heat_increment)
-        self.popup = OutcomeWidget(10, hit, hits, broken)
+        self.popup = OutcomeWidget(num_shots, hit, hits, broken)
         self.popup.closed.connect(self.close_popup)
 
     def close_popup(self, val):

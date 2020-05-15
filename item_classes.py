@@ -1,10 +1,14 @@
 import string
 import random
-from parameters import armor_names, translate_item
+from parameters import load_parameters, translate_item
+
+param_dict = load_parameters()
+armor_names = param_dict["armor"]
+
 
 def random_word(length):
-   letters = string.ascii_lowercase
-   return ''.join(random.choice(letters) for i in range(length))
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
 
 
 class Item:
@@ -18,13 +22,38 @@ class Item:
         self.availability = None
         self.quantity = None
         self.ID = random_word(16)
+        self.arch_name = None
+
+
+class ModifierItem(Item):
+
+    def __init__(self):
+        Item.__init__(self)
+        self.equipped = False
+        self.bonuses = {}
+        self.bonus_type = None
+        self._line = None
+
+    def load_from_line(self, line):
+        name, availability, value, weight, bonuses, bonus_type = line.strip().split(";")
+        bonuses = bonuses.split(",")
+        self.arch_name = name
+        self.name = translate_item(name)
+        self.availability = availability
+        self.price = int(value)
+        self.weight = int(weight)
+        self.bonus_type = bonus_type
+        self._line = line
+
+        for bonus in bonuses:
+            bonus_name, value = bonus.split()
+            self.bonuses[bonus_name] = int(value)
 
 
 class Armor(Item):
 
     def __init__(self):
         Item.__init__(self)
-        self.arch_name = None
         self.armor = {}
         for armor_param in armor_names:
             self.armor[armor_param] = 0
@@ -47,16 +76,11 @@ class Armor(Item):
             part, value = part.split()
             self.armor[part] = int(value)
 
-    # def calculate_armor_values(self):
-    #     for mod_name in self.modifications:
-    #         mod = self.modifications[mod_name]
-
 
 class Weapon(Item):
 
     def __init__(self):
         Item.__init__(self)
-        self.arch_name = None
         self.modifications = []
         self.addons = []
         self.traits = []
@@ -113,6 +137,12 @@ def weapon_from_line(line):
     weapon = Weapon()
     weapon.load_from_line(line)
     return weapon
+
+
+def modifier_from_line(line):
+    item = ModifierItem()
+    item.load_from_line(line)
+    return item
 
 
 def armor_from_line(line):

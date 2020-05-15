@@ -1,52 +1,53 @@
 import codecs
 from os import path
 
-#base_path = path.split(path.abspath(__file__))[0]
 
-notes_names = ["notes", "contacts", "knowledge"]
+def load_parameters(alternative=False):
+    parameters = {"param": [],
+                  "armor": [],
+                  "notes": [],
+                  "attrib": [],
+                  "damage": [],
+                  "character": [],
+                  "skill": {}
+                  }
+    filepath = path.join("parameters", "parameters.csv")
+    if alternative:
+        filepath = path.join("parameters", "parameters_alternative.csv")
+    with codecs.open(filepath, "r", encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.strip():
+                continue
+            if line.startswith("#"):
+                continue
+            field_type = line.split("_")[0]
+            if field_type == "skill":
+                skill, attribs = line.strip().split(";")
+                attribs = attribs.split(",")
+                parameters[field_type][skill] = attribs
+                continue
+            line = line.strip().replace(";", "")
+            parameters[field_type].append(line)
+    return parameters
 
-attribute_names = ["param_strength", "param_agility", "param_intelligence", 
-                   "param_toughness", "param_willpower", "param_charisma"]
-damage_types = ["e", "p", "x", "el", "i", "ammo"]
-character_names = ["param_name", "param_race", "param_planet", "param_age", "param_traits", "param_profession"]
 
-parameter_names = ["param_encumbrance_low", "param_encumbrance_med", "param_encumbrance_high", "param_speed_low", 
-                   "param_speed_med", "param_speed_high", "param_reputation_bad", "param_reputation_good", 
-                   "param_hp_max", "param_hp_current", "param_pp_total", "param_pp_curr", "param_fatigue", 
-                   "param_xp_total", "param_xp_free"]
+def load_modifiers(alternative=False):
+    from item_classes import modifier_from_line
+    print(alternative)
+    modifiers = {}
+    filepath = path.join("parameters", "modifiers.csv")
+    if alternative:
+        filepath = path.join("parameters", "modifiers_alternative.csv")
 
-armor_names = ["param_armor_head", "param_armor_rh", "param_armor_chest", 
-               "param_armor_lh", "param_armor_rl", "param_armor_ll"]
-
-attribute_skill_dict = {"param_athletics": ["param_strength"],
-                        "param_melee_unarmed": ["param_strength", "param_agility"],
-                        "param_melee_armed": ["param_strength", "param_agility"],
-                        "param_ranged_light": ["param_agility"],
-                        "param_ranged_heavy": ["param_strength"],
-                        "param_ranged_stationary": ["param_intelligence", "param_agility"],
-                        "param_dodge": ["param_agility"],
-                        "param_dexterity": ["param_agility"],
-                        "param_perception": ["param_intelligence", "param_agility"],
-                        "param_analysis": ["param_intelligence"],
-                        "param_composition": ["param_willpower"],
-                        "param_persistence": ["param_willpower"],
-                        "param_resistance": ["param_toughness"],
-                        "param_conceal": ["param_agility"],
-                        "param_influence": ["param_charisma"],
-                        "param_diplomacy": ["param_charisma"],
-                        "param_cheat": ["param_charisma"],
-                        "param_commerce": ["param_charisma"],
-                        "param_interrogation": ["param_charisma"],
-                        "param_survival": ["param_intelligence", "param_agility"],
-                        "param_cybernetics": ["param_intelligence"],
-                        "param_mechanics": ["param_intelligence"],
-                        "param_security": ["param_intelligence"],
-                        "param_navigation": ["param_intelligence"],
-                        "param_medicine": ["param_intelligence"],
-                        "param_pilot_speeders": ["param_agility"],
-                        "param_pilot_walkers": ["param_agility"],
-                        "param_pilot_spaceships": ["param_agility"]
-                        }
+    with codecs.open(filepath, "r", encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.strip():
+                continue
+            if line.strip().startswith("#"):
+                continue
+            modifier = modifier_from_line(line)
+            modifiers[modifier.arch_name] = modifier
+    return modifiers
 
 
 def load_abilities():

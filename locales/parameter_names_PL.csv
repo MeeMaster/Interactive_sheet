@@ -1,37 +1,45 @@
-param_strength;Si³a
-param_agility;Zrêcznoœæ
-param_intelligence;Inteligencja
-param_toughness;Twardoœæ
-param_willpower;Si³a Woli
-param_charisma;Charyzma
-param_athletics;Atletyka
-param_melee_unarmed;Walka nieuzbrojona
-param_melee_armed;Broñ bia³a
-param_ranged_light;Broñ lekka
-param_ranged_heavy;Broñ ciê¿ka
-param_ranged_stationary;Broñ stacjonarna
-param_dodge;Unik
-param_dexterity;Zwinnoœæ
-param_perception;Percepcja
-param_analysis;Analiza
-param_composition;Opanowanie
-param_persistence;Wytrwa³oœæ
-param_resistance;Odpornoœæ
-param_conceal;Ukrycie
-param_diplomacy;Dyplomacja
-param_cheat;Oszustwo
-param_commerce;Handel
-param_interrogation;Przes³uchiwanie
-param_survival;Sztuka przetrwania
-param_cybernetics;Cybernetyka
-param_mechanics;Mechanika
-param_security;Zabezpieczenia
-param_navigation;Nawigacja
-param_medicine;Medycyna
-param_pilot_speeders;Speedery
-param_pilot_walkers;Maszyny krocz¹ce
-param_pilot_spaceships;Statki kosmiczne
-param_influence;Wp³yw
+attrib_strength;Si³a
+attrib_agility;Zrêcznoœæ
+attrib_intelligence;Inteligencja
+attrib_toughness;Twardoœæ
+attrib_willpower;Si³a Woli
+attrib_charisma;Charyzma
+attrib_hacking;Hakowanie
+attrib_integrity;Spójnoœæ
+#
+skill_athletics;Atletyka
+skill_melee_unarmed;Walka nieuzbrojona
+skill_melee_armed;Broñ bia³a
+skill_ranged_light;Broñ lekka
+skill_ranged_heavy;Broñ ciê¿ka
+skill_ranged_stationary;Broñ stacjonarna
+skill_dodge;Unik
+skill_dexterity;Zwinnoœæ
+skill_perception;Percepcja
+skill_analysis;Analiza
+skill_composition;Opanowanie
+skill_persistence;Wytrwa³oœæ
+skill_resistance;Odpornoœæ
+skill_conceal;Ukrycie
+skill_diplomacy;Dyplomacja
+skill_cheat;Oszustwo
+skill_commerce;Handel
+skill_interrogation;Przes³uchiwanie
+skill_survival;Sztuka przetrwania
+skill_cybernetics;Cybernetyka
+skill_mechanics;Mechanika
+skill_security;Zabezpieczenia
+skill_navigation;Nawigacja
+skill_medicine;Medycyna
+skill_pilot_speeders;Speedery
+skill_pilot_walkers;Maszyny krocz¹ce
+skill_pilot_spaceships;Statki kosmiczne
+skill_influence;Wp³yw
+skill_control;Kontrola systemu
+skill_holonet;Holonet
+skill_systems;Systemy
+skill_communication;Komunikacja
+#
 param_encumbrance_low;Lekkie
 param_encumbrance_med;Komfortowe
 param_encumbrance_high;Maksymalne
@@ -40,6 +48,7 @@ param_speed_med;Normalny
 param_speed_high;Sprint
 param_reputation_bad;Negatywna
 param_reputation_good;Pozytywna
+param_reputation_total;Ca³kowita
 param_hp_max;P¯ maks
 param_hp_current;P¯ obecne
 param_pp_total;PP ca³kowite
@@ -47,18 +56,23 @@ param_pp_curr;PP obecne
 param_fatigue;Zmêczenie
 param_xp_total;XP wykorzystane
 param_xp_free;XP wolne
-param_armor_head;G³owa
-param_armor_rh;Prawa rêka
-param_armor_chest;Korpus
-param_armor_lh;Lewa rêka
-param_armor_rl;Prawa noga
-param_armor_ll;Lewa noga
-param_name;Imiê
-param_race;Rasa
-param_planet;Planeta
-param_age;Wiek
-param_traits;Cechy szczególne
-param_profession;Zawód
+#
+armor_head;G³owa
+armor_rh;Prawa rêka
+armor_chest;Korpus
+armor_lh;Lewa rêka
+armor_rl;Prawa noga
+armor_ll;Lewa noga
+#
+character_name;Imiê
+character_race;Rasa
+character_planet;Planeta
+character_age;Wiek
+character_traits;Cechy szczególne
+character_profession;Zawód
+character_model;Model
+character_fabricator;Wytwórca
+#
 param_size_tiny;Bardzo ma³y
 param_size_small;Ma³y
 param_size_normal;Normalny

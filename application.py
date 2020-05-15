@@ -6,17 +6,35 @@ from PyQt5.QtWidgets import QApplication
 import pickle
 from sheet import Character
 from window import MainWindow
-from parameters import attribute_skill_dict, armor_names
-from item_classes import Item
+from item_classes import Item, Weapon, Armor, ModifierItem
+# from layout_classes import ArmorView, ModifierItemView, WeaponView, AbilityView
 
 class Application:
 
     def __init__(self):
         self.main_window = MainWindow()
-        self.main_widget = self.main_window.window_widget
-        self.sheet = Character()
+        self.main_widget = None
         self.main_window.directory_signal.connect(self.file_IO)
-        self.main_widget.armor_changed.connect(lambda: self.update_armor())
+        self.main_window.new_sheet.connect(self.new_sheet)
+        self.sheet = None
+
+    def reset_window(self):
+        self.main_window.clear()
+        self.main_window.create()
+        self.main_widget = self.main_window.window_widget
+
+    def new_sheet(self, robot=False):
+        self.sheet = Character(robot)
+        self.reset_window()
+        self.load_sheet()
+
+    def load_sheet(self):
+        self.reset_window()
+        alt = self.sheet.is_robot
+        self.main_widget.fill_tab1(self.sheet.character, self.sheet.attributes,
+                                   self.sheet.skills, self.sheet.armor_names, alternative=alt)
+        self.main_widget.fill_tab2()
+        self.main_widget.fill_tab3([a for a in self.sheet.notes if a != "notes_money"])
 
         # Register attributes
         for attribute in self.main_widget.attribute_dict:
@@ -36,14 +54,18 @@ class Application:
         # Register notes
         for notebook in self.main_widget.notes_dict:
             note_class = self.main_widget.notes_dict[notebook]
-            note_class.text_changed.connect(self.change_notes)
+            note_class.text_changed.connect(self.sheet.change_notes)
 
         # Register equipment
-        self.main_widget.equipment_tables.item_create.connect(self.add_equipment)
+        for scroll in self.main_widget.scrolls:
+            self.main_widget.scrolls[scroll].item_equipped.connect(self.equip_item)
+            self.main_widget.scrolls[scroll].item_created.connect(self.create_item)
+            self.main_widget.scrolls[scroll].item_removed.connect(self.remove_item)
+        self.main_widget.equipment_tables.item_create.connect(self.add_item)
         self.main_widget.equipment_tables.item_qty_changed.connect(self.change_item_quantity)
         self.main_widget.equipment_tables.move_item.connect(self.move_item)
 
-        self.fill_form()
+        self.update_form()
 
     def file_IO(self, *args):
         path, action = args
@@ -51,117 +73,204 @@ class Application:
             self.read_character(path)
         if action == "save":
             self.save_character(path)
-        pass
 
     def read_character(self, path):
         self.sheet = pickle.load(open(path, "rb"))
-        self.fill_form()
+        self.sheet = sheet_compatibility_check(self.sheet)
+        self.load_sheet()
 
     def save_character(self, path):
+        if self.sheet is None:
+            return
         pickle.dump(self.sheet, open(path, "wb"))
 
-    def change_attribute(self, name, val_type, value):
-        if val_type == "base":
-            self.sheet.attributes[name] = value
-        if val_type == "adv":
-            self.sheet.attribute_advancements[name] = value
-        total = self.sheet.calculate_attribute(name)
-        self.update_attribute(name, total)
-        self.update_armor()
+    # Attribute Handling
+    def update_attribute(self, attribute):
+        val = self.sheet.attributes[attribute]
+        self.main_widget.attribute_dict[attribute].set_base(val)
+        val = self.sheet.attribute_advancements[attribute]
+        self.main_widget.attribute_dict[attribute].set_advancement(val)
+        val = self.sheet.calculate_attribute(attribute)
+        self.main_widget.attribute_dict[attribute].set_total(val)
+        self.update_skills()
+        self.update_armor_values()
+        self.update_parameters()
 
-    def update_attribute(self, attribute, value):
-        self.main_widget.attribute_dict[attribute].set_total(value)
-        for skill in attribute_skill_dict:
-            if attribute in attribute_skill_dict[skill]:
-                skill_val = self.sheet.calculate_skill(skill)
-                self.update_skill(skill, skill_val)
+    def update_attributes(self):
+        for attribute in self.sheet.attributes:
+            self.update_attribute(attribute)
+
+    def change_attribute(self, name, val_type, value):
+        self.sheet.change_attribute(name, val_type, value)
+        self.update_attribute(name)
+
+    # Skill Handling
+    def update_skill(self, skill):
+        val = self.sheet.skills[skill]
+        self.main_widget.skills_dict[skill].set_advancement(val)
+        self.main_widget.skills_dict[skill].set_enabled(True)
+        bonus_val = self.sheet.skill_bonuses[skill]
+        bonus_val2 = self.sheet.skill_bonuses2[skill]
+        self.main_widget.skills_dict[skill].set_bonus(bonus_val, bonus_val2)
+        total_val = self.sheet.calculate_skill(skill)
+        if self.sheet.is_robot:
+            if bonus_val == 0 and bonus_val2 == 0:
+                self.main_widget.skills_dict[skill].set_enabled(False)
+                total_val = 0
+        self.main_widget.skills_dict[skill].set_total(total_val)
+
+    def update_skills(self):
+        for skill in self.sheet.skills:
+            self.update_skill(skill)
 
     def change_skill(self, name, val_type, value):
-        if val_type == "adv":
-            self.sheet.skills[name] = int(value)
-        if val_type == "bonus":
-            self.sheet.skill_bonuses[name] = int(value)
-        final_value = self.sheet.calculate_skill(name)
-        self.update_skill(name, final_value)
+        self.sheet.change_skill(name, val_type, value)
+        self.update_skill(name)
 
-    def update_skill(self, name, value):
-        self.main_widget.skills_dict[name].set_total(value)
+    # Parameter Handling
+    def update_parameters(self):
+        for parameter in self.sheet.parameters:
+            self.update_parameter(parameter)
+
+    def update_parameter(self, name):
+        value = self.sheet.parameters[name]
+        if name not in self.main_widget.params_dict:
+            return  # TODO use all of params in the sheet
+        self.main_widget.params_dict[name].setText(value)
 
     def change_parameter(self, name, value):
-        self.sheet.parameters[name] = value
+        self.sheet.change_parameter(name, value)
+        self.update_parameters()
 
-    def update_parameter(self, name, value):
-        self.main_widget.params_dict[name].setText(str(value))
+    # Character Handling
+    def update_character_fields(self):
+        for parameter in self.sheet.character:
+            self.update_character_field(parameter)
 
-    def change_armor(self, slot, armor_dict):
-        self.sheet.armor[slot] = armor_dict
+    def update_character_field(self, name):
+        value = self.sheet.character[name]
+        self.main_widget.params_dict[name].setText(value)
 
-    def change_notes(self, name, value):
-        self.sheet.notes[name] = value
+    def change_character(self, name, value):
+        self.sheet.change_character(name, value)
+        self.update_character_field(name)
 
-    def update_notes(self, name, value):
-        self.main_widget.notes_dict[name].set_text(str(value))
+    # Handle all scrolls items
+    def equip_item(self, item, equip):
+        # Weapon
+        if isinstance(item, Weapon):
+            item.equipped = equip
+            self.update_weapons()
+        # Armor
+        elif isinstance(item, Armor):
+            item.equipped = equip
+            self.update_armor()
+            pass
+        # Modifier
+        elif isinstance(item, ModifierItem):
+            self.sheet.equip_modifier_item(item, equip)
+            self.update_modifiers()
+            self.update_attributes()
+            self.update_parameters()
+            self.update_abilities()
 
-    def fill_attributes(self):
-        for attribute in self.sheet.attributes:
-            val = self.sheet.attributes[attribute]
-            self.main_widget.attribute_dict[attribute].set_base(val)
-            val = self.sheet.attribute_advancements[attribute]
-            self.main_widget.attribute_dict[attribute].set_advancement(val)
-            val = self.sheet.calculate_attribute(attribute)
-            self.update_attribute(attribute, val)
+    def create_item(self, item):
+        # Ability
+        if isinstance(item, str):
+            self.add_ability(item)
+            self.update_abilities()
+        # Weapon
+        elif isinstance(item, Weapon):
+            self.sheet.add_weapon(item)
+            self.update_weapons()
+        # Armor
+        elif isinstance(item, Armor):
+            self.sheet.add_armor(item)
+            self.update_armor()
+        # Modifier
+        elif isinstance(item, ModifierItem):
+            self.sheet.add_modifier_item(item)
+            self.update_modifiers()
 
-    def fill_skills(self):
-        for skill in self.sheet.skills:
-            val = self.sheet.skills[skill]
-            self.main_widget.skills_dict[skill].set_advancement(val)
-            val = self.sheet.skill_bonuses[skill]
-            self.main_widget.skills_dict[skill].set_bonus(val)
-            val = self.sheet.calculate_skill(skill)
-            self.update_skill(skill, val)
+    def remove_item(self, item):
+        # Ability
+        if isinstance(item, str):
+            self.remove_ability(item)
+            self.update_abilities()
+        # Weapon
+        elif isinstance(item, Weapon):
+            self.sheet.remove_weapon(item)
+            self.update_weapons()
+        # Armor
+        elif isinstance(item, Armor):
+            self.sheet.remove_armor(item)
+            self.update_armor()
+            pass
+        # Modifier
+        elif isinstance(item, ModifierItem):
+            self.sheet.remove_modifier_item(item)
+            self.update_modifiers()
+            self.update_form()
+            pass
+        # Item
+        # elif isinstance(item, ItemView):
+        #     pass
 
-    def fill_parameters(self):
-        for parameter in self.sheet.parameters:
-            val = self.sheet.parameters[parameter]
-            if parameter not in self.main_widget.params_dict:
-                continue
-            self.main_widget.params_dict[parameter].setText(str(val))
-            self.update_parameter(parameter, val)
-
-    def fill_abilities(self):
+    # Ability Handling
+    def update_abilities(self):
         self.main_widget.scrolls["abilities"].clear()
         for ability in self.sheet.abilities:
-            self.main_widget.scrolls["abilities"]._add_widget(ability, filling=True)
+            self.main_widget.scrolls["abilities"].add_widget(ability)
 
-    def fill_weapons(self):
+    def add_ability(self, ability):
+        self.sheet.add_ability(ability)
+        self.update_abilities()
+
+    def remove_ability(self, ability):
+        self.sheet.remove_ability(ability)
+        self.update_abilities()
+    # Weapon Handling
+
+    def update_weapons(self):
         self.main_widget.scrolls["weapons"].clear()
         for weapon in self.sheet.weapons:
-            self.main_widget.scrolls["weapons"]._add_widget(weapon, filling=True)
-
-    def fill_armor(self):
-        self.main_widget.scrolls["armor"].clear()
-        for armor in self.sheet.armor:
-            self.main_widget.scrolls["armor"]._add_widget(armor, filling=True)
-
-    def fill_notes(self):
-        for note_name in self.sheet.notes:
-            text = self.sheet.notes[note_name]
-            self.main_widget.notes_dict[note_name].set_text(text)
+            self.main_widget.scrolls["weapons"].add_widget(weapon)
 
     def update_armor(self):
+        self.main_widget.scrolls["armor"].clear()
+        for armor in self.sheet.armor:
+            self.main_widget.scrolls["armor"].add_widget(armor)
+        self.update_armor_values()
+
+    def update_armor_values(self):
         armor_dict = self.sheet.calculate_armor()
         for armor_slot in armor_dict:
             self.main_widget.params_dict[armor_slot].setText(str(armor_dict[armor_slot]))
 
-    def add_equipment(self, item):
-        self.sheet.items_stashed[item.ID] = item
+    def update_modifiers(self):
+        self.main_widget.scrolls["modifiers"].clear()
+        for modifier in self.sheet.modifier_items:
+            self.main_widget.scrolls["modifiers"].add_widget(modifier)
+
+    def update_notes(self):
+        for note_name in self.sheet.notes:
+            text = self.sheet.notes[note_name]
+            self.main_widget.notes_dict[note_name].set_text(text)
+
+    def change_notes(self, name, value):
+        self.main_widget.notes_dict[name].set_text(str(value))
+
+    def update_items(self):
         self.main_widget.equipment_tables.set_item_tables(self.sheet.items_stashed, self.sheet.items_equipped)
+
+    def add_item(self, item):
+        self.sheet.add_item(item)
+        self.update_items()
 
     def change_item_quantity(self, equipped, _id, value, change):
         target_dict = self.sheet.items_equipped if equipped else self.sheet.items_stashed
         if _id not in target_dict:
             return
-        print("changing", value, change)
         if change:
             target_dict[_id].quantity += value
         else:
@@ -173,7 +282,7 @@ class Application:
         source = self.sheet.items_stashed if equip else self.sheet.items_equipped
         target = self.sheet.items_equipped if equip else self.sheet.items_stashed
         if _id not in source:
-            print("Error while transfering")
+            print("Error while transferring")
             return
         source[_id].quantity -= value
         if _id not in target:
@@ -186,27 +295,85 @@ class Application:
             del source[_id]
         self.main_widget.equipment_tables.update_item_tables()
 
-    def fill_form(self):
+    def update_form(self):
         self.main_widget.character = self.sheet
         # Attributes
-        self.fill_attributes()
+        self.update_attributes()
         # Skills
-        self.fill_skills()
-        # Parameters
-        self.fill_parameters()
+        self.update_skills()
         # Armor
         self.update_armor()
         # Abilities
-        self.fill_abilities()
+        self.update_abilities()
         # Weapons
-        self.fill_weapons()
+        self.update_weapons()
+        # Modifiers
+        self.update_modifiers()
+        # Items
+        self.update_items()
         # Armor
-        self.fill_armor()
+        self.update_armor_values()
+        # Parameters
+        self.update_parameters()
+        # Character
+        self.update_character_fields()
         # Notes
-        self.fill_notes()
+        self.update_notes()
+
+
+def sheet_compatibility_check(sheet):
+    sheet_dict = sheet.__dict__
+    if "is_robot" not in sheet_dict:
+        sheet_dict["is_robot"] = False
+    reference_sheet = Character(sheet.is_robot)
+    reference_dict = reference_sheet.__dict__
+    for name in reference_dict:
+        if name in sheet_dict:
+            continue
+        sheet_dict[name] = reference_dict[name]
+    for name in sheet_dict:
+        if name in reference_dict:
+            continue
+    new_notes = {}
+    for item in ["notes", "knowledge", "contacts"]:
+        new_notes["notes_" + item] = sheet_dict[item]
+        del sheet_dict[item]
+    sheet_dict["notes"] = new_notes
+
+    for attrib_dict in ["attributes", "attribute_advancements", "attribute_bonuses"]:
+        new_dict = {}
+        for attrib, value in sheet_dict[attrib_dict].items():
+            new_dict[attrib.replace("param_", "attrib_")] = value
+        sheet_dict[attrib_dict] = new_dict
+
+    for skill_dict in ["skills", "skill_bonuses"]:
+        new_dict = {}
+        for skill, value in sheet_dict[skill_dict].items():
+            new_dict[skill.replace("param_", "skill_")] = value
+        sheet_dict[skill_dict] = new_dict
+
+    sheet_dict["character"] = {}
+    for param in list(sheet_dict["parameters"].keys()):
+        if param in ['param_name', 'param_race', 'param_planet', 'param_age', 'param_traits', 'param_profession']:
+            sheet_dict["character"][param.replace("param_", "character_")] = sheet_dict["parameters"][param]
+            del sheet_dict["parameters"][param]
+        if "param_" not in param:
+            sheet_dict["parameters"]["param_" + param] = sheet_dict["parameters"][param]
+            del sheet_dict["parameters"][param]
+
+    # Fix items
+    for armor in sheet_dict["armor"]:
+        armor_names = {}
+        for armor_name in armor.armor:
+            armor_names[armor_name.replace("param_", "")] = armor.armor[armor_name]
+        armor.armor = armor_names
+
+    return sheet
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app_class = Application()
     sys.exit(app.exec_())
+
+

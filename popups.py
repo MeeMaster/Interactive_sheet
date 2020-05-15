@@ -1,13 +1,17 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QLabel, QVBoxLayout, QHBoxLayout, QSpacerItem, \
-    QSizePolicy, QTextEdit, QScrollArea, QTableWidget, QCheckBox, QComboBox
+    QSizePolicy, QTextEdit, QScrollArea, QTableWidget, QCheckBox, QComboBox, QRadioButton
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
-from parameters import (load_abilities, translate_parameter, translate_ui, translate_ability, load_weapons,
-                        damage_types, armor_names, load_armors, translate_item)
-from item_classes import Weapon, Armor, Item
-from layout_classes import InputLine, LabelledComboBox
+from parameters import (load_parameters, load_abilities, translate_parameter, translate_ui, translate_ability,
+                        load_weapons, load_armors, translate_item, load_modifiers)
+from item_classes import Weapon, Armor, Item, random_word, ModifierItem
+from layout_classes import InputLine, LabelledComboBox, View
+
+param_dict = load_parameters()
+damage_types = param_dict["damage"]
+armor_names = param_dict["armor"]
 
 
 class BasePopup(QWidget):
@@ -427,7 +431,7 @@ class ItemPopup(BasePopup):
         item = Item()
         item.quantity = int(self.quantity.text())
         item.name = self.name.text()
-        item.weight = int(self.weight.text())
+        item.weight = float(self.weight.text())
         item.description = self.description.toPlainText()
         self.popup_ok.emit(item)
         self.close()
@@ -450,7 +454,7 @@ class ItemMovePopup(BasePopup):
         self.equipment_value.setText(item.quantity)
         self.transfer_value = InputLine("transfer", dtype="int", min_val=0, max_val=item.quantity,
                                         label=translate_ui("ui_items_to_transfer"))
-
+        self.transfer_value.setText(item.quantity)
         values_layout.addWidget(self.transfer_value)
         values_layout.addWidget(self.equipment_value)
 
@@ -462,3 +466,175 @@ class ItemMovePopup(BasePopup):
         value = int(self.transfer_value.text())
         self.popup_ok.emit(self.item.ID, value)
         self.close()
+
+
+class CreateCharacterPopup(BasePopup):
+    popup_ok = pyqtSignal(bool)
+
+    def __init__(self):
+        BasePopup.__init__(self)
+        self.alternative = False
+        choice_layout = QHBoxLayout()
+        normal_button = QRadioButton(translate_ui("ui_normal_character"))
+        normal_button.setChecked(True)
+        alternative_button = QRadioButton(translate_ui("ui_alternative_character"))
+        normal_button.clicked.connect(lambda: self.change_selection(False))
+        alternative_button.clicked.connect(lambda: self.change_selection(True))
+        choice_layout.addWidget(normal_button)
+        choice_layout.addWidget(alternative_button)
+        self.main_layout.addLayout(choice_layout)
+        self.show()
+
+    def change_selection(self, alternative):
+        self.alternative = alternative
+
+    def ok_pressed(self):
+        self.popup_ok.emit(self.alternative)
+        self.close()
+
+
+class ModifierItemPopup(BasePopup):
+    popup_ok = pyqtSignal(ModifierItem)
+
+    def __init__(self, character=None):
+        BasePopup.__init__(self)
+        self.archetype_items = load_modifiers(character.is_robot)
+        self.current_item = None
+        self.alternative = character.is_robot
+        combo_layout = QHBoxLayout()
+        self.archetype_combobox = LabelledComboBox(label=translate_ui("ui_item_archetype"))
+        self.archetype_names = []
+        self.fill_archetype_combobox()
+        self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
+        self.item_name = InputLine("item_name", Qt.AlignLeft, label=translate_ui("ui_item_name"))
+        self.item_name.value_changed.connect(self.update_parameters)
+        combo_layout.addWidget(self.archetype_combobox)
+        combo_layout.addWidget(self.item_name)
+        self.bonuses_layout = QVBoxLayout()
+
+        add_button_layout = QVBoxLayout()
+        add_button = QPushButton(translate_ui("ui_add_property"))
+        add_button.clicked.connect(self.add_property)
+        add_button_layout.addWidget(add_button)
+
+        self.main_layout.addLayout(combo_layout)
+        self.main_layout.addLayout(self.bonuses_layout)
+        self.main_layout.addLayout(add_button_layout)
+        self.fill_parameters()
+        self.show()
+
+    def fill_archetype_combobox(self):
+        for item in self.archetype_items:
+            self.archetype_combobox.addItem(translate_item(item))
+            self.archetype_names.append(item)
+        self.archetype_names.append("item_other")
+        self.archetype_combobox.addItem(translate_item("item_other"))
+
+    def fill_parameters(self, index=None):
+        index = self.archetype_combobox.currentIndex()
+        item_name = self.archetype_names[index]
+        self.item_name.setText(translate_item(item_name))
+        item = ModifierItem()
+        self.current_item = item
+        self.remove_property("all")
+        if item_name == "item_other":
+            return
+        item_line = self.archetype_items[item_name]._line
+        item.load_from_line(item_line)
+        for property in item.bonuses:
+            self.add_property(property=property, value=item.bonuses[property])
+
+    def update_parameters(self, parameter, value):
+        if parameter == "item_name":
+            self.current_item.name = value
+        if parameter in self.current_item.bonuses:
+            self.current_item.bonuses[parameter] = int(value)
+
+    def add_property(self, fixed=False, property=None, value=0):
+        view = ModifierView(self.alternative, not fixed)
+        view.set_property(property, value)
+        self.bonuses_layout.addWidget(view)
+        view.delete.connect(self.remove_property)
+
+    def remove_property(self, prop_id):
+        for index in reversed(range(self.bonuses_layout.count())):
+            child = self.bonuses_layout.itemAt(index)
+            if child is None:
+                continue
+            widget = child.widget()
+            if widget is None:
+                continue
+            if not isinstance(widget, ModifierView):
+                continue
+            if prop_id != "all" and widget.name != prop_id:
+                continue
+            widget.setParent(None)
+            widget.deleteLater()
+
+    def sum_up_item(self):
+        for index in reversed(range(self.bonuses_layout.count())):
+            child = self.bonuses_layout.itemAt(index)
+            if child is None:
+                continue
+            widget = child.widget()
+            if widget is None:
+                continue
+            if not isinstance(widget, ModifierView):
+                continue
+            prop_name = widget.param_names[widget.param_combo.currentIndex()]
+            if not widget.value.text():
+                continue
+            value = int(widget.value.text())
+            if prop_name not in self.current_item.bonuses:
+                self.current_item.bonuses[prop_name] = value
+                continue
+            if value > self.current_item.bonuses[prop_name]:
+                self.current_item.bonuses[prop_name] = value
+                continue
+
+    def ok_pressed(self):
+        self.sum_up_item()
+        self.popup_ok.emit(self.current_item)
+        self.close()
+
+
+class ModifierView(View):
+
+    def __init__(self, alternative=False, enabled=True):
+        View.__init__(self)
+        self.alternative = alternative
+        self.name = random_word(5)
+        layout = QHBoxLayout()
+        self.param_combo = QComboBox()
+        self.param_names = []
+        self.param_combo.setEnabled(enabled)
+        self.value = InputLine("value", dtype="int", maxwidth=60)
+        self.cost = InputLine("cost", dtype="int", maxwidth=60)
+        layout.addWidget(self.param_combo)
+        layout.addWidget(self.value)
+        if alternative:
+            layout.addWidget(self.cost)
+        self.fill_combobox()
+        self.setLayout(layout)
+
+    def fill_combobox(self):
+        mods = self.load_modifiable_parameters()
+        self.param_names = mods
+        self.param_combo.addItems([translate_parameter(mod) for mod in mods])
+
+    def set_property(self, prop, value):
+        if prop not in self.param_names:
+            return
+        index = self.param_names.index(prop)
+        self.param_combo.setCurrentIndex(index)
+        self.value.setText(value)
+
+    def load_modifiable_parameters(self):
+        params = load_parameters(self.alternative)
+        mods = []
+        for n in params:
+            if n not in ["attrib", "skill"]:
+                continue
+            mods.extend(params[n])
+        return mods
+
