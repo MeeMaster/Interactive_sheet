@@ -8,6 +8,8 @@ from sheet import Character
 from window import MainWindow
 from item_classes import Item, Weapon, Armor, ModifierItem
 # from layout_classes import ArmorView, ModifierItemView, WeaponView, AbilityView
+version = 0.9
+
 
 class Application:
 
@@ -24,7 +26,7 @@ class Application:
         self.main_widget = self.main_window.window_widget
 
     def new_sheet(self, robot=False):
-        self.sheet = Character(robot)
+        self.sheet = Character(robot, version)
         self.reset_window()
         self.load_sheet()
 
@@ -323,6 +325,10 @@ class Application:
 
 def sheet_compatibility_check(sheet):
     sheet_dict = sheet.__dict__
+    if "version" in sheet_dict:
+        if sheet_dict["version"] == version:
+            return sheet
+
     if "is_robot" not in sheet_dict:
         sheet_dict["is_robot"] = False
     reference_sheet = Character(sheet.is_robot)
@@ -331,14 +337,15 @@ def sheet_compatibility_check(sheet):
         if name in sheet_dict:
             continue
         sheet_dict[name] = reference_dict[name]
-    for name in sheet_dict:
-        if name in reference_dict:
-            continue
-    new_notes = {}
-    for item in ["notes", "knowledge", "contacts"]:
-        new_notes["notes_" + item] = sheet_dict[item]
-        del sheet_dict[item]
-    sheet_dict["notes"] = new_notes
+
+    if not isinstance(sheet_dict["notes"], dict):
+        new_notes = {}
+        for item in ["notes", "knowledge", "contacts"]:
+            new_notes["notes_" + item] = ""
+            if item in sheet_dict:
+                new_notes["notes_" + item] = sheet_dict[item]
+                del sheet_dict[item]
+        sheet_dict["notes"] = new_notes
 
     for attrib_dict in ["attributes", "attribute_advancements", "attribute_bonuses"]:
         new_dict = {}
@@ -352,7 +359,8 @@ def sheet_compatibility_check(sheet):
             new_dict[skill.replace("param_", "skill_")] = value
         sheet_dict[skill_dict] = new_dict
 
-    sheet_dict["character"] = {}
+    if "character" not in sheet_dict:
+        sheet_dict["character"] = {}
     for param in list(sheet_dict["parameters"].keys()):
         if param in ['param_name', 'param_race', 'param_planet', 'param_age', 'param_traits', 'param_profession']:
             sheet_dict["character"][param.replace("param_", "character_")] = sheet_dict["parameters"][param]
@@ -368,6 +376,7 @@ def sheet_compatibility_check(sheet):
             armor_names[armor_name.replace("param_", "")] = armor.armor[armor_name]
         armor.armor = armor_names
 
+    sheet.version = version
     return sheet
 
 

@@ -28,8 +28,9 @@ def read_parameters(alternative=False):
 
 class Character:
 
-    def __init__(self, is_robot=False):
+    def __init__(self, is_robot=False, version=None):
         self.is_robot = is_robot
+        self.version = version
         self.attributes = {}
         self.attribute_advancements = {}
         self.attribute_bonuses = {}
