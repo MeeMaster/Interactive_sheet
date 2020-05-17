@@ -18,8 +18,8 @@ class BasePopup(QWidget):
     popup_cancel = pyqtSignal(bool)
     popup_ok = pyqtSignal(str)
 
-    def __init__(self, parent=None):
-        QWidget.__init__(self, parent=parent)
+    def __init__(self):
+        QWidget.__init__(self)
         self._layout = QVBoxLayout()
         self.main_layout = QVBoxLayout()
         self._layout.addLayout(self.main_layout)
@@ -47,12 +47,11 @@ class BasePopup(QWidget):
 class AbilityPopup(BasePopup):
     popup_ok = pyqtSignal(str)
 
-    def __init__(self, character=None):
+    def __init__(self, kwargs):
         BasePopup.__init__(self)
-
         self.abilities = load_abilities()
         self.translate_abilities()
-        self.character = character
+        self.validator = kwargs["validator"]
         self.override_checkbox = QCheckBox("override_disabled")
         self.override_checkbox.stateChanged.connect(self.update_button)
         self.button_layout.insertWidget(0, self.override_checkbox)
@@ -102,20 +101,21 @@ class AbilityPopup(BasePopup):
         for row, ability in enumerate(ability_subset):
             row_enabled = True
             already_bought = False
+            ability_status = self.validator(self.abilities[ability])
+            if ability_status[0]:
+                already_bought = True
+                row_enabled = False
+            if sum(ability_status[1]) < 0:
+                row_enabled = False
             for column, parameter in enumerate(["name", "display", "requirements", "description", "tier"]):
                 value = self.abilities[ability][parameter]
-                if isinstance(value, dict):
-                    item = TableRequirementItem(value, self.character)
+                if column == 2:
+                    item = TableRequirementItem(value, ability_status[1])
                     table.setCellWidget(row, column, item)
-                    row_enabled *= item.fulfilled
                 elif column == 3:
                     item = TableDescriptionItem(value, 400)
                     table.setCellWidget(row, column, item)
                 else:
-                    if column == 0:
-                        if value in self.character.abilities:
-                            already_bought = True
-                            row_enabled = False
                     item = TableDescriptionItem(value, 150)
                     table.setCellWidget(row, column, item)
             if not row_enabled:
@@ -123,7 +123,7 @@ class AbilityPopup(BasePopup):
                     child = table.cellWidget(row, column)
                     p = child.palette()
                     p.setColor(child.backgroundRole(), QColor(0, 0, 0, 50)
-                    if not already_bought else QColor(0, 100, 0, 50))
+                               if not already_bought else QColor(0, 100, 0, 50))
                     child.setPalette(p)
                     child.setAutoFillBackground(True)
 
@@ -167,9 +167,8 @@ class AbilityPopup(BasePopup):
                 continue
             if counter == index:
                 self.selected_ability = item.cellWidget(self.current_row, 0).text()
-                requirement = item.cellWidget(self.current_row, 2)
-                self.ability_is_valid = requirement.fulfilled \
-                    if self.selected_ability not in self.character.abilities else False
+                ability_status = self.validator(self.abilities[self.selected_ability])
+                self.ability_is_valid = not ability_status[0] and sum(ability_status[1]) == 0
                 self.update_button()
             if counter != index:
                 item.clearSelection()
@@ -201,30 +200,15 @@ def get_true_table_size(table_widget: QTableWidget):
 
 class TableRequirementItem(QWidget):
 
-    def __init__(self, data, character):
+    def __init__(self, data, status):
         QWidget.__init__(self)
         layout = QVBoxLayout()
-        self.fulfilled = True
-        for n in data:
+        for index, n in enumerate(data):
             if data[n] is True:
                 label = QLabel(translate_ability(n)[0])
-                label.setStyleSheet("color: green")
-                if n not in character.abilities:
-                    self.fulfilled = False
-                    label.setStyleSheet("color: red")
             else:
                 label = QLabel("{} {}".format(translate_parameter(n), data[n]))
-                label.setStyleSheet("color: green")
-                value = 0
-                if n in character.skills:
-                    value = int(character.skills[n]) + int(character.skill_bonuses[n])
-                elif n in character.attributes:
-                    value = int(character.attributes[n]) + \
-                            int(character.attribute_advancements[n]) + \
-                            int(character.attribute_bonuses[n])
-                if int(data[n]) > value:
-                    self.fulfilled = False
-                    label.setStyleSheet("color: red")
+            label.setStyleSheet("color: green") if status[index] == 0 else label.setStyleSheet("color: red")
             layout.addWidget(label)
         self.setLayout(layout)
 
@@ -242,7 +226,7 @@ class TableDescriptionItem(QLabel):
 class WeaponPopup(BasePopup):
     popup_ok = pyqtSignal(Weapon)
 
-    def __init__(self, character=None):
+    def __init__(self, kwargs):
         BasePopup.__init__(self)
         self.archetype_weapons = load_weapons()
         self.current_weapon = None
@@ -337,7 +321,7 @@ class WeaponPopup(BasePopup):
 class ArmorPopup(BasePopup):
     popup_ok = pyqtSignal(Armor)
 
-    def __init__(self, character=None):
+    def __init__(self, kwargs):
         BasePopup.__init__(self)
         self.archetype_armor = load_armors()
         self.current_armor = None
@@ -402,19 +386,20 @@ class ArmorPopup(BasePopup):
 class ItemPopup(BasePopup):
     popup_ok = pyqtSignal(Item)
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         BasePopup.__init__(self)
         layout = QVBoxLayout()
         line1 = QHBoxLayout()
         line2 = QVBoxLayout()
         layout.addLayout(line1)
         layout.addLayout(line2)
-
+        self.edit = None
+        print(kwargs)
+        if "edit" in kwargs:
+            self.edit = kwargs["edit"]
         self.quantity = InputLine("quantity", dtype="int", label=translate_ui("ui_item_quantity"))
-        self.quantity.setText("0")
         self.name = InputLine("name", dtype="str", label=translate_ui("ui_item_name"))
         self.weight = InputLine("weight", dtype="float", label=translate_ui("ui_item_weight"))
-        self.weight.setText("0")
         line1.addWidget(self.quantity, 1)
         line1.addWidget(self.name, 4)
         line1.addWidget(self.weight, 1)
@@ -422,28 +407,39 @@ class ItemPopup(BasePopup):
         self.description = QTextEdit()
         line2.addWidget(label)
         line2.addWidget(self.description)
+        if self.edit is None:
+            self.item = Item()
+            self.quantity.setText("0")
+            self.weight.setText("0")
+        else:
+            self.item = self.edit
+            self.quantity.setEnabled(False)
+            self.name.setText(self.edit.name)
+            self.weight.setText(self.edit.weight)
+            self.description.setText(self.edit.description)
         self.main_layout.addLayout(layout)
         self.show()
 
     def ok_pressed(self):
         if not self.name.text().strip():
             return
-        item = Item()
-        item.quantity = int(self.quantity.text())
-        item.name = self.name.text()
-        item.weight = float(self.weight.text())
-        item.description = self.description.toPlainText()
-        self.popup_ok.emit(item)
-        self.close()
+        if self.edit is None:
+            self.item.total_quantity = int(self.quantity.text())
+        self.item.name = self.name.text()
+        self.item.weight = float(self.weight.text())
+        self.item.description = self.description.toPlainText()
+        self.popup_ok.emit(self.item)
+        # self.close()
 
 
 class ItemMovePopup(BasePopup):
-    popup_ok = pyqtSignal(str, int)
+    popup_ok = pyqtSignal(Item, int)
 
-    def __init__(self, item):
+    def __init__(self, item, equipped=False):
         BasePopup.__init__(self)
         layout = QVBoxLayout()
         self.item = item
+        self.equipped = equipped
         label_layout = QVBoxLayout()
         label = QLabel("{}: {}".format(translate_ui("ui_item_transfer_dialog"), item.name))
         label_layout.addWidget(label)
@@ -451,10 +447,11 @@ class ItemMovePopup(BasePopup):
 
         values_layout = QHBoxLayout()
         self.equipment_value = InputLine("max", dtype="int", enabled=False, label=translate_ui("ui_items_in_inventory"))
-        self.equipment_value.setText(item.quantity)
-        self.transfer_value = InputLine("transfer", dtype="int", min_val=0, max_val=item.quantity,
+        value = item.equipped_quantity if equipped else item.total_quantity - item.equipped_quantity
+        self.equipment_value.setText(value)
+        self.transfer_value = InputLine("transfer", dtype="int", min_val=0, max_val=value,
                                         label=translate_ui("ui_items_to_transfer"))
-        self.transfer_value.setText(item.quantity)
+        self.transfer_value.setText(value)
         values_layout.addWidget(self.transfer_value)
         values_layout.addWidget(self.equipment_value)
 
@@ -464,7 +461,7 @@ class ItemMovePopup(BasePopup):
 
     def ok_pressed(self):
         value = int(self.transfer_value.text())
-        self.popup_ok.emit(self.item.ID, value)
+        self.popup_ok.emit(self.item, -value if self.equipped else value)
         self.close()
 
 
@@ -496,15 +493,21 @@ class CreateCharacterPopup(BasePopup):
 class ModifierItemPopup(BasePopup):
     popup_ok = pyqtSignal(ModifierItem)
 
-    def __init__(self, character=None):
+    def __init__(self, kwargs):
+        print(kwargs)
         BasePopup.__init__(self)
-        self.archetype_items = load_modifiers(character.is_robot)
+        self.alternative = kwargs["alternative"]
+        self.edit = None
+        if "edit" in kwargs:
+            self.edit = kwargs["edit"]
+        self.archetype_items = load_modifiers(self.alternative)
         self.current_item = None
-        self.alternative = character.is_robot
         combo_layout = QHBoxLayout()
         self.archetype_combobox = LabelledComboBox(label=translate_ui("ui_item_archetype"))
+        self.archetype_combobox.setEnabled(self.edit is None)
         self.archetype_names = []
-        self.fill_archetype_combobox()
+        if self.edit is None:
+            self.fill_archetype_combobox()
         self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
         self.item_name = InputLine("item_name", Qt.AlignLeft, label=translate_ui("ui_item_name"))
         self.item_name.value_changed.connect(self.update_parameters)
@@ -530,17 +533,23 @@ class ModifierItemPopup(BasePopup):
         self.archetype_names.append("item_other")
         self.archetype_combobox.addItem(translate_item("item_other"))
 
-    def fill_parameters(self, index=None):
-        index = self.archetype_combobox.currentIndex()
-        item_name = self.archetype_names[index]
-        self.item_name.setText(translate_item(item_name))
-        item = ModifierItem()
+    def fill_parameters(self):
+        if self.edit is None:
+            index = self.archetype_combobox.currentIndex()
+            item_name = self.archetype_names[index]
+            self.item_name.setText(translate_item(item_name))
+            item = ModifierItem()
+            self.current_item = item
+            self.remove_property("all")
+            if item_name == "item_other":
+                return
+            item_line = self.archetype_items[item_name]._line
+            item.load_from_line(item_line)
+        else:
+            item = self.edit
+            self.item_name.setText(item.name)
         self.current_item = item
         self.remove_property("all")
-        if item_name == "item_other":
-            return
-        item_line = self.archetype_items[item_name]._line
-        item.load_from_line(item_line)
         for property in item.bonuses:
             self.add_property(property=property, value=item.bonuses[property])
 
@@ -572,6 +581,7 @@ class ModifierItemPopup(BasePopup):
             widget.deleteLater()
 
     def sum_up_item(self):
+        self.current_item.bonuses = {}
         for index in reversed(range(self.bonuses_layout.count())):
             child = self.bonuses_layout.itemAt(index)
             if child is None:
@@ -582,6 +592,7 @@ class ModifierItemPopup(BasePopup):
             if not isinstance(widget, ModifierView):
                 continue
             prop_name = widget.param_names[widget.param_combo.currentIndex()]
+            print(prop_name)
             if not widget.value.text():
                 continue
             value = int(widget.value.text())

@@ -26,14 +26,18 @@ class MainWindow(QMainWindow):
         # Add menu bar
         bar = self.menuBar()
         file = bar.addMenu(translate_ui("ui_menu_file"))
-        file.addAction(translate_ui("ui_new_sheet"))
-        open_file = file.addAction(translate_ui("ui_menu_load_sheet"))
+        new_sheet = QAction(translate_ui("ui_new_sheet"), self)
+        new_sheet.setShortcut("Ctrl+N")
+        file.addAction(new_sheet)
+        open_file = QAction(translate_ui("ui_menu_load_sheet"), self)
         open_file.setShortcut("Ctrl+O")
+        file.addAction(open_file)
         save = QAction(translate_ui("ui_menu_save_sheet"), self)
         save.setShortcut("Ctrl+S")
         file.addAction(save)
         file.addSeparator()
         calc = QAction(translate_ui("ui_menu_open_calculator"), self)
+        calc.setShortcut("Ctrl+K")
         file.addAction(calc)
         file.addSeparator()
         save_as = QAction(translate_ui("ui_menu_save_sheet_as"), self)
@@ -128,7 +132,7 @@ class MyWindowWidget(QWidget):
         self.actions_panel_layout = QVBoxLayout()
         self.main_layout.addLayout(self.actions_panel_layout, 1)
         self.actions_panel_layout.setSizeConstraint(3)
-        self.character = None
+        # self.character = None
         self.tabs = QTabWidget()
         self.main_sheet_layout.addWidget(self.tabs, 9)
 
@@ -147,7 +151,7 @@ class MyWindowWidget(QWidget):
         self.tabs.addTab(self.tab2, translate_ui("ui_equipment_tab"))
         self.tabs.addTab(self.tab3, translate_ui("ui_misc_tab"))
 
-    def fill_tab1(self, character_names, attribute_names, skill_names, armor_names, alternative=False):
+    def fill_tab1(self, character_names, attribute_names, skill_names, armor_names, validator, alternative=False):
         page1 = QVBoxLayout()
         self.tab1.setLayout(page1)
         # Parameters layout
@@ -181,9 +185,8 @@ class MyWindowWidget(QWidget):
         # Set Attributes
         self.fill_attributes(attributes_layout, attribute_names, alternative)
         # Set skills
-
         abilities = ScrollContainer(translate_ui("ui_abilities"), translate_ui("ui_ability_add_button"), AbilityView,
-                                    parent=self, popup=AbilityPopup)
+                                    validator=validator, alternative=alternative, popup=AbilityPopup)
         self.scrolls["abilities"] = abilities
         abilities_layout.addWidget(abilities)
 
@@ -348,16 +351,16 @@ class MyWindowWidget(QWidget):
         page2 = QVBoxLayout()
         # Equipment panel
         weapons_scroll = ScrollContainer(translate_ui("ui_weapons"), translate_ui("ui_weapons_add_button"), WeaponView,
-                                         popup=WeaponPopup, parent=self)
+                                         popup=WeaponPopup)
         self.scrolls["weapons"] = weapons_scroll
         page2.addWidget(weapons_scroll)
         armor_scroll = ScrollContainer(translate_ui("ui_armors"), translate_ui("ui_armor_add_button"), ArmorView,
-                                       popup=ArmorPopup, parent=self)
+                                       popup=ArmorPopup)
         self.scrolls["armor"] = armor_scroll
         page2.addWidget(armor_scroll)
         modifiers_and_money = QHBoxLayout()
         modifier_scroll = ScrollContainer(translate_ui("ui_modifiers"), translate_ui("ui_modifier_add_button"),
-                                          ModifierItemView, popup=ModifierItemPopup, parent=self)
+                                          ModifierItemView, popup=ModifierItemPopup, alternative=alternative)
         self.scrolls["modifiers"] = modifier_scroll
         modifiers_and_money.addWidget(modifier_scroll, 3)
         name = "notes_money"

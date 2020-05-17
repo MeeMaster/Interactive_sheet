@@ -20,7 +20,8 @@ class Item:
         self.tooltip = None
         self.description = None
         self.availability = None
-        self.quantity = None
+        self.total_quantity = 0
+        self.equipped_quantity = 0
         self.ID = random_word(16)
         self.arch_name = None
 

@@ -6,9 +6,11 @@ from PyQt5.QtWidgets import QApplication
 import pickle
 from sheet import Character
 from window import MainWindow
+from popups import ItemPopup
 from item_classes import Item, Weapon, Armor, ModifierItem
+
 # from layout_classes import ArmorView, ModifierItemView, WeaponView, AbilityView
-version = 0.9
+version = 0.91
 
 
 class Application:
@@ -34,7 +36,7 @@ class Application:
         self.reset_window()
         alt = self.sheet.is_robot
         self.main_widget.fill_tab1(self.sheet.character, self.sheet.attributes,
-                                   self.sheet.skills, self.sheet.armor_names, alternative=alt)
+                                   self.sheet.skills, self.sheet.armor_names, self.ability_validator, alternative=alt)
         self.main_widget.fill_tab2()
         self.main_widget.fill_tab3([a for a in self.sheet.notes if a != "notes_money"])
 
@@ -63,9 +65,13 @@ class Application:
             self.main_widget.scrolls[scroll].item_equipped.connect(self.equip_item)
             self.main_widget.scrolls[scroll].item_created.connect(self.create_item)
             self.main_widget.scrolls[scroll].item_removed.connect(self.remove_item)
-        self.main_widget.equipment_tables.item_create.connect(self.add_item)
+        self.main_widget.equipment_tables.set_items(self.sheet.items)
+        self.main_widget.equipment_tables.item_create.connect(self.create_item)
         self.main_widget.equipment_tables.item_qty_changed.connect(self.change_item_quantity)
         self.main_widget.equipment_tables.move_item.connect(self.move_item)
+        self.main_widget.equipment_tables.delete_item.connect(self.remove_item)
+        # self.main_widget.equipment_tables.edit_item.connect(self.edit_item)
+        # self.main_widget.equipment_tables.delete_item.connect(self.delete_item)
 
         self.update_form()
 
@@ -193,6 +199,10 @@ class Application:
         elif isinstance(item, ModifierItem):
             self.sheet.add_modifier_item(item)
             self.update_modifiers()
+        elif isinstance(item, Item):
+            self.sheet.add_item(item)
+            self.update_items()
+
 
     def remove_item(self, item):
         # Ability
@@ -214,9 +224,16 @@ class Application:
             self.update_modifiers()
             self.update_form()
             pass
-        # Item
-        # elif isinstance(item, ItemView):
-        #     pass
+        elif isinstance(item, Item):
+            self.sheet.remove_item(item)
+            self.update_items()
+
+    def delete_item(self, equipped, _id):
+        source = self.sheet.items_stashed if not equipped else self.sheet.items_equipped
+        if _id not in source:
+            return
+        del source[_id]
+        self.main_widget.equipment_tables.update_item_tables()
 
     # Ability Handling
     def update_abilities(self):
@@ -263,39 +280,38 @@ class Application:
         self.main_widget.notes_dict[name].set_text(str(value))
 
     def update_items(self):
-        self.main_widget.equipment_tables.set_item_tables(self.sheet.items_stashed, self.sheet.items_equipped)
+        self.main_widget.equipment_tables.update_item_tables()
 
-    def add_item(self, item):
-        self.sheet.add_item(item)
+    def change_item_quantity(self, equipped, name, value, change):
+        item = self.sheet.find_item_with_name(name)
+        if item is None:
+            print("No such item!")
+        item.total_quantity += value
+        if equipped:
+            item.equipped_quantity += value
         self.update_items()
 
-    def change_item_quantity(self, equipped, _id, value, change):
-        target_dict = self.sheet.items_equipped if equipped else self.sheet.items_stashed
-        if _id not in target_dict:
-            return
-        if change:
-            target_dict[_id].quantity += value
-        else:
-            target_dict[_id].quantity = value
-        if target_dict[_id].quantity < 0:
-            target_dict[_id].quantity = 0
-
-    def move_item(self, _id, value, equip):
-        source = self.sheet.items_stashed if equip else self.sheet.items_equipped
-        target = self.sheet.items_equipped if equip else self.sheet.items_stashed
-        if _id not in source:
-            print("Error while transferring")
-            return
-        source[_id].quantity -= value
-        if _id not in target:
-            item = Item()
-            item.__dict__ = dict(source[_id].__dict__)
-            item.quantity = 0
-            target[_id] = item
-        target[_id].quantity += value
-        if source[_id].quantity <= 0:
-            del source[_id]
+    def move_item(self, item, value):
+        self.sheet.move_item(item, value)
         self.main_widget.equipment_tables.update_item_tables()
+
+    def ability_validator(self, ability):
+        already_bought = self.sheet.has_ability(ability["name"])
+        requires = []
+        requirements = ability["requirements"]
+        for requirement in requirements:
+            if "ability_" in requirement:
+                requires.append(int(self.sheet.has_ability(requirement)) - 1)
+                continue
+            if "skill_" in requirement:
+                ski_val = int(self.sheet.calculate_skill(requirement, full=False)[0])
+                requires.append(int(ski_val >= ability["requirements"][requirement]) -1)
+                continue
+            if "attrib_" in requirement:
+                att_val = self.sheet.calculate_attribute(requirement, full=False)
+                requires.append(int(att_val >= ability["requirements"][requirement]) - 1)
+                continue
+        return already_bought, requires
 
     def update_form(self):
         self.main_widget.character = self.sheet

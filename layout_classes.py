@@ -5,12 +5,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QValidator, QColor, QDoubleValidator
 from parameters import translate_ability, translate_ui, translate_parameter
 from parameters import load_parameters
+from item_classes import Item
 
 param_dict = load_parameters()
 armor_names = param_dict["armor"]
 
-
-from item_classes import Item
 
 line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-width: 0px;\
  alternate-background-color: rgba(200,200,200,50); font: bold 10px; margin: 0px;}"
@@ -21,9 +20,9 @@ class ScrollContainer(QWidget):
     item_equipped = pyqtSignal(object, bool)
     item_removed = pyqtSignal(object)
 
-    def __init__(self, name, button_text, content_widget, parent=None, popup=None, **kwargs):
+    def __init__(self, name, button_text, content_widget, popup=None, **kwargs):
         QWidget.__init__(self)
-        self.parent = parent
+        # self.parent = parent
         self.kwargs = kwargs
         self.layout = QVBoxLayout()
         self.label = QLabel(name)
@@ -33,7 +32,7 @@ class ScrollContainer(QWidget):
         self.scroll.setWidgetResizable(True)
         self.layout.addWidget(self.scroll)
         self.button = QPushButton(button_text)
-        self.button.clicked.connect(self.open_popup)
+        self.button.clicked.connect(lambda: self.open_popup())
         self.layout.addWidget(self.button)
         self.setLayout(self.layout)
         self.popup = popup
@@ -46,9 +45,13 @@ class ScrollContainer(QWidget):
         self.scroll.setWidget(self.scroll_widget)
         self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
-    def open_popup(self):
+    def open_popup(self, edit=None):
         if self.popup is not None:
-            self.current_popup = self.popup(self.parent.character)
+            # print(self.kwargs)
+            print(self.kwargs)
+            self.kwargs["edit"] = edit
+            print(self.kwargs)
+            self.current_popup = self.popup(self.kwargs)
             self.current_popup.popup_ok.connect(self.ok_clicked)
             self.current_popup.popup_cancel.connect(self.close_popup)
 
@@ -59,6 +62,9 @@ class ScrollContainer(QWidget):
     def close_popup(self):
         self.current_popup.close()
         self.current_popup = None
+
+    def edit_item(self, item):
+        self.open_popup(edit=item)
 
     def get_children(self):
         children = []
@@ -99,6 +105,7 @@ class ScrollContainer(QWidget):
             return
         widget.delete.connect(lambda x: self.item_removed.emit(x))
         widget.item_equipped.connect(lambda x, y: self.item_equipped.emit(x, y))
+        widget.edit_item.connect(self.edit_item)
         self.scroll_layout.insertWidget(-2, widget)
 
     def remove_widget(self, name):
@@ -334,6 +341,7 @@ class NameView(QWidget):
 class View(QWidget):
     delete = pyqtSignal(object)
     item_equipped = pyqtSignal(object, bool)
+    edit_item = pyqtSignal(object)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -344,13 +352,13 @@ class View(QWidget):
         self.customContextMenuRequested.connect(self.show_header_menu)
         self.item = None
 
-    def add_header_option(self, option, target):
-        self.menu.addAction(QAction(option, self))
-        self.menu_actions[option] = target
-
     def show_header_menu(self, point):
         self.menu.triggered[QAction].connect(self.resolve_action)
         self.menu.exec_(self.mapToGlobal(point))
+
+    def add_header_option(self, option, target):
+        self.menu.addAction(QAction(option, self))
+        self.menu_actions[option] = target
 
     def resolve_action(self, action):
         if action.text() not in self.menu_actions:
@@ -700,17 +708,22 @@ class LabelledTextEdit(QWidget):
 class EquipmentWidget(QWidget):
     item_qty_changed = pyqtSignal(bool, str, int, bool)
     item_create = pyqtSignal(Item)
-    move_item = pyqtSignal(str, int, bool)
+    move_item = pyqtSignal(object, int)
+    delete_item = pyqtSignal(bool, str)
+    edit_item = pyqtSignal(str)
 
     def __init__(self, popup=None, transfer_popup=None):
         QWidget.__init__(self)
         layout = QHBoxLayout()
         self.popup = popup
+        self.items = None
         self.current_popup = None
         self.transfer_popup = transfer_popup
         self.equipped_table = ItemTable(equipped=True)
         self.equipped_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.equipped_table.item_qty_changed.connect(self.signal_forward)
+        self.equipped_table.delete_item.connect(self.signal_delete)
+        self.equipped_table.edit_item.connect(self.item_edit)
         equipped_table_layout = QVBoxLayout()
         label = QLabel(translate_ui("ui_equipped_items"))
         label.setStyleSheet("font: bold 12px")
@@ -720,6 +733,8 @@ class EquipmentWidget(QWidget):
         self.stash_table = ItemTable(equipped=False)
         self.stash_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.stash_table.item_qty_changed.connect(self.signal_forward)
+        self.stash_table.delete_item.connect(self.signal_delete)
+        self.stash_table.edit_item.connect(self.item_edit)
         stash_table_layout = QVBoxLayout()
         label = QLabel(translate_ui("ui_stashed_items"))
         label.setStyleSheet("font: bold 12px")
@@ -746,10 +761,13 @@ class EquipmentWidget(QWidget):
         layout.addLayout(stash_table_layout, 10)
         self.setLayout(layout)
 
-    def open_popup(self):
+    def set_items(self, items):
+        self.items = items
+
+    def open_popup(self, **kwargs):
         if self.current_popup is not None:
             return
-        self.current_popup = self.popup()
+        self.current_popup = self.popup(**kwargs)
         self.current_popup.popup_ok.connect(self.add_item)
         self.current_popup.popup_cancel.connect(self.close_popup)
 
@@ -761,35 +779,58 @@ class EquipmentWidget(QWidget):
         if current_row == -1:
             return
         current_item_id = source_table.table.cellWidget(current_row, 0).text()
-        current_item = source_table.items[current_item_id]
-        self.current_popup = self.transfer_popup(current_item)
-        self.current_popup.popup_ok.connect(lambda _id, value: self.move_item_func(_id, value, equip))
+        found = False
+        for item in self.items:
+            if item.name == current_item_id:
+                found = True
+                break
+        if not found:
+            return
+        # current_item = source_table.items[current_item_id]
+        self.current_popup = self.transfer_popup(item, not equip)
+        self.current_popup.popup_ok.connect(self.move_item_func)
+        self.current_popup.popup_cancel.connect(self.close_popup)
+
+    def item_edit(self, item_id):
+        found = False
+        for item in self.items:
+            if item.name == item_id:
+                found = True
+                break
+        if not found:
+            return
+        self.open_popup(edit=item)
+        self.current_popup.popup_ok.connect(self.add_item)
         self.current_popup.popup_cancel.connect(self.close_popup)
 
     def add_item(self, item):
         self.item_create.emit(item)
         self.close_popup()
 
-    def move_item_func(self, _id, value, equip):
+    def move_item_func(self, item, value):
         if value:
-            self.move_item.emit(_id, value, equip)
+            self.move_item.emit(item, value)
         self.close_popup()
 
     def close_popup(self):
+        if self.current_popup is None:
+            return  # TODO WTF fix that?
         self.current_popup.close()
         self.current_popup = None
 
-    def set_item_tables(self, stashed_items, equipped_items):
-        self.stash_table.items = stashed_items
-        self.equipped_table.items = equipped_items
+    def set_items(self, items):
+        self.items = items
         self.update_item_tables()
+
+    def signal_delete(self, *args):
+        self.delete_item.emit(*args)
 
     def signal_forward(self, *args):
         self.item_qty_changed.emit(*args)
 
-    def update_item_tables(self):
-        self.equipped_table.fill_table()
-        self.stash_table.fill_table()
+    def update_item_tables(self):  # TODO change table data handling; make tables not hold data, just display
+        self.equipped_table.update_values(self.items)
+        self.stash_table.update_values(self.items)
 
 
 class ItemCounter(QWidget):
@@ -841,20 +882,52 @@ class ItemCounter(QWidget):
 
 class ItemTable(QWidget):
     item_qty_changed = pyqtSignal(bool, str, int, bool)
+    delete_item = pyqtSignal(bool, str)
+    edit_item = pyqtSignal(str)
 
-    def __init__(self, equipped=True, current_items={}):
+    def __init__(self, equipped=True):
         QWidget.__init__(self)
         self.equipped = equipped
-        self.table = None
-        self.items = current_items
+        self.table = QTableWidget(self)
         self.get_table()
+        self.menu = QMenu(self)
+        self.menu_actions = {"Usun": self.remove_item}
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.menu.addAction(QAction("Usun", self))
+        self.customContextMenuRequested.connect(self.show_header_menu)
+        self.item = None
+        self.add_header_option("Edit", self.item_edit)
+
+    def show_header_menu(self, point):
+        if not self.table.selectedIndexes():
+            return
+
+        self.menu.triggered[QAction].connect(self.resolve_action)
+        self.menu.exec_(self.mapToGlobal(point))
+
+    def add_header_option(self, option, target):
+        self.menu.addAction(QAction(option, self))
+        self.menu_actions[option] = target
+
+    def resolve_action(self, action):
+        if action.text() not in self.menu_actions:
+            return
+        self.menu_actions[action.text()]()
+
+    def item_edit(self):
+        current_item_id = self.table.cellWidget(self.table.currentRow(), 0).text()
+        self.edit_item.emit(current_item_id)  # TODO fix to item id later
+
+    def remove_item(self):
+        current_item_id = self.table.cellWidget(self.table.currentRow(), 0).text()
+        self.delete_item.emit(self.equipped, current_item_id)
 
     def get_table(self):
-        self.table = QTableWidget(self)
         self.table.setColumnCount(5)
         self.table.setFixedWidth(300)
         self.table.setSelectionBehavior(1)
         self.table.setHorizontalScrollBarPolicy(1)
+        # self.table.currentCellChanged.connect(lambda w, x, y, z: print(w, x, y, z, self.table.currentIndex()))
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.table.setColumnHidden(0, True)
         self.table.verticalHeader().setVisible(False)
@@ -863,23 +936,27 @@ class ItemTable(QWidget):
                                               translate_ui("ui_item_weight"),
                                               translate_ui("ui_item_total_weight")])
 
-    def fill_table(self):
-        self.table.setRowCount(len(self.items))
-        for index, item in enumerate(self.items):
-            item_class = self.items[item]
-            self.table.setCellWidget(index, 0, QLabel(item))
-            counter_widget = ItemCounter(item)
-            counter_widget.set_value(str(item_class.quantity))
+    def fill_table(self, data):  # TODO fix this shit
+        self.table.setRowCount(len(data))
+        for index, item in enumerate(data):
+            value = item.equipped_quantity if self.equipped else item.total_quantity - item.equipped_quantity
+            print(value, self.equipped)
+            if value == 0:
+                continue
+            # item_class = self.items[item]
+            self.table.setCellWidget(index, 0, QLabel(item.name))
+            counter_widget = ItemCounter(item.name)
+            counter_widget.set_value(str(value))
             counter_widget.value_changed.connect(self.item_changed)
             self.table.setCellWidget(index, 1, counter_widget)
-            name_label = QLabel(item_class.name)
+            name_label = QLabel(item.name)
             name_label.setAlignment(Qt.AlignCenter)
-            name_label.setToolTip(item_class.description)
+            name_label.setToolTip(item.description)
             self.table.setCellWidget(index, 2, name_label)
-            weight_label = QLabel(str(item_class.weight))
+            weight_label = QLabel(str(item.weight))
             weight_label.setAlignment(Qt.AlignCenter)
             self.table.setCellWidget(index, 3, weight_label)
-            total_weight_label = QLabel("{:.1f}".format(item_class.weight * item_class.quantity))
+            total_weight_label = QLabel("{:.1f}".format(item.weight * value))
             total_weight_label.setAlignment(Qt.AlignCenter)
             self.table.setCellWidget(index, 4, total_weight_label)
         for n in range(5):
@@ -888,20 +965,18 @@ class ItemTable(QWidget):
         self.table.resizeRowsToContents()
         self.table.show()
 
-    def item_changed(self, _id, value, change=True):
-        self.item_qty_changed.emit(self.equipped, _id, value, change)
-        self.update_values(_id)
+    def item_changed(self, item, value, change=True):
 
-    def update_values(self, item_id):
-        for row in range(self.table.rowCount()):
-            id_cell = self.table.cellWidget(row, 0)
-            if id_cell.text() != item_id:
-                continue
-            item = self.items[item_id]
-            self.table.cellWidget(row, 1).set_value(item.quantity)
-            self.table.cellWidget(row, 2).setText(item.name)
-            self.table.cellWidget(row, 3).setText(str(item.weight))
-            self.table.cellWidget(row, 4).setText(str(item.weight * item.quantity))
+        self.item_qty_changed.emit(self.equipped, item, value, change)
+        # self.update_values(_id)
+
+    def clear(self):
+        print("here")
+        self.table.setRowCount(0)
+
+    def update_values(self, data):
+        self.clear()
+        self.fill_table(data)
 
 
 class ModifierItemView(View):
@@ -931,7 +1006,11 @@ class ModifierItemView(View):
         for bonus in self.item.bonuses:
             view = PropertyView(bonus, self.item.bonuses[bonus])
             self.values_layout.addWidget(view)
+        self.add_header_option("Edit", self.edit)
         self.setLayout(layout)
+
+    def edit(self):
+        self.edit_item.emit(self.item)
 
     def update_parameters(self, parameter, value):
         if parameter == "equipped":

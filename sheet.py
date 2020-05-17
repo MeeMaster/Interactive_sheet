@@ -64,8 +64,7 @@ class Character:
         self.armor = set()
         self.weapons = set()
         self.modifier_items = set()
-        self.items_equipped = {}
-        self.items_stashed = {}
+        self.items = set()
         self.notes = {}
         for note in self.notes_names:
             self.notes[note] = ""
@@ -75,27 +74,30 @@ class Character:
         self.free_XP = 0
         self.spent_XP = 0
 
-    def calculate_skill(self, skill):
+    def calculate_skill(self, skill, full=True):
         ski_value = 0
         ski_value += self.skills[skill]
         ski_value += self.skill_bonuses[skill]
         ski_value += self.skill_bonuses2[skill]
-        attributes = self.attribute_skill_dict[skill]
-        modifier = self.read_modifier_items(skill)
-        ski_value += modifier
-        values = []
-        for att in attributes:
-            values.append(str(self.calculate_attribute(att) + ski_value))
-        final_value = "/".join(values)
+        if full:
+            attributes = self.attribute_skill_dict[skill]
+            modifier = self.read_modifier_items(skill)
+            ski_value += modifier
+            values = []
+            for att in attributes:
+                values.append(str(self.calculate_attribute(att) + ski_value))
+            final_value = "/".join(values)
+        else:
+            final_value = [str(ski_value)]
         return final_value
 
-    def calculate_attribute(self, attribute):
+    def calculate_attribute(self, attribute, full=True):
         att_value = 0
         att_value += self.attributes[attribute]
         att_value += self.attribute_advancements[attribute]
         att_value += self.attribute_bonuses[attribute]
-        modifier = self.read_modifier_items(attribute)
-        att_value += modifier
+        if full:
+            att_value += self.read_modifier_items(attribute)
         return att_value
 
     def calculate_armor(self):
@@ -153,6 +155,18 @@ class Character:
         if found:
             self.armor.remove(armor)
         return found
+
+    def find_item_with_id(self, _id):
+        for item in self.items:
+            if _id == item.ID:
+                return item
+        return
+
+    def find_item_with_name(self, name):
+        for item in self.items:
+            if name == item.name:
+                return item
+        return
 
     def change_armor(self, slot, armor_dict):
         self.armor[slot] = armor_dict
@@ -241,9 +255,27 @@ class Character:
                 self.equip_modifier_item(other_item, False)
 
     def add_item(self, item):
-        if item.ID in self.items_stashed:
+        if item in self.items:
             return
-        self.items_stashed[item.ID] = item
+        self.items.add(item)
+
+    def remove_item(self, _item):
+        found = False
+        for item in self.items:
+            if _item.ID == item.ID:
+                found = True
+                break
+        if found:
+            self.items.remove(item)
+
+    def move_item(self, item, value):
+        if item not in self.items:
+            return
+        item.equipped_quantity += value
+        if item.equipped_quantity > item.total_quantity:
+            item.equipped_quantity = item.total_quantity
+        if item.equipped_quantity < 0:
+            item.equipped_quantity = 0
 
     def update_parameters(self):
         self.update_speed()
@@ -267,4 +299,7 @@ class Character:
     def update_reputation(self):
         self.parameters["param_reputation_total"] = int(self.parameters["param_reputation_good"]) + \
                                                     int(self.parameters["param_reputation_bad"])
+
+    def has_ability(self, ability):
+        return ability in self.abilities
 
