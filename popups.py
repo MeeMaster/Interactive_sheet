@@ -33,6 +33,7 @@ class BasePopup(QWidget):
         self.button_layout.addWidget(self.ok_button)
         self.button_layout.addWidget(self.cancel_button)
         self.setLayout(self._layout)
+        self.setWindowModality(Qt.ApplicationModal)
         # self.show()
 
     def cancel_pressed(self):

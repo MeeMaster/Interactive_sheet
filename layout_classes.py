@@ -19,6 +19,7 @@ class ScrollContainer(QWidget):
     item_created = pyqtSignal(object)
     item_equipped = pyqtSignal(object, bool)
     item_removed = pyqtSignal(object)
+    item_edited = pyqtSignal()
 
     def __init__(self, name, button_text, content_widget, popup=None, **kwargs):
         QWidget.__init__(self)
@@ -52,7 +53,10 @@ class ScrollContainer(QWidget):
             self.kwargs["edit"] = edit
             print(self.kwargs)
             self.current_popup = self.popup(self.kwargs)
-            self.current_popup.popup_ok.connect(self.ok_clicked)
+            if edit is None:
+                self.current_popup.popup_ok.connect(self.ok_clicked)
+            else:
+                self.current_popup.popup_ok.connect(lambda: self.item_edited.emit())
             self.current_popup.popup_cancel.connect(self.close_popup)
 
     def ok_clicked(self, obj):
@@ -709,7 +713,7 @@ class EquipmentWidget(QWidget):
     item_qty_changed = pyqtSignal(bool, str, int, bool)
     item_create = pyqtSignal(Item)
     move_item = pyqtSignal(object, int)
-    delete_item = pyqtSignal(bool, str)
+    delete_item = pyqtSignal(bool, Item)
     edit_item = pyqtSignal(str)
 
     def __init__(self, popup=None, transfer_popup=None):
@@ -822,8 +826,16 @@ class EquipmentWidget(QWidget):
         self.items = items
         self.update_item_tables()
 
-    def signal_delete(self, *args):
-        self.delete_item.emit(*args)
+    def signal_delete(self, equipped, item_name):
+        found = False
+        for item in self.items:
+            if item.name == item_name:
+                found = True
+                break
+        if not found:
+            return
+        print("here")
+        self.delete_item.emit(equipped, item)
 
     def signal_forward(self, *args):
         self.item_qty_changed.emit(*args)
@@ -940,8 +952,10 @@ class ItemTable(QWidget):
         self.table.setRowCount(len(data))
         for index, item in enumerate(data):
             value = item.equipped_quantity if self.equipped else item.total_quantity - item.equipped_quantity
-            print(value, self.equipped)
-            if value == 0:
+
+            if self.equipped and value == 0:
+                continue
+            if not self.equipped and value == 0 and item.total_quantity != 0:
                 continue
             # item_class = self.items[item]
             self.table.setCellWidget(index, 0, QLabel(item.name))
@@ -971,7 +985,6 @@ class ItemTable(QWidget):
         # self.update_values(_id)
 
     def clear(self):
-        print("here")
         self.table.setRowCount(0)
 
     def update_values(self, data):

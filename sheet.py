@@ -77,11 +77,10 @@ class Character:
     def calculate_skill(self, skill, full=True):
         ski_value = 0
         ski_value += self.skills[skill]
-        ski_value += self.skill_bonuses[skill]
-        ski_value += self.skill_bonuses2[skill]
+        ski_bonus1, ski_bonus2 = self.get_skill_bonuses(skill)
         if full:
             attributes = self.attribute_skill_dict[skill]
-            modifier = self.read_modifier_items(skill)
+            modifier = self.read_modifier_items(skill, "modifier")
             ski_value += modifier
             values = []
             for att in attributes:
@@ -90,6 +89,13 @@ class Character:
         else:
             final_value = [str(ski_value)]
         return final_value
+
+    def get_skill_bonuses(self, skill):
+        ski_value1 = self.skill_bonuses[skill]
+        ski_value2 = self.skill_bonuses2[skill]
+        ski_value1 += self.read_modifier_items(skill, "bonus")
+        ski_value2 += self.read_modifier_items(skill, "bonus2")
+        return ski_value1, ski_value2
 
     def calculate_attribute(self, attribute, full=True):
         att_value = 0
@@ -198,10 +204,12 @@ class Character:
             self.attribute_advancements[name] = value
         self.update_parameters()
 
-    def read_modifier_items(self, param):
+    def read_modifier_items(self, param, mod_type="modifier"):
         out = 0
         for item in self.modifier_items:
             if not item.equipped:
+                continue
+            if item.bonus_type != mod_type:
                 continue
             if param not in item.bonuses:
                 continue
@@ -231,16 +239,16 @@ class Character:
         if item.bonus_type == "modifier":
             return
         # Change bonuses when equipping/unequipping
-        modifier = 1 if equip else -1
-        for bonus in item.bonuses:
-            if bonus.startswith("attrib_"):
-                if item.bonus_type == "bonus":
-                    self.attribute_bonuses[bonus] += modifier * item.bonuses[bonus]
-            if bonus.startswith("skill_"):
-                if item.bonus_type == "bonus":
-                    self.skill_bonuses[bonus] += modifier * item.bonuses[bonus]
-                if item.bonus_type == "bonus2":
-                    self.skill_bonuses2[bonus] += modifier * item.bonuses[bonus]
+        # modifier = 1 if equip else -1
+        # for bonus in item.bonuses:
+        #     if bonus.startswith("attrib_"):
+        #         if item.bonus_type == "bonus":
+        #             self.attribute_bonuses[bonus] += modifier * item.bonuses[bonus]
+        #     if bonus.startswith("skill_"):
+        #         if item.bonus_type == "bonus":
+        #             self.skill_bonuses[bonus] += modifier * item.bonuses[bonus]
+        #         if item.bonus_type == "bonus2":
+        #             self.skill_bonuses2[bonus] += modifier * item.bonuses[bonus]
         #  Unequip items that share bonuses
         if not equip:
             return
@@ -259,13 +267,20 @@ class Character:
             return
         self.items.add(item)
 
-    def remove_item(self, _item):
+    def remove_item(self, equipped, _item):
         found = False
         for item in self.items:
             if _item.ID == item.ID:
                 found = True
                 break
-        if found:
+        if not found:
+            return
+        if equipped:
+            item.total_quantity -= item.equipped_quantity
+            item.equipped_quantity = 0
+        else:
+            item.total_quantity -= item.total_quantity - item.equipped_quantity
+        if item.total_quantity == 0:
             self.items.remove(item)
 
     def move_item(self, item, value):

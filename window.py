@@ -116,6 +116,8 @@ class MainWindow(QMainWindow):
         self.popup = None
 
 
+
+
 class MyWindowWidget(QWidget):
     # parameter_changed = pyqtSignal(str, str, int)
 

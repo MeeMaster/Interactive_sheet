@@ -37,7 +37,7 @@ class Application:
         alt = self.sheet.is_robot
         self.main_widget.fill_tab1(self.sheet.character, self.sheet.attributes,
                                    self.sheet.skills, self.sheet.armor_names, self.ability_validator, alternative=alt)
-        self.main_widget.fill_tab2()
+        self.main_widget.fill_tab2(self.sheet.is_robot)
         self.main_widget.fill_tab3([a for a in self.sheet.notes if a != "notes_money"])
 
         # Register attributes
@@ -65,11 +65,12 @@ class Application:
             self.main_widget.scrolls[scroll].item_equipped.connect(self.equip_item)
             self.main_widget.scrolls[scroll].item_created.connect(self.create_item)
             self.main_widget.scrolls[scroll].item_removed.connect(self.remove_item)
+            self.main_widget.scrolls[scroll].item_edited.connect(self.update_form)
         self.main_widget.equipment_tables.set_items(self.sheet.items)
         self.main_widget.equipment_tables.item_create.connect(self.create_item)
         self.main_widget.equipment_tables.item_qty_changed.connect(self.change_item_quantity)
         self.main_widget.equipment_tables.move_item.connect(self.move_item)
-        self.main_widget.equipment_tables.delete_item.connect(self.remove_item)
+        self.main_widget.equipment_tables.delete_item.connect(self.delete_item)
         # self.main_widget.equipment_tables.edit_item.connect(self.edit_item)
         # self.main_widget.equipment_tables.delete_item.connect(self.delete_item)
 
@@ -117,9 +118,9 @@ class Application:
         val = self.sheet.skills[skill]
         self.main_widget.skills_dict[skill].set_advancement(val)
         self.main_widget.skills_dict[skill].set_enabled(True)
-        bonus_val = self.sheet.skill_bonuses[skill]
-        bonus_val2 = self.sheet.skill_bonuses2[skill]
-        self.main_widget.skills_dict[skill].set_bonus(bonus_val, bonus_val2)
+        bonus_val = self.sheet.get_skill_bonuses(skill)
+        # bonus_val2 = self.sheet.skill_bonuses2[skill]
+        self.main_widget.skills_dict[skill].set_bonus(bonus_val[0], bonus_val[1])
         total_val = self.sheet.calculate_skill(skill)
         if self.sheet.is_robot:
             if bonus_val == 0 and bonus_val2 == 0:
@@ -203,8 +204,8 @@ class Application:
             self.sheet.add_item(item)
             self.update_items()
 
-
     def remove_item(self, item):
+        print(item)
         # Ability
         if isinstance(item, str):
             self.remove_ability(item)
@@ -224,16 +225,13 @@ class Application:
             self.update_modifiers()
             self.update_form()
             pass
-        elif isinstance(item, Item):
-            self.sheet.remove_item(item)
-            self.update_items()
+        # elif isinstance(item, tuple) and isinstance(item[1], Item):
+        #     self.sheet.remove_item(item[0], item[1])
+        #     self.update_items()
 
-    def delete_item(self, equipped, _id):
-        source = self.sheet.items_stashed if not equipped else self.sheet.items_equipped
-        if _id not in source:
-            return
-        del source[_id]
-        self.main_widget.equipment_tables.update_item_tables()
+    def delete_item(self, equipped, item):
+        self.sheet.remove_item(equipped, item)
+        self.update_items()
 
     # Ability Handling
     def update_abilities(self):
@@ -287,8 +285,12 @@ class Application:
         if item is None:
             print("No such item!")
         item.total_quantity += value
+        if item.total_quantity < 0:
+            item.total_quantity = 0
         if equipped:
             item.equipped_quantity += value
+        if item.equipped_quantity < 0:
+            item.equipped_quantity = 0
         self.update_items()
 
     def move_item(self, item, value):
@@ -315,6 +317,8 @@ class Application:
 
     def update_form(self):
         self.main_widget.character = self.sheet
+        # Modifiers
+        self.update_modifiers()
         # Attributes
         self.update_attributes()
         # Skills
@@ -325,8 +329,6 @@ class Application:
         self.update_abilities()
         # Weapons
         self.update_weapons()
-        # Modifiers
-        self.update_modifiers()
         # Items
         self.update_items()
         # Armor
@@ -337,6 +339,8 @@ class Application:
         self.update_character_fields()
         # Notes
         self.update_notes()
+        for item in self.sheet.modifier_items:
+            print(item.name, item.bonuses)
 
 
 def sheet_compatibility_check(sheet):
