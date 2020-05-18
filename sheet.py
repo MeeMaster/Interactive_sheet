@@ -78,6 +78,10 @@ class Character:
         ski_value = 0
         ski_value += self.skills[skill]
         ski_bonus1, ski_bonus2 = self.get_skill_bonuses(skill)
+        if self.is_robot and ski_bonus1 == 0 and ski_bonus2 == 0:
+            return 0
+        ski_value += ski_bonus1
+        ski_value += ski_bonus2
         if full:
             attributes = self.attribute_skill_dict[skill]
             modifier = self.read_modifier_items(skill, "modifier")
@@ -104,6 +108,7 @@ class Character:
         att_value += self.attribute_bonuses[attribute]
         if full:
             att_value += self.read_modifier_items(attribute)
+        print(full, att_value)
         return att_value
 
     def calculate_armor(self):
@@ -231,6 +236,19 @@ class Character:
             self.equip_modifier_item(modifier, False)
             self.modifier_items.remove(modifier)
         return found
+
+    def calculate_current_encumbrance(self):
+        curr_weight = 0
+        for item in self.items:
+            curr_weight += item.equipped_quantity * item.weight
+        for weapon in self.weapons:
+            if weapon.equipped:
+                curr_weight += weapon.weight
+        for armor in self.armor:
+            if armor.equipped:
+                curr_weight += armor.weight
+        return curr_weight
+        # for modifi
 
     def equip_modifier_item(self, item, equip):
         if item.equipped == equip:

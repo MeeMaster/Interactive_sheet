@@ -25,8 +25,8 @@ weapon_dagger;common;40;5;damage_p;0;;;1;cutting,balanced;;param_melee_armed;1;;
 weapon_vibroblade;common;250;5;damage_p;2;;;1;cutting,balanced,energy_resistant;;param_melee_armed;1;;param_melee
 weapon_sword;uncommon;150;8;damage_p;0;;;1.5;cutting;;param_melee_armed;1.5;;param_melee
 weapon_vibrosword;uncommon;450;8;damage_p;2;;;1.5;cutting,energy_resistant;;param_melee_armed;1.5;;param_melee
-weapon_lightsaber;-;-;20;damage_e;10;;;1.5;scorching,energy_resistant;;param_melee_armed;1.5;;param_melee
-weapon_offhand_lightsaber;-;-;20;damage_e;10;;;1;scorching,energy_resistant;;param_melee_armed;1;;param_melee
+weapon_lightsaber;-;;20;damage_e;10;;;1.5;scorching,energy_resistant;;param_melee_armed;1.5;;param_melee
+weapon_offhand_lightsaber;-;;20;damage_e;10;;;1;scorching,energy_resistant;;param_melee_armed;1;;param_melee
 weapon_vibrolance;rare;500;7;damage_p;2;;;2;cutting,energy_resistant;;param_melee_armed;2;;param_melee
 weapon_vibroaxe;rare;700;9;damage_p;2;;;1.5;cutting,energy_resistant;;param_melee_armed;1.5;;param_melee
 weapon_forcepike;veryrare;900;8;damage_p;4;;;2;cutting,stunning;;param_melee_armed;2;;param_melee
@@ -35,5 +35,5 @@ weapon_stun_baton;common;150;6;damage_el;0;;;1;balanced,stunning;;param_melee_ar
 weapon_stun_gloves;rare;150;4;damage_el;0;;;1;stunning;;param_melee_unarmed;1;;param_melee
 weapon_vibro_knuckles;rare;200;3;damage_p;2;;;1;;;param_melee_unarmed;1;;param_melee
 weapon_vibro_doublesword;veryrare;1000;7;damage_p;2;;;2;cutting,energy_resistant;;param_melee_armed;2;;param_melee
-weapon_light_doublesaber;-;-;20;damage_e;10;;;2;scorching,energy_resistant;;param_melee_armed;2;;param_melee
+weapon_light_doublesaber;-;;20;damage_e;10;;;2;scorching,energy_resistant;;param_melee_armed;2;;param_melee
 weapon_ryyk_blade;blackmarket;1500;8;damage_p;0;;;1;cutting, forceful;;param_melee_armed;1;;param_melee

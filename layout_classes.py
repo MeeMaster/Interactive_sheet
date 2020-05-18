@@ -42,7 +42,7 @@ class ScrollContainer(QWidget):
         self.scroll_widget = QWidget()
         self.scroll_layout = QVBoxLayout()
         self.scroll_widget.setLayout(self.scroll_layout)
-        self.scroll_widget.setContentsMargins(0, 0, 0, 0)
+        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
         self.scroll.setWidget(self.scroll_widget)
         self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
@@ -405,7 +405,11 @@ class WeaponView(View):
         self.layout = QVBoxLayout()
         self.line1_layout = QHBoxLayout()
         self.line2_layout = QHBoxLayout()
-        self.line3_layout = QHBoxLayout()
+        # self.line3_layout = QHBoxLayout()
+        self.equipped_checkbox = EquippedCheckbox()
+        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
+        self.line1_layout.addWidget(self.equipped_checkbox)
         self.weapon_name = InputLine("weapon_name", Qt.AlignLeft, label=translate_ui("ui_item_name"))
         self.weapon_name.value_changed.connect(self.update_parameters)
         self.weapon_name.setFixedWidth(200)
@@ -419,7 +423,8 @@ class WeaponView(View):
         self.weapon_pp = InputLine("weapon_ap", dtype="int", label=translate_ui("ui_weapon_ap"))
         self.weapon_pp.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_pp, stretch=0)
-        self.weapon_damage_type = InputLine("damage_type", Qt.AlignLeft, label=translate_ui("ui_weapon_damage_type"))
+        self.weapon_damage_type = InputLine("damage_type", Qt.AlignLeft, enabled=False,
+                                            label=translate_ui("ui_weapon_damage_type"))
         self.weapon_damage_type.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_damage_type, stretch=0)
         self.weapon_ammo_cost = InputLine("weapon_shot_cost", dtype="int", label=translate_ui("ui_weapon_shotcost"))
@@ -428,19 +433,16 @@ class WeaponView(View):
         self.weapon_current_power = InputLine("current_battery", dtype="int", label=translate_ui("ui_weapon_magazine"))
         self.weapon_current_power.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.weapon_current_power, stretch=0)
-        self.weapon_traits = InputLine("weapon_traits", Qt.AlignLeft, label=translate_ui("ui_item_traits"))
-        self.weapon_traits.value_changed.connect(self.update_parameters)
-        self.line2_layout.addWidget(self.weapon_traits, stretch=0)
+        self.weapon_weight = InputLine("weapon_weight", dtype="int", label=translate_ui("ui_item_weight"), maxwidth=40)
+        self.weapon_weight.value_changed.connect(self.update_parameters)
+        self.line2_layout.addWidget(self.weapon_weight, stretch=0)
         self.weapon_value = InputLine("weapon_value", dtype="int", label=translate_ui("ui_item_price"), maxwidth=40)
         self.weapon_value.value_changed.connect(self.update_parameters)
         self.line2_layout.addWidget(self.weapon_value, stretch=0)
-        self.weapon_weight = InputLine("weapon_weight", dtype="int", label=translate_ui("ui_item_weight"))
-        self.weapon_weight.value_changed.connect(self.update_parameters)
-        self.line2_layout.addWidget(self.weapon_weight, stretch=0)
-        self.equipped_checkbox = EquippedCheckbox()
-        self.equipped_checkbox.setChecked(self.item.equipped)
-        self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
-        self.line2_layout.addWidget(self.equipped_checkbox)
+        self.weapon_traits = InputLine("weapon_traits", Qt.AlignLeft, label=translate_ui("ui_item_traits"))
+        self.weapon_traits.value_changed.connect(self.update_parameters)
+        self.line2_layout.addWidget(self.weapon_traits, stretch=0)
+
         self.layout.addLayout(self.line1_layout, stretch=0)
         self.layout.addLayout(self.line2_layout, stretch=0)
         self.layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
@@ -452,23 +454,23 @@ class WeaponView(View):
         if parameter == "weapon_name":
             self.item.name = value
         if parameter == "weapon_damage":
-            self.item.damage = value
+            self.item.damage = int(value)
         if parameter == "weapon_ap":
-            self.item.ap = value
+            self.item.ap = int(value)
         if parameter == "damage_type":
             self.item.damage_type = value
         if parameter == "current_battery":
-            self.item.power_magazine = value
+            self.item.power_magazine = int(value)
         if parameter == "weapon_shot_cost":
-            self.item.shot_cost = value
+            self.item.shot_cost = int(value)
         if parameter == "weapon_mode":
             self.item.fire_modes = value.split("/")
         # if parameter == "weapon_traits":
         #     self.current_weapon.traits = value
         if parameter == "weapon_value":
-            self.item.price = value
+            self.item.price = int(value)
         if parameter == "weapon_weight":
-            self.item.weight = value
+            self.item.weight = int(value)
         if parameter == "equipped":
             self.item.equipped = value
         # if parameter == "weapon_shot_cost":
@@ -493,12 +495,17 @@ class ArmorView(View):
         View.__init__(self)
         self.name = armor.ID
         self.item = armor
-        self.setFixedWidth(400)
+        # self.setFixedWidth()
         self.layout = QVBoxLayout()
         self.line1_layout = QHBoxLayout()
         self.line1_layout.setContentsMargins(0, 0, 0, 0)
-        self.line2_layout = QHBoxLayout()
-        self.line2_layout.setContentsMargins(0, 0, 0, 0)
+        # self.line2_layout = QHBoxLayout()
+        # self.line2_layout.setContentsMargins(0, 0, 0, 0)
+        self.equipped_checkbox = EquippedCheckbox()
+        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
+        self.line1_layout.addWidget(self.equipped_checkbox)
+
         self.armor_name = InputLine("armor_name", Qt.AlignLeft, label="Name")
         self.armor_name.value_changed.connect(self.update_parameters)
         self.line1_layout.addWidget(self.armor_name)
@@ -510,19 +517,16 @@ class ArmorView(View):
             self.line1_layout.addWidget(armor_piece)
         self.weight = InputLine("armor_weight", dtype="int", label=translate_ui("ui_item_weight"), maxwidth=30)
         self.weight.value_changed.connect(self.update_parameters)
-        self.line2_layout.addWidget(self.weight)
-        self.value = InputLine("armor_value", dtype="int", label=translate_ui("ui_item_price"), maxwidth=30)
+        self.line1_layout.addWidget(self.weight)
+        self.value = InputLine("armor_value", dtype="int", label=translate_ui("ui_item_price"), maxwidth=50)
         self.value.value_changed.connect(self.update_parameters)
-        self.line2_layout.addWidget(self.value)
-        self.traits = InputLine("armor_traits", Qt.AlignLeft, label=translate_ui("ui_item_traits"))
-        self.traits.value_changed.connect(self.update_parameters)
-        self.line2_layout.addWidget(self.traits)
-        self.equipped_checkbox = EquippedCheckbox()
-        self.equipped_checkbox.setChecked(self.item.equipped)
-        self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
-        self.line2_layout.addWidget(self.equipped_checkbox)
+        self.line1_layout.addWidget(self.value)
+        # self.traits = InputLine("armor_traits", Qt.AlignLeft, label=translate_ui("ui_item_traits"))
+        # self.traits.value_changed.connect(self.update_parameters)
+        # self.line2_layout.addWidget(self.traits)
+
         self.layout.addLayout(self.line1_layout)
-        self.layout.addLayout(self.line2_layout)
+        # self.layout.addLayout(self.line2_layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.fill_values()
         self.setLayout(self.layout)
@@ -997,6 +1001,7 @@ class ModifierItemView(View):
     def __init__(self, equipment_item):
         View.__init__(self)
         layout = QHBoxLayout()
+        layout.setContentsMargins(5, 1, 1, 1)
         self.item = equipment_item
         self.name = equipment_item.ID
         name_layout = QVBoxLayout()
@@ -1004,7 +1009,7 @@ class ModifierItemView(View):
         name_layout.addWidget(name)
         self.values_layout = QVBoxLayout()
         cost_layout = QVBoxLayout()
-        cost = QLabel("TODO COST")
+        cost = QLabel("TODO COST")  # TODO
         cost_layout.addWidget(cost)
         layout.addLayout(name_layout)
         layout.addLayout(self.values_layout)
@@ -1016,9 +1021,11 @@ class ModifierItemView(View):
         checkbox_layout.addWidget(self.equipped_checkbox)
         layout.addLayout(checkbox_layout)
         self.setLayout(layout)
-        for bonus in self.item.bonuses:
-            view = PropertyView(bonus, self.item.bonuses[bonus])
-            self.values_layout.addWidget(view)
+        view = PropertyView(self.item.bonuses)
+        self.values_layout.addWidget(view)
+        # for bonus in :
+        #
+
         self.add_header_option("Edit", self.edit)
         self.setLayout(layout)
 
@@ -1032,13 +1039,18 @@ class ModifierItemView(View):
 
 class PropertyView(QWidget):
 
-    def __init__(self, name="", value=0):
+    def __init__(self, bonuses):
         QWidget.__init__(self)
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        self.label = QLabel(translate_parameter(name))
-        self.value = QLabel(str(value))
+        names = [name for name in bonuses]
+        self.label = QLabel(translate_parameter(names[0]))
+        self.value = QLabel(str(bonuses[names[0]]))
+        self.cont = QLabel("...")
         layout.addWidget(self.label)
         layout.addWidget(self.value)
+        if len(bonuses) > 1:
+            layout.addWidget(self.cont)
+        self.setToolTip("\n".join([translate_parameter(name)+": "+str(value) for name, value in bonuses.items()]))
         self.setLayout(layout)
 

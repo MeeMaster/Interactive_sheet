@@ -140,8 +140,13 @@ class Application:
     def update_parameters(self):
         for parameter in self.sheet.parameters:
             self.update_parameter(parameter)
+        self.update_parameter("param_encumbrance_current")
 
     def update_parameter(self, name):
+        if name == "param_encumbrance_current":
+            value = self.sheet.calculate_current_encumbrance()
+            self.main_widget.params_dict[name].setText(value)
+            return
         value = self.sheet.parameters[name]
         if name not in self.main_widget.params_dict:
             return  # TODO use all of params in the sheet

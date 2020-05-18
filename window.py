@@ -116,8 +116,6 @@ class MainWindow(QMainWindow):
         self.popup = None
 
 
-
-
 class MyWindowWidget(QWidget):
     # parameter_changed = pyqtSignal(str, str, int)
 
@@ -200,12 +198,15 @@ class MyWindowWidget(QWidget):
         label.setAlignment(Qt.AlignCenter)
         encumbrance_layout.addWidget(label)
         encumbrance_values_layout = QHBoxLayout()
+        encumbrance_current = InputLine("param_encumbrance_current", enabled=False, val_dict=self.params_dict,
+                                        dtype="float", label=translate_parameter("param_encumbrance_current"), maxwidth=50)
         encumbrance_low = InputLine("param_encumbrance_low", enabled=False, val_dict=self.params_dict, dtype="int",
                                     label=translate_parameter("param_encumbrance_low"), maxwidth=50)
         encumbrance_med = InputLine("param_encumbrance_med", enabled=False, val_dict=self.params_dict, dtype="int",
                                     label=translate_parameter("param_encumbrance_med"), maxwidth=50)
         encumbrance_high = InputLine("param_encumbrance_high", enabled=False, val_dict=self.params_dict, dtype="int",
                                      label=translate_parameter("param_encumbrance_high"), maxwidth=50)
+        encumbrance_values_layout.addWidget(encumbrance_current)
         encumbrance_values_layout.addWidget(encumbrance_low)
         encumbrance_values_layout.addWidget(encumbrance_med)
         encumbrance_values_layout.addWidget(encumbrance_high)

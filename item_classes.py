@@ -32,7 +32,7 @@ class ModifierItem(Item):
         Item.__init__(self)
         self.equipped = False
         self.bonuses = {}
-        self.bonus_type = None
+        self.bonus_type = "modifier"
         self._line = None
 
     def load_from_line(self, line):
@@ -41,8 +41,8 @@ class ModifierItem(Item):
         self.arch_name = name
         self.name = translate_item(name)
         self.availability = availability
-        self.price = int(value)
-        self.weight = int(weight)
+        self.price = 0 if not value else int(value)
+        self.weight = 0 if not weight else int(weight)
         self.bonus_type = bonus_type
         self._line = line
 
@@ -69,9 +69,9 @@ class Armor(Item):
         self.arch_name = name
         self.name = translate_item(name)
         self.availability = availability
-        self.price = value
+        self.price = 0 if not value else int(value)
+        self.weight = 0 if not weight else int(weight)
         self.traits = traits.split(",")
-        self.weight = weight
         self._line = line
         for part in armor.split(","):
             part, value = part.split()
@@ -118,7 +118,8 @@ class Weapon(Item):
         self.arch_name = name
         self.name = translate_item(name)
         self.availability = availability
-        self.price = value
+        self.price = 0 if not value else int(value)
+        self.weight = 0 if not weight else int(weight)
         self.damage = damage
         self.damage_type = damage_type
         self.ap = ap
@@ -129,7 +130,6 @@ class Weapon(Item):
         self.mods = mods.split(",")
         self.base_skill = skill
         self.hands = hands
-        self.weight = weight
         self.weapon_type = weapon_type
         self._line = line
 
