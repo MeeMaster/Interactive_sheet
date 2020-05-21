@@ -803,7 +803,6 @@ class EquipmentWidget(QWidget):
                 break
         if not found:
             return
-        # current_item = source_table.items[current_item_id]
         self.current_popup = self.transfer_popup(item, not equip)
         self.current_popup.popup_ok.connect(self.move_item_func)
         self.current_popup.popup_cancel.connect(self.close_popup)
@@ -811,7 +810,7 @@ class EquipmentWidget(QWidget):
     def item_edit(self, item_id):
         found = False
         for item in self.items:
-            if item.name == item_id:
+            if item.ID == item_id:
                 found = True
                 break
         if not found:
@@ -839,10 +838,10 @@ class EquipmentWidget(QWidget):
         self.items = items
         self.update_item_tables()
 
-    def signal_delete(self, equipped, item_name):
+    def signal_delete(self, equipped, item_id):
         found = False
         for item in self.items:
-            if item.name == item_name:
+            if item.ID == item_id:
                 found = True
                 break
         if not found:
@@ -945,6 +944,8 @@ class ItemTable(QWidget):
         self.edit_item.emit(current_item_id)  # TODO fix to item id later
 
     def remove_item(self):
+        if self.table.currentRow() == -1:
+            return
         current_item_id = self.table.cellWidget(self.table.currentRow(), 0).text()
         self.delete_item.emit(self.equipped, current_item_id)
 
@@ -968,7 +969,7 @@ class ItemTable(QWidget):
 
     def fill_table(self, data):
         data_len = len([item for item in data if item.equipped_quantity > 0]) if self.equipped else \
-            len([item for item in data if item.total_quantity - item.equipped_quantity > 0])
+            len([item for item in data if (item.total_quantity != item.equipped_quantity) or item.total_quantity == 0])
         self.table.setRowCount(data_len)
         index = 0
         for item in data:
@@ -997,9 +998,7 @@ class ItemTable(QWidget):
         self.table.show()
 
     def item_changed(self, item, value, change=True):
-
         self.item_qty_changed.emit(self.equipped, item, value, change)
-        # self.update_values(_id)
 
     def clear(self):
         self.table.setRowCount(0)

@@ -408,7 +408,7 @@ class ItemPopup(BasePopup):
         line2.addWidget(self.description)
         if self.edit is None:
             self.item = Item()
-            self.quantity.setText("0")
+            self.quantity.setText("1")
             self.weight.setText("0")
         else:
             self.item = self.edit
