@@ -798,7 +798,7 @@ class EquipmentWidget(QWidget):
         current_item_id = source_table.table.cellWidget(current_row, 0).text()
         found = False
         for item in self.items:
-            if item.name == current_item_id:
+            if item.ID == current_item_id:
                 found = True
                 break
         if not found:
@@ -852,7 +852,7 @@ class EquipmentWidget(QWidget):
     def signal_forward(self, *args):
         self.item_qty_changed.emit(*args)
 
-    def update_item_tables(self):  # TODO change table data handling; make tables not hold data, just display
+    def update_item_tables(self):
         self.equipped_table.update_values(self.items)
         self.stash_table.update_values(self.items)
 
@@ -970,16 +970,15 @@ class ItemTable(QWidget):
         data_len = len([item for item in data if item.equipped_quantity > 0]) if self.equipped else \
             len([item for item in data if item.total_quantity - item.equipped_quantity > 0])
         self.table.setRowCount(data_len)
-        for index, item in enumerate(data):
+        index = 0
+        for item in data:
             value = item.equipped_quantity if self.equipped else item.total_quantity - item.equipped_quantity
-
             if self.equipped and value == 0:
                 continue
             if not self.equipped and value == 0 and item.total_quantity != 0:
                 continue
-            # item_class = self.items[item]
-            self.table.setCellWidget(index, 0, QLabel(item.name))
-            counter_widget = ItemCounter(item.name)
+            self.table.setCellWidget(index, 0, QLabel(item.ID))
+            counter_widget = ItemCounter(item.ID)
             counter_widget.set_value(str(value))
             counter_widget.value_changed.connect(self.item_changed)
             self.table.setCellWidget(index, 1, counter_widget)
@@ -993,9 +992,7 @@ class ItemTable(QWidget):
             total_weight_label = QLabel("{:.1f}".format(item.weight * value))
             total_weight_label.setAlignment(Qt.AlignCenter)
             self.table.setCellWidget(index, 4, total_weight_label)
-        for n in range(5):
-            self.table.setColumnWidth(n, 60)
-        self.table.setColumnWidth(2, 120)
+            index += 1
         self.table.resizeRowsToContents()
         self.table.show()
 

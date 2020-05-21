@@ -33,7 +33,6 @@ def load_parameters(alternative=False):
 
 def load_modifiers(alternative=False):
     from item_classes import modifier_from_line
-    print(alternative)
     modifiers = {}
     filepath = path.join("parameters", "modifiers.csv")
     if alternative:

@@ -108,7 +108,6 @@ class Character:
         att_value += self.attribute_bonuses[attribute]
         if full:
             att_value += self.read_modifier_items(attribute)
-        print(full, att_value)
         return att_value
 
     def calculate_armor(self):

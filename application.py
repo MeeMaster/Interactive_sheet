@@ -119,11 +119,10 @@ class Application:
         self.main_widget.skills_dict[skill].set_advancement(val)
         self.main_widget.skills_dict[skill].set_enabled(True)
         bonus_val = self.sheet.get_skill_bonuses(skill)
-        # bonus_val2 = self.sheet.skill_bonuses2[skill]
         self.main_widget.skills_dict[skill].set_bonus(bonus_val[0], bonus_val[1])
         total_val = self.sheet.calculate_skill(skill)
         if self.sheet.is_robot:
-            if bonus_val == 0 and bonus_val2 == 0:
+            if bonus_val[0] == 0 and bonus_val[1] == 0:
                 self.main_widget.skills_dict[skill].set_enabled(False)
                 total_val = 0
         self.main_widget.skills_dict[skill].set_total(total_val)
@@ -294,8 +293,8 @@ class Application:
     def update_items(self):
         self.main_widget.equipment_tables.update_item_tables()
 
-    def change_item_quantity(self, equipped, name, value, change):
-        item = self.sheet.find_item_with_name(name)
+    def change_item_quantity(self, equipped, _id, value, change):
+        item = self.sheet.find_item_with_id(_id)
         if item is None:
             print("No such item!")
         item.total_quantity += value
