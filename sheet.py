@@ -135,6 +135,10 @@ class Character:
             return
         self.abilities.remove(ability)
 
+    def get_abilities(self):
+        abilities = self.get_modifier_item_abilities()
+        return self.abilities | abilities
+
     def add_weapon(self, weapon):
         if weapon in self.weapons:
             return False
@@ -209,6 +213,16 @@ class Character:
             self.attribute_advancements[name] = value
         self.update_parameters()
 
+    def get_modifier_item_abilities(self):
+        abilities = set()
+        for item in self.modifier_items:
+            if not item.equipped:
+                continue
+            for bonus in item.bonuses:
+                if bonus.startswith("ability_"):
+                    abilities.add(bonus)
+        return abilities
+
     def read_modifier_items(self, param, mod_type="modifier"):
         out = 0
         for item in self.modifier_items:
@@ -256,18 +270,6 @@ class Character:
         item.equipped = equip
         if item.bonus_type == "modifier":
             return
-        # Change bonuses when equipping/unequipping
-        # modifier = 1 if equip else -1
-        # for bonus in item.bonuses:
-        #     if bonus.startswith("attrib_"):
-        #         if item.bonus_type == "bonus":
-        #             self.attribute_bonuses[bonus] += modifier * item.bonuses[bonus]
-        #     if bonus.startswith("skill_"):
-        #         if item.bonus_type == "bonus":
-        #             self.skill_bonuses[bonus] += modifier * item.bonuses[bonus]
-        #         if item.bonus_type == "bonus2":
-        #             self.skill_bonuses2[bonus] += modifier * item.bonuses[bonus]
-        #  Unequip items that share bonuses
         if not equip:
             return
         for other_item in self.modifier_items:

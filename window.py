@@ -185,7 +185,7 @@ class MyWindowWidget(QWidget):
         # Set Attributes
         self.fill_attributes(attributes_layout, attribute_names, alternative)
         # Set skills
-        abilities = ScrollContainer(translate_ui("ui_abilities"), translate_ui("ui_ability_add_button"), AbilityView,
+        abilities = ScrollContainer("ui_abilities", translate_ui("ui_ability_add_button"), AbilityView,
                                     validator=validator, alternative=alternative, popup=AbilityPopup)
         self.scrolls["abilities"] = abilities
         abilities_layout.addWidget(abilities)
@@ -353,27 +353,67 @@ class MyWindowWidget(QWidget):
     def fill_tab2(self, alternative=False):
         page2 = QVBoxLayout()
         # Equipment panel
-        weapons_scroll = ScrollContainer(translate_ui("ui_weapons"), translate_ui("ui_weapons_add_button"), WeaponView,
-                                         popup=WeaponPopup)
+        equipment_tabs = QTabWidget()
+        page2.addWidget(equipment_tabs, 1)
+        tab1 = QWidget()
+        tab2 = QWidget()
+        tab3 = QWidget()
+        equipment_tabs.addTab(tab1, translate_ui("ui_weapons"))
+        equipment_tabs.addTab(tab2, translate_ui("ui_armors"))
+        equipment_tabs.addTab(tab3, translate_ui("ui_modifiers"))
+        tab1_layout = QVBoxLayout()
+        tab2_layout = QVBoxLayout()
+        tab3_layout = QVBoxLayout()
+        tab1.setLayout(tab1_layout)
+        tab2.setLayout(tab2_layout)
+        tab3.setLayout(tab3_layout)
+
+        weapons_scroll = ConditionalScrollContainer("ui_weapons", translate_ui("ui_weapons_add_button"), WeaponView,
+                                                    popup=WeaponPopup, conditions=["weapon"])
         self.scrolls["weapons"] = weapons_scroll
-        page2.addWidget(weapons_scroll)
-        armor_scroll = ScrollContainer(translate_ui("ui_armors"), translate_ui("ui_armor_add_button"), ArmorView,
-                                       popup=ArmorPopup)
+        tab1_layout.addWidget(weapons_scroll)
+        armor_scroll = ConditionalScrollContainer("ui_armors", translate_ui("ui_armor_add_button"), ArmorView,
+                                                  popup=ArmorPopup, conditions=["armor"])
         self.scrolls["armor"] = armor_scroll
-        page2.addWidget(armor_scroll)
-        modifiers_and_money = QHBoxLayout()
-        modifier_scroll = ScrollContainer(translate_ui("ui_modifiers"), translate_ui("ui_modifier_add_button"),
-                                          ModifierItemView, popup=ModifierItemPopup, alternative=alternative)
+        tab2_layout.addWidget(armor_scroll)
+
+        modifier_scroll = ConditionalScrollContainer("ui_modifiers", translate_ui("ui_modifier_add_button"),
+                                                     ModifierItemView, conditions=["implant", "modifier", "bionic"],
+                                                     popup=ModifierItemPopup, alternative=alternative)
         self.scrolls["modifiers"] = modifier_scroll
-        modifiers_and_money.addWidget(modifier_scroll, 3)
+        tab3_layout.addWidget(modifier_scroll)
+
+        if alternative:
+            tab4 = QWidget()
+            tab5 = QWidget()
+            equipment_tabs.addTab(tab4, translate_ui("ui_modules"))
+            equipment_tabs.addTab(tab5, translate_ui("ui_parts"))
+            tab4_layout = QVBoxLayout()
+            tab5_layout = QVBoxLayout()
+            tab4.setLayout(tab4_layout)
+            tab5.setLayout(tab5_layout)
+
+            modules_scroll = ConditionalScrollContainer("ui_modules", translate_ui("ui_module_add_button"),
+                                                        ModifierItemView, conditions=["module"],
+                                                        popup=ModifierItemPopup, alternative=alternative)
+            self.scrolls["modules"] = modules_scroll
+            tab4_layout.addWidget(modules_scroll)
+
+            parts_scroll = ConditionalScrollContainer("ui_parts", translate_ui("ui_part_add_button"),
+                                                      ModifierItemView, conditions=["part"],
+                                                      popup=ModifierItemPopup, alternative=alternative)
+            self.scrolls["parts"] = parts_scroll
+            tab5_layout.addWidget(parts_scroll)
+
+        # items
+        equipment_and_money = QHBoxLayout()
         name = "notes_money"
         money = LabelledTextEdit(name, label=translate_ui("ui_{}".format(name)))
         self.notes_dict[name] = money
-        modifiers_and_money.addWidget(money)
-        page2.addLayout(modifiers_and_money)
-        # armo
         self.equipment_tables = EquipmentWidget(ItemPopup, ItemMovePopup)
-        page2.addWidget(self.equipment_tables)
+        equipment_and_money.addWidget(self.equipment_tables, 3)
+        equipment_and_money.addWidget(money, 1)
+        page2.addLayout(equipment_and_money, 2)
         self.tab2.setLayout(page2)
 
     def fill_tab3(self, notes_names):

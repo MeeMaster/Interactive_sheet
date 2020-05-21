@@ -1,44 +1,172 @@
-modifier_droid_ability1_1;0;0;0;skill_analysis 5;bonus
-modifier_droid_ability1_2;0;0;0;skill_analysis 5;bonus2
-modifier_droid_ability2_1;0;0;0;skill_communication 5;bonus
-modifier_droid_ability2_2;0;0;0;skill_communication 5;bonus2
-modifier_droid_ability3_1;0;0;0;skill_conceal 5;bonus
-modifier_droid_ability3_2;0;0;0;skill_conceal 5;bonus2
-modifier_droid_ability4_1;0;0;0;skill_control 5;bonus
-modifier_droid_ability4_2;0;0;0;skill_control 5;bonus2
-modifier_droid_ability5_1;0;0;0;skill_cybernetics 5;bonus
-modifier_droid_ability5_2;0;0;0;skill_cybernetics 5;bonus2
-modifier_droid_ability6_1;0;0;0;skill_dexterity 5;bonus
-modifier_droid_ability6_2;0;0;0;skill_dexterity 5;bonus2
-modifier_droid_ability7_1;0;0;0;skill_dodge 5;bonus
-modifier_droid_ability7_2;0;0;0;skill_dodge 5;bonus2
-modifier_droid_ability8_1;0;0;0;skill_holonet 5;bonus
-modifier_droid_ability8_2;0;0;0;skill_holonet 5;bonus2
-modifier_droid_ability9_1;0;0;0;skill_mechanics 5;bonus
-modifier_droid_ability9_2;0;0;0;skill_mechanics 5;bonus2
-modifier_droid_ability10_1;0;0;0;skill_medicine 5;bonus
-modifier_droid_ability10_2;0;0;0;skill_medicine 5;bonus2
-modifier_droid_ability11_1;0;0;0;skill_melee_armed 5;bonus
-modifier_droid_ability11_2;0;0;0;skill_melee_armed 5;bonus2
-modifier_droid_ability12_1;0;0;0;skill_melee_unarmed 5;bonus
-modifier_droid_ability12_2;0;0;0;skill_melee_unarmed 5;bonus2
-modifier_droid_ability13_1;0;0;0;skill_navigation 5;bonus
-modifier_droid_ability13_2;0;0;0;skill_navigation 5;bonus2
-modifier_droid_ability14_1;0;0;0;skill_perception 5;bonus
-modifier_droid_ability14_2;0;0;0;skill_perception 5;bonus2
-modifier_droid_ability15_1;0;0;0;skill_pilot_spaceships 5;bonus
-modifier_droid_ability15_2;0;0;0;skill_pilot_spaceships 5;bonus2
-modifier_droid_ability16_1;0;0;0;skill_pilot_speeders 5;bonus
-modifier_droid_ability16_2;0;0;0;skill_pilot_speeders 5;bonus2
-modifier_droid_ability17_1;0;0;0;skill_pilot_walkers 5;bonus
-modifier_droid_ability17_2;0;0;0;skill_pilot_walkers 5;bonus2
-modifier_droid_ability18_1;0;0;0;skill_ranged_light 5;bonus
-modifier_droid_ability18_2;0;0;0;skill_ranged_light 5;bonus2
-modifier_droid_ability19_1;0;0;0;skill_ranged_heavy 5;bonus
-modifier_droid_ability19_2;0;0;0;skill_ranged_heavy 5;bonus2
-modifier_droid_ability20_1;0;0;0;skill_ranged_stationary 5;bonus
-modifier_droid_ability20_2;0;0;0;skill_ranged_stationary 5;bonus2
-modifier_droid_ability21_1;0;0;0;skill_security 5;bonus
-modifier_droid_ability21_2;0;0;0;skill_security 5;bonus2
-modifier_droid_ability22_1;0;0;0;skill_systems 5;bonus
-modifier_droid_ability22_2;0;0;0;skill_systems 5;bonus2
+modifier_droid_ability1_1;0;0;0;skill_analysis 5;bonus;module
+modifier_droid_ability1_2;0;0;0;skill_analysis 5;bonus2;module
+modifier_droid_ability2_1;0;0;0;skill_communication 5;bonus;module
+modifier_droid_ability2_2;0;0;0;skill_communication 5;bonus2;module
+modifier_droid_ability3_1;0;0;0;skill_conceal 5;bonus;module
+modifier_droid_ability3_2;0;0;0;skill_conceal 5;bonus2;module
+modifier_droid_ability4_1;0;0;0;skill_control 5;bonus;module
+modifier_droid_ability4_2;0;0;0;skill_control 5;bonus2;module
+modifier_droid_ability5_1;0;0;0;skill_cybernetics 5;bonus;module
+modifier_droid_ability5_2;0;0;0;skill_cybernetics 5;bonus2;module
+modifier_droid_ability6_1;0;0;0;skill_dexterity 5;bonus;module
+modifier_droid_ability6_2;0;0;0;skill_dexterity 5;bonus2;module
+modifier_droid_ability7_1;0;0;0;skill_dodge 5;bonus;module
+modifier_droid_ability7_2;0;0;0;skill_dodge 5;bonus2;module
+modifier_droid_ability8_1;0;0;0;skill_holonet 5;bonus;module
+modifier_droid_ability8_2;0;0;0;skill_holonet 5;bonus2;module
+modifier_droid_ability9_1;0;0;0;skill_mechanics 5;bonus;module
+modifier_droid_ability9_2;0;0;0;skill_mechanics 5;bonus2;module
+modifier_droid_ability10_1;0;0;0;skill_medicine 5;bonus;module
+modifier_droid_ability10_2;0;0;0;skill_medicine 5;bonus2;module
+modifier_droid_ability11_1;0;0;0;skill_melee_armed 5;bonus;module
+modifier_droid_ability11_2;0;0;0;skill_melee_armed 5;bonus2;module
+modifier_droid_ability12_1;0;0;0;skill_melee_unarmed 5;bonus;module
+modifier_droid_ability12_2;0;0;0;skill_melee_unarmed 5;bonus2;module
+modifier_droid_ability13_1;0;0;0;skill_navigation 5;bonus;module
+modifier_droid_ability13_2;0;0;0;skill_navigation 5;bonus2;module
+modifier_droid_ability14_1;0;0;0;skill_perception 5;bonus;module
+modifier_droid_ability14_2;0;0;0;skill_perception 5;bonus2;module
+modifier_droid_ability15_1;0;0;0;skill_pilot_spaceships 5;bonus;module
+modifier_droid_ability15_2;0;0;0;skill_pilot_spaceships 5;bonus2;module
+modifier_droid_ability16_1;0;0;0;skill_pilot_speeders 5;bonus;module
+modifier_droid_ability16_2;0;0;0;skill_pilot_speeders 5;bonus2;module
+modifier_droid_ability17_1;0;0;0;skill_pilot_walkers 5;bonus;module
+modifier_droid_ability17_2;0;0;0;skill_pilot_walkers 5;bonus2;module
+modifier_droid_ability18_1;0;0;0;skill_ranged_light 5;bonus;module
+modifier_droid_ability18_2;0;0;0;skill_ranged_light 5;bonus2;module
+modifier_droid_ability19_1;0;0;0;skill_ranged_heavy 5;bonus;module
+modifier_droid_ability19_2;0;0;0;skill_ranged_heavy 5;bonus2;module
+modifier_droid_ability20_1;0;0;0;skill_ranged_stationary 5;bonus;module
+modifier_droid_ability20_2;0;0;0;skill_ranged_stationary 5;bonus2;module
+modifier_droid_ability21_1;0;0;0;skill_security 5;bonus;module
+modifier_droid_ability21_2;0;0;0;skill_security 5;bonus2;module
+modifier_droid_ability22_1;0;0;0;skill_systems 5;bonus;module
+modifier_droid_ability22_2;0;0;0;skill_systems 5;bonus2;module
+
+#Mózg;;;;;;
+droid_brain_assasin;0;0;0;attrib_intelligence 10,attrib_integrity 10,attrib_hacking 5;modifier;part
+droid_brain_combat;0;0;0;attrib_intelligence 5,attrib_integrity 10;modifier;part
+droid_brain_engineer;0;0;0;attrib_intelligence 15,attrib_integrity 10,attrib_hacking 5;modifier;part
+droid_brain_medical;0;0;0;attrib_intelligence 20,attrib_integrity 10;modifier;part
+droid_brain_worker;0;0;0;attrib_intelligence 5,attrib_integrity 20;modifier;part
+droid_brain_protocol;0;0;0;attrib_intelligence 15,attrib_integrity 15;modifier;part
+droid_brain_pilot;0;0;0;attrib_intelligence 10,attrib_integrity 10;modifier;part
+droid_brain_combatpilot;0;0;0;attrib_intelligence 10,attrib_integrity 10;modifier;part
+droid_brain_astromech;0;0;0;attrib_intelligence 15,attrib_integrity 10,attrib_hacking 10;modifier;part
+droid_brain_slicer;0;0;0;attrib_intelligence 15,attrib_integrity 15,attrib_hacking 15;modifier;part
+droid_brain_gunner;0;0;0;attrib_intelligence 5,attrib_integrity 10;modifier;part
+
+#Głowa;;;;;;
+droid_head_small;0;0;0;attrib_toughness 1;modifier;part
+droid_head_medium;0;0;0;attrib_toughness 1;modifier;part
+droid_head_large;0;0;0;attrib_toughness 2;modifier;part
+droid_head_compact;0;0;0;attrib_toughness 3,attrib_agility -5;modifier;part
+
+#Korpus;;;;;;
+droid_humanoidchest_small;0;0;0;attrib_strength 1,attrib_agility 7,attrib_toughness 4;modifier;part
+droid_humanoidchest_medium;0;0;0;attrib_strength 3,attrib_agility 5,attrib_toughness 6;modifier;part
+droid_humanoidchest_large;0;0;0;attrib_strength 5,attrib_agility 4,attrib_toughness 8;modifier;part
+droid_boxchest_small;0;0;0;attrib_strength 2,attrib_toughness 5;modifier;part
+droid_boxchest_medium;0;0;0;attrib_strength 4,attrib_toughness 7;modifier;part
+droid_boxchest_large;0;0;0;attrib_strength 6,attrib_toughness 10;modifier;part
+droid_barrelchest_small;0;0;0;attrib_agility 9,attrib_toughness 4;modifier;part
+droid_barrelchest_medium;0;0;0;attrib_agility 8,attrib_toughness 7;modifier;part
+droid_barrelchest_large;0;0;0;attrib_strength 2,attrib_agility 6,attrib_toughness 10;modifier;part
+#droid_nonstandardchest_small;;;;;;
+#droid_nonstandardchest_medium;;;;;;
+#droid_nonstandardchest_large;;;;;;
+
+#Ręce;;;;;;
+droid_manipulatorarms_small;0;0;0;attrib_strength 2,attrib_agility 2,attrib_toughness 1;modifier;part
+droid_manipulatorarms_medium;0;0;0;attrib_strength 3,attrib_agility 5,attrib_toughness 3;modifier;part
+droid_manipulatorarms_large;0;0;0;attrib_strength 5,attrib_agility 5,attrib_toughness 5;modifier;part
+
+#droid_functionalarms_multitool;0;0;0;attrib_strength 2,attrib_agility 5,attrib_toughness 1,skill_mechanics 5,skill_cybernetics 5;modifier;part
+#droid_functionalarms_medical;0;0;0;attrib_agility 10,skill_medicine 5;modifier;part
+
+droid_weaponarms_small;0;0;0;attrib_strength 1,attrib_agility 2,attrib_toughness 0;modifier;part
+droid_weaponarms_medium;0;0;0;attrib_strength 2,attrib_agility 3,attrib_toughness 1;modifier;part
+droid_weaponarms_large;0;0;0;attrib_strength 2,attrib_agility 4,attrib_toughness 2;modifier;part
+droid_heavydutyarms_medium;0;0;0;attrib_strength 5,attrib_agility 1,attrib_toughness 5;modifier;part
+droid_heavydutyarms_large;0;0;0;attrib_strength 10,attrib_toughness 10;modifier;part
+
+#Napęd;;;;;;
+droid_humanoidlegs_small;0;0;0;attrib_strength 2,attrib_agility 10,attrib_toughness 5;modifier;part
+droid_humanoidlegs_medium;0;0;0;attrib_strength 7,attrib_agility 5,attrib_toughness 7;modifier;part
+droid_humanoidlegs_large;0;0;0;attrib_strength 10,attrib_agility 2,attrib_toughness 10;modifier;part
+droid_rollerlegs_small;0;0;0;attrib_strength 4,attrib_agility 5,attrib_toughness 7;modifier;part
+droid_rollerlegs_medium;0;0;0;attrib_strength 10,attrib_agility 3,attrib_toughness 10;modifier;part
+droid_rollerlegs_large;0;0;0;attrib_strength 15,attrib_agility 1,attrib_toughness 15;modifier;part
+droid_hoverpad_small;0;0;0;attrib_agility 15,attrib_toughness 5;modifier;part
+droid_hoverpad_medium;0;0;0;attrib_agility 12,attrib_toughness 10;modifier;part
+droid_spiderlegs_small;0;0;0;attrib_strength 1,attrib_agility 15,attrib_toughness 3;modifier;part
+droid_spiderlegs_medium;0;0;0;attrib_strength 3,attrib_agility 12,attrib_toughness 5;modifier;part
+droid_spiderlegs_large;0;0;0;attrib_strength 5,attrib_agility 10,attrib_toughness 7;modifier;part
+
+#Dodatki-ręce;;;;;;
+#droid_power_servos;0;0;0;attrib_strength 5;modifier;part
+#droid_precision_servos;0;0;0;attrib_agility 5;modifier;part
+#droid_hydraulic_servos;0;0;0;attrib_strength 10,attrib_agility -5;modifier;part
+#droid_data_connector;;;;;;
+#droid_slicer_spike;;;;;;
+#droid_wrist-blaster;;;;;;
+#droid_wrist-flamethrower;;;;;;
+#droid_wrist-blade;;;;;;
+
+#Dodatki-nogi;;;;;;
+#droid_overdrive_motors;;;;;;
+#droid_magnetized_boots;;;;;;
+#droid_momentum_dampeners;;;;;;
+
+#Dodatki-korpus;;;;;;
+#droid_gas_dispenser;;;;;;
+#droid_stabilizer_hooks;;;;;;
+#droid_jet_jumper;;;;;;
+
+#Dodatki-głowa;;;;;;
+#droid_long_range_antennae;;;;;;
+#droid_improved_vision_sensors;;;;;;
+#droid_multi_spectrum_sensors;;;;;;
+#droid_improved_sound_receivers;;;;;;
+
+#Rozszerzenia;;;;;;
+droid_redundancy_circuits;0;0;0;attrib_toughness 2;modifier;modifier
+droid_decentralized_memory_core;0;0;0;attrib_toughness 3;modifier;modifier
+droid_short_circuit_breakers;0;0;0;attrib_toughness 3;modifier;modifier
+droid_advanced_alloy_frame;0;0;0;attrib_toughness 4;modifier;modifier
+droid_full_rotation_joints;0;0;0;attrib_agility 3;modifier;modifier
+droid_recoil_dampening_pistons;0;0;0;attrib_agility 4;modifier;modifier
+droid_auridium_circuitry;0;0;0;attrib_agility 2;modifier;modifier
+droid_joint_roller_blockers;0;0;0;attrib_strength 2;modifier;modifier
+droid_strengthened_pistons;0;0;0;attrib_strength 3;modifier;modifier
+droid_high_pressure_tubing;0;0;0;attrib_strength 3;modifier;modifier
+droid_additional_computing_module;0;0;0;attrib_intelligence 2;modifier;modifier
+droid_additional_cognitive_core;0;0;0;attrib_intelligence 4;modifier;modifier
+droid_fast_data_processing_module;0;0;0;attrib_intelligence 3;modifier;modifier
+droid_quantum_code_resolver;0;0;0;attrib_hacking 5;modifier;modifier
+droid_isolated_decoding_environments;0;0;0;attrib_hacking 3;modifier;modifier
+droid_repurposed_slicer_droid_brain;0;0;0;attrib_hacking 15,attrib_integrity -10;modifier;modifier
+droid_isolated_encryption_system;0;0;0;attrib_integrity 4;modifier;modifier
+droid_dispersed_decision_cores;0;0;0;attrib_integrity 5;modifier;modifier
+droid_isolated_command_processing_environment;0;0;0;attrib_integrity 5;modifier;modifier
+droid_supplementary_system_override;0;0;0;attrib_integrity 4;modifier;modifier
+droid_hardwired_firewall;0;0;0;attrib_integrity 3;modifier;modifier
+
+#Baterie;;;;;;
+#droid_small_battery;;;;;;
+#droid_small_Auridium_battery;;;;;;
+#droid_small_Nova_crystal_battery;;;;;;
+#droid_medium_battery;;;;;;
+#droid_medium_Auridium_battery;;;;;;
+#droid_medium_Nova_crystal_battery;;;;;;
+#droid_large_battery;;;;;;
+#droid_large_Auridium_battery;;;;;;
+#droid_large_Nova_crystal_battery;;;;;;
+
+
+#attrib_strength 5;;;;;;
+#attrib_agility 5;;;;;;
+#attrib_intelligence 5;;;;;;
+#attrib_toughness 5;;;;;;
+#attrib_integrity 5;;;;;;
+#attrib_hacking 5;;;;;;

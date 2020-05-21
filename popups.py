@@ -229,47 +229,46 @@ class WeaponPopup(BasePopup):
 
     def __init__(self, kwargs):
         BasePopup.__init__(self)
+        self.edit = None
+        if "edit" in kwargs:
+            self.edit = kwargs["edit"]
         self.archetype_weapons = load_weapons()
         self.current_weapon = None
-        self.combo_layout = QHBoxLayout()
+        combo_layout = QHBoxLayout()
         self.archetype_combobox = LabelledComboBox(label=translate_ui("ui_item_archetype"))
         self.archetype_names = []
         self.fill_archetype_combobox()
+        if self.edit is not None:
+            self.archetype_combobox.setCurrentIndex(self.archetype_names.index(self.edit.arch_name))
+            self.archetype_combobox.setEnabled(False)
         self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
         self.weapon_name = InputLine("weapon_name", Qt.AlignLeft, label=translate_ui("ui_item_name"))
-        self.weapon_name.value_changed.connect(self.update_parameters)
-        self.combo_layout.addWidget(self.archetype_combobox)
-        self.combo_layout.addWidget(self.weapon_name)
+        combo_layout.addWidget(self.archetype_combobox)
+        combo_layout.addWidget(self.weapon_name)
 
-        self.damage_layout = QHBoxLayout()
+        damage_layout = QHBoxLayout()
         self.damage_value = InputLine("weapon_damage", Qt.AlignLeft, dtype="int", label=translate_ui("ui_weapon_damage"))
-        self.damage_value.value_changed.connect(self.update_parameters)
         self.ap_value = InputLine("weapon_ap", Qt.AlignLeft, dtype="int", label=translate_ui("ui_weapon_ap"))
-        self.ap_value.value_changed.connect(self.update_parameters)
         self.damage_type = LabelledComboBox(label=translate_ui("ui_weapon_damage_type"))
         for damage_type in damage_types:
             self.damage_type.addItem(damage_type)
-        self.damage_type.currentIndexChanged.connect(lambda x: self.update_parameters("damage_type", damage_types[x]))
-        self.damage_layout.addWidget(self.damage_value)
-        self.damage_layout.addWidget(self.damage_type)
-        self.damage_layout.addWidget(self.ap_value)
+        damage_layout.addWidget(self.damage_value)
+        damage_layout.addWidget(self.damage_type)
+        damage_layout.addWidget(self.ap_value)
 
-        self.shot_layout = QHBoxLayout()
+        shot_layout = QHBoxLayout()
         self.max_energy = InputLine("weapon_max_energy", Qt.AlignLeft,
                                     dtype="int", label=translate_ui("ui_weapon_max_magazine"))
-        self.max_energy.value_changed.connect(self.update_parameters)
         self.energy_per_shot = InputLine("weapon_shot_cost", Qt.AlignLeft,
                                          dtype="int", label=translate_ui("ui_weapon_shotcost"))
-        self.energy_per_shot.value_changed.connect(self.update_parameters)
         self.shot_type = InputLine("weapon_mode", Qt.AlignLeft, label=translate_ui("ui_weapon_fire_mode"))
-        self.shot_type.value_changed.connect(self.update_parameters)
-        self.shot_layout.addWidget(self.max_energy)
-        self.shot_layout.addWidget(self.energy_per_shot)
-        self.shot_layout.addWidget(self.shot_type)
+        shot_layout.addWidget(self.max_energy)
+        shot_layout.addWidget(self.energy_per_shot)
+        shot_layout.addWidget(self.shot_type)
 
-        self.main_layout.addLayout(self.combo_layout)
-        self.main_layout.addLayout(self.damage_layout)
-        self.main_layout.addLayout(self.shot_layout)
+        self.main_layout.addLayout(combo_layout)
+        self.main_layout.addLayout(damage_layout)
+        self.main_layout.addLayout(shot_layout)
         self.fill_parameters()
         self.show()
 
@@ -281,15 +280,20 @@ class WeaponPopup(BasePopup):
         self.archetype_combobox.addItem(translate_item("weapon_other"))
 
     def fill_parameters(self, index=None):
-        index = self.archetype_combobox.currentIndex()
-        weapon_name = self.archetype_names[index]
-        weapon = Weapon()
+        if self.edit is None:
+            index = self.archetype_combobox.currentIndex()
+            weapon_name = self.archetype_names[index]
+            weapon = Weapon()
+            if weapon_name in self.archetype_weapons:
+                weapon_line = self.archetype_weapons[weapon_name]._line
+                weapon.load_from_line(weapon_line)
+        else:
+            weapon = self.edit
+            weapon_name = weapon.name
         self.weapon_name.setText(translate_item(weapon_name))
-        if weapon_name == "weapon_other":
+        if weapon_name == "weapon_other" and self.edit is None:
             self.current_weapon = weapon
             return
-        weapon_line = self.archetype_weapons[weapon_name]._line
-        weapon.load_from_line(weapon_line)
         self.damage_value.setText(str(weapon.damage))
         self.ap_value.setText(str(weapon.ap))
         self.damage_type.setCurrentIndex(damage_types.index(weapon.damage_type))
@@ -298,23 +302,14 @@ class WeaponPopup(BasePopup):
         self.shot_type.setText("/".join(weapon.fire_modes))
         self.current_weapon = weapon
 
-    def update_parameters(self, parameter, value):
-        if parameter == "weapon_name":
-            self.current_weapon.name = value
-        if parameter == "weapon_damage":
-            self.current_weapon.damage = int(value)
-        if parameter == "weapon_ap":
-            self.current_weapon.ap = int(value)
-        if parameter == "damage_type":
-            self.current_weapon.damage_type = value
-        if parameter == "weapon_max_energy":
-            self.current_weapon.max_magazine = int(value)
-        if parameter == "weapon_shot_cost":
-            self.current_weapon.shot_cost = int(value)
-        if parameter == "weapon_mode":
-            self.current_weapon.fire_modes = value.split("/")
-
     def ok_pressed(self):
+        self.current_weapon.name = self.weapon_name.text()
+        self.current_weapon.damage = int(self.damage_value.text())
+        self.current_weapon.ap = int(self.ap_value.text())
+        self.current_weapon.damage_type = self.damage_type.currentText()
+        self.current_weapon.max_magazine = int(self.max_energy.text())
+        self.current_weapon.shot_cost = int(self.energy_per_shot.text())
+        self.current_weapon.fire_modes = self.shot_type.text().split("/")
         self.popup_ok.emit(self.current_weapon)
         self.close()
 
@@ -324,29 +319,32 @@ class ArmorPopup(BasePopup):
 
     def __init__(self, kwargs):
         BasePopup.__init__(self)
+        if "edit" in kwargs:
+            self.edit = kwargs["edit"]
         self.archetype_armor = load_armors()
         self.current_armor = None
-        self.combo_layout = QHBoxLayout()
+        combo_layout = QHBoxLayout()
         self.archetype_combobox = LabelledComboBox(label=translate_ui("ui_item_archetype"))
         self.archetype_names = []
         self.fill_archetype_combobox()
+        if self.edit is not None:
+            self.archetype_combobox.setCurrentIndex(self.archetype_names.index(self.edit.arch_name))
+            self.archetype_combobox.setEnabled(False)
         self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
         self.armor_name = InputLine("armor_name", Qt.AlignLeft, label=translate_ui("ui_item_name"))
-        self.armor_name.value_changed.connect(self.update_parameters)
-        self.combo_layout.addWidget(self.archetype_combobox)
-        self.combo_layout.addWidget(self.armor_name)
+        combo_layout.addWidget(self.archetype_combobox)
+        combo_layout.addWidget(self.armor_name)
 
-        self.armor_layout = QHBoxLayout()
+        armor_layout = QHBoxLayout()
         self.armors = {}
         for armor in armor_names:
             armor_widget = InputLine(armor, Qt.AlignLeft, dtype="int",
                                      label=translate_parameter(armor))
             self.armors[armor] = armor_widget
-            armor_widget.value_changed.connect(self.update_parameters)
-            self.armor_layout.addWidget(armor_widget)
+            armor_layout.addWidget(armor_widget)
 
-        self.main_layout.addLayout(self.combo_layout)
-        self.main_layout.addLayout(self.armor_layout)
+        self.main_layout.addLayout(combo_layout)
+        self.main_layout.addLayout(armor_layout)
         self.fill_parameters()
         self.show()
 
@@ -358,28 +356,29 @@ class ArmorPopup(BasePopup):
         self.archetype_combobox.addItem(translate_item("armor_other"))
 
     def fill_parameters(self, index=None):
-        index = self.archetype_combobox.currentIndex()
-        armor_name = self.archetype_names[index]
+        if self.edit is None:
+            index = self.archetype_combobox.currentIndex()
+            armor_name = self.archetype_names[index]
+            armor = Armor()
+            if armor_name in self.archetype_armor:
+                armor_line = self.archetype_armor[armor_name]._line
+                armor.load_from_line(armor_line)
+        else:
+            armor = self.edit
+            armor_name = armor.name
+        self.current_armor = armor
         self.armor_name.setText(translate_item(armor_name))
-        armor = Armor()
         if armor_name == "armor_other":
             for armor_name in armor_names:
                 self.armors[armor_name].setText(armor.armor[armor_name])
-            self.current_armor = armor
             return
-        armor_line = self.archetype_armor[armor_name]._line
-        armor.load_from_line(armor_line)
-        for armor_name in armor_names:
-            self.armors[armor_name].setText(armor.armor[armor_name])
-        self.current_armor = armor
-
-    def update_parameters(self, parameter, value):
-        if parameter == "armor_name":
-            self.current_armor.name = value
-        if parameter in armor_names:
-            self.current_armor.armor[parameter] = int(value)
+        for armor_type in armor_names:
+            self.armors[armor_type].setText(armor.armor[armor_type])
 
     def ok_pressed(self):
+        self.current_armor.name = self.armor_name.text()
+        for armor_type in armor_names:
+            self.current_armor.armor[armor_type] = int(self.armors[armor_type].text())
         self.popup_ok.emit(self.current_armor)
         self.close()
 
@@ -395,7 +394,6 @@ class ItemPopup(BasePopup):
         layout.addLayout(line1)
         layout.addLayout(line2)
         self.edit = None
-        print(kwargs)
         if "edit" in kwargs:
             self.edit = kwargs["edit"]
         self.quantity = InputLine("quantity", dtype="int", label=translate_ui("ui_item_quantity"))
@@ -426,6 +424,7 @@ class ItemPopup(BasePopup):
             return
         if self.edit is None:
             self.item.total_quantity = int(self.quantity.text())
+            self.item.equipped_quantity = int(self.quantity.text())
         self.item.name = self.name.text()
         self.item.weight = float(self.weight.text())
         self.item.description = self.description.toPlainText()
@@ -495,13 +494,19 @@ class ModifierItemPopup(BasePopup):
     popup_ok = pyqtSignal(ModifierItem)
 
     def __init__(self, kwargs):
-        print(kwargs)
         BasePopup.__init__(self)
         self.alternative = kwargs["alternative"]
         self.edit = None
         if "edit" in kwargs:
             self.edit = kwargs["edit"]
+        self.include = []
+        if "include" in kwargs:
+            self.include = kwargs["include"]
         self.archetype_items = load_modifiers(self.alternative)
+        if self.include:
+            for item in list(self.archetype_items.keys()):
+                if self.archetype_items[item].type not in self.include:
+                    del self.archetype_items[item]
         self.current_item = None
         combo_layout = QHBoxLayout()
         self.archetype_combobox = LabelledComboBox(label=translate_ui("ui_item_archetype"))
@@ -593,7 +598,6 @@ class ModifierItemPopup(BasePopup):
             if not isinstance(widget, ModifierView):
                 continue
             prop_name = widget.param_names[widget.param_combo.currentIndex()]
-            print(prop_name)
             if not widget.value.text():
                 continue
             value = int(widget.value.text())

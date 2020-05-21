@@ -71,8 +71,8 @@ ui_items_in_inventory;Dostêpna iloœæ
 ui_items_to_transfer;Do przeniesienia
 ui_add_item_button;Dodaj
 ;
-ui_modifiers;Modu³y
-ui_modifier_add_button;Dodaj modu³
+ui_modifiers;Modyfikatory
+ui_modifier_add_button;Dodaj modyfikator
 ui_normal_character;Normalna
 ui_alternative_character;Droid
 ui_add_property;Dodaj w³aœciwoœæ
@@ -82,3 +82,7 @@ ui_encumbrance;Obci¹¿enie
 ui_reputation;Reputacja
 ui_speed;Ruch
 ui_num_shots;Iloœæ pocisków
+ui_modules;Modu³y
+ui_parts;Czêœci
+ui_module_add_button;Dodaj modu³
+ui_part_add_button;Dodaj czêœæ

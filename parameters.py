@@ -78,6 +78,8 @@ def load_abilities():
 
 
 def translate_ability(name, locale="PL"):
+    if not name.strip():
+        return ""
     locale_file = path.join("locales", "ability_names_{}.csv".format(locale))
     if not path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))
@@ -95,6 +97,8 @@ def translate_ability(name, locale="PL"):
 
 
 def translate_parameter(name, locale="PL"):
+    if not name.strip():
+        return ""
     locale_file = path.join("locales", "parameter_names_{}.csv".format(locale))
     if not path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))
@@ -113,6 +117,8 @@ def translate_parameter(name, locale="PL"):
 
 
 def translate_ui(name, locale="PL"):
+    if not name.strip():
+        return ""
     locale_file = path.join("locales", "ui_names_{}.csv".format(locale))
     if not path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))
@@ -131,6 +137,8 @@ def translate_ui(name, locale="PL"):
 
 
 def translate_item(name, locale="PL"):
+    if not name.strip():
+        return ""
     locale_file = path.join("locales", "item_names_{}.csv".format(locale))
     if not path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))

@@ -10,7 +10,7 @@ from popups import ItemPopup
 from item_classes import Item, Weapon, Armor, ModifierItem
 
 # from layout_classes import ArmorView, ModifierItemView, WeaponView, AbilityView
-version = 0.91
+version = 0.92
 
 
 class Application:
@@ -175,10 +175,12 @@ class Application:
         if isinstance(item, Weapon):
             item.equipped = equip
             self.update_weapons()
+            self.update_parameters()
         # Armor
         elif isinstance(item, Armor):
             item.equipped = equip
             self.update_armor()
+            self.update_parameters()
             pass
         # Modifier
         elif isinstance(item, ModifierItem):
@@ -208,9 +210,9 @@ class Application:
         elif isinstance(item, Item):
             self.sheet.add_item(item)
             self.update_items()
+            self.update_parameters()
 
     def remove_item(self, item):
-        print(item)
         # Ability
         if isinstance(item, str):
             self.remove_ability(item)
@@ -241,8 +243,7 @@ class Application:
     # Ability Handling
     def update_abilities(self):
         self.main_widget.scrolls["abilities"].clear()
-        for ability in self.sheet.abilities:
-            self.main_widget.scrolls["abilities"].add_widget(ability)
+        self.main_widget.scrolls["abilities"].fill(self.sheet.get_abilities())
 
     def add_ability(self, ability):
         self.sheet.add_ability(ability)
@@ -255,13 +256,15 @@ class Application:
 
     def update_weapons(self):
         self.main_widget.scrolls["weapons"].clear()
-        for weapon in self.sheet.weapons:
-            self.main_widget.scrolls["weapons"].add_widget(weapon)
+        self.main_widget.scrolls["weapons"].fill(self.sheet.weapons)
+        # for weapon in self.sheet.weapons:
+        #     self.main_widget.scrolls["weapons"].add_widget(weapon)
 
     def update_armor(self):
         self.main_widget.scrolls["armor"].clear()
-        for armor in self.sheet.armor:
-            self.main_widget.scrolls["armor"].add_widget(armor)
+        self.main_widget.scrolls["armor"].fill(self.sheet.armor)
+        # for armor in self.sheet.armor:
+        #     self.main_widget.scrolls["armor"].add_widget(armor)
         self.update_armor_values()
 
     def update_armor_values(self):
@@ -271,8 +274,14 @@ class Application:
 
     def update_modifiers(self):
         self.main_widget.scrolls["modifiers"].clear()
-        for modifier in self.sheet.modifier_items:
-            self.main_widget.scrolls["modifiers"].add_widget(modifier)
+        self.main_widget.scrolls["modifiers"].fill(self.sheet.modifier_items)
+        if self.sheet.is_robot:
+            self.main_widget.scrolls["modules"].clear()
+            self.main_widget.scrolls["modules"].fill(self.sheet.modifier_items)
+            self.main_widget.scrolls["parts"].clear()
+            self.main_widget.scrolls["parts"].fill(self.sheet.modifier_items)
+        # for modifier in self.sheet.modifier_items:
+        #     self.main_widget.scrolls["modifiers"].add_widget(modifier)
 
     def update_notes(self):
         for note_name in self.sheet.notes:
@@ -344,8 +353,6 @@ class Application:
         self.update_character_fields()
         # Notes
         self.update_notes()
-        for item in self.sheet.modifier_items:
-            print(item.name, item.bonuses)
 
 
 def sheet_compatibility_check(sheet):
@@ -395,11 +402,36 @@ def sheet_compatibility_check(sheet):
             del sheet_dict["parameters"][param]
 
     # Fix items
+    if isinstance(sheet_dict["items"], dict):
+        items = set()
+        for item in sheet_dict["items"]:
+            items.add(sheet_dict["items"][item])
+        sheet_dict["items"] = items
+    for item in sheet_dict["items"]:
+        item.weight = float(item.weight)
+        item.type = "item"
+    for item in sheet_dict["weapons"]:
+        if not item.weight:
+            item.weight = 0
+        item.weight = float(item.weight)
+        if not "damage" in item.damage_type:
+            item.damage_type = "damage_" + item.damage_type
+        item.type = "weapon"
     for armor in sheet_dict["armor"]:
+        armor.type = "armor"
         armor_names = {}
+        if not armor.weight:
+            armor.weight = 0
+        armor.weight = float(armor.weight)
         for armor_name in armor.armor:
             armor_names[armor_name.replace("param_", "")] = armor.armor[armor_name]
         armor.armor = armor_names
+    for item in sheet_dict["modifier_items"]:
+        if "ability" in item.arch_name:
+            item.type = "module"
+        else:
+            item.type = "part"
+
 
     sheet.version = version
     return sheet

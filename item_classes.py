@@ -14,16 +14,17 @@ def random_word(length):
 class Item:
 
     def __init__(self):
-        self.name = None
+        self.name = ""
         self.price = 0
         self.weight = 0
-        self.tooltip = None
-        self.description = None
-        self.availability = None
+        self.tooltip = ""
+        self.description = ""
+        self.availability = ""
         self.total_quantity = 0
         self.equipped_quantity = 0
         self.ID = random_word(16)
-        self.arch_name = None
+        self.arch_name = ""
+        self.type = "item"
 
 
 class ModifierItem(Item):
@@ -34,9 +35,10 @@ class ModifierItem(Item):
         self.bonuses = {}
         self.bonus_type = "modifier"
         self._line = None
+        self.type = "modifier"
 
     def load_from_line(self, line):
-        name, availability, value, weight, bonuses, bonus_type = line.strip().split(";")
+        name, availability, value, weight, bonuses, bonus_type, modifier_type = line.strip().split(";")
         bonuses = bonuses.split(",")
         self.arch_name = name
         self.name = translate_item(name)
@@ -45,6 +47,7 @@ class ModifierItem(Item):
         self.weight = 0 if not weight else int(weight)
         self.bonus_type = bonus_type
         self._line = line
+        self.type = modifier_type
 
         for bonus in bonuses:
             bonus_name, value = bonus.split()
@@ -63,6 +66,7 @@ class Armor(Item):
         self.traits = {}
         self.equipped = False
         self._line = None
+        self.type = "armor"
 
     def load_from_line(self, line):
         name, availability, value, armor, weight, other, traits = line.strip().split(";")
@@ -85,9 +89,9 @@ class Weapon(Item):
         self.modifications = []
         self.addons = []
         self.traits = []
-        self.type = None
+        self.type = ""
         self.damage = 0
-        self.damage_type = None
+        self.damage_type = ""
         self.ap = 0
         self.power_magazine = 0
         self.max_magazine = 0
@@ -98,7 +102,8 @@ class Weapon(Item):
         self.base_skill = None
         self.hands = 0
         self._line = None
-        self.weapon_type = None
+        self.weapon_type = ""
+        self.type = "weapon"
 
     def update(self):
         if self.power_magazine < self.shot_cost:
@@ -114,8 +119,9 @@ class Weapon(Item):
 
     def load_from_line(self, line):
         name, availability, value, damage, damage_type, ap, max_clip, energy_per_shot, \
-        fire_mode, traits, mods, skill, hands, weight, weapon_type = line.strip().strip().split(";")
+        fire_mode, traits, mods, skill, hands, weight, weapon_type, item_type = line.strip().strip().split(";")
         self.arch_name = name
+        # self.type = "weapon"
         self.name = translate_item(name)
         self.availability = availability
         self.price = 0 if not value else int(value)
