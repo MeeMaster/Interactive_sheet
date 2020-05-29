@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import (QPushButton, QWidget, QSpacerItem, QSizePolicy, QVBoxLayout, QHBoxLayout, QLabel, QSlider)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
-from parameters import translate_ui, translate_parameter
+from parameters import translate
 from layout_classes import InputLine
 import random
 from os import path
@@ -19,7 +19,7 @@ class ShootingWidget(QWidget):
 
     def __init__(self, parent=None, character=None, weapon=None):
         QWidget.__init__(self)
-        self.setWindowTitle(translate_ui("ui_shooting_app"))
+        self.setWindowTitle(translate("ui_shooting_app"))
         if parent is not None:
             self.setParent(parent)
         self.popup = None
@@ -44,21 +44,21 @@ class ShootingWidget(QWidget):
         # Left side
         # Params
         self.skill_value = InputLine("skill", enabled=True, maxwidth=80, dtype="int", spacer="upper",
-                                     label=translate_ui("ui_ranged_skill_value"))
+                                     label=translate("ui_ranged_skill_value"))
         self.skill_value.setText("0")
         self.skill_value.value_changed.connect(lambda: self.update_distances())
         self.gm_modifier = InputLine("gm_mod", enabled=True, dtype="int", maxwidth=80, spacer="upper",
-                                     label=translate_ui("ui_gm_modifier"))
+                                     label=translate("ui_gm_modifier"))
         self.gm_modifier.setText("0")
         self.gm_modifier.value_changed.connect(lambda: self.update_distances())
         self.break_chance = InputLine("break_chance", enabled=True, dtype="int", maxwidth=80, spacer="upper",
-                                      label=translate_ui("ui_break_chance"))
+                                      label=translate("ui_break_chance"))
         self.break_chance.setText("0")
         self.break_increment = InputLine("break_increment", enabled=True, dtype="int", spacer="upper",
-                                         maxwidth=80, label=translate_ui("ui_break_increment"))
+                                         maxwidth=80, label=translate("ui_break_increment"))
         self.break_increment.setText("0")
         self.num_shots = InputLine("num_shots", enabled=True, dtype="int", spacer="upper",
-                                         maxwidth=80, label=translate_ui("ui_num_shots"))
+                                         maxwidth=80, label=translate("ui_num_shots"))
         self.num_shots.setText("10")
         if weapon is not None:
             skill = weapon.base_skill
@@ -91,13 +91,13 @@ class ShootingWidget(QWidget):
         distance_slider_layout.addLayout(slider_layout)
         distance_values_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.current_distance = InputLine("distance", enabled=False,
-                                          label=translate_ui("ui_distance_value"))
+                                          label=translate("ui_distance_value"))
         distance_values_layout.addWidget(self.current_distance)
         self.current_distance_type = InputLine("distance_type", enabled=False,
-                                               label=translate_ui("ui_distance_type"))
+                                               label=translate("ui_distance_type"))
         distance_values_layout.addWidget(self.current_distance_type)
         self.current_distance_mod = InputLine("distance_modifier", enabled=False,
-                                              label=translate_ui("ui_distance_modifier"))
+                                              label=translate("ui_distance_modifier"))
         distance_values_layout.addWidget(self.current_distance_mod)
         distance_values_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.distance_slider = QSlider(Qt.Horizontal)
@@ -125,9 +125,9 @@ class ShootingWidget(QWidget):
         size_slider_slider_layout = QVBoxLayout()
         size_slider_layout.addLayout(size_slider_values_layout)
         size_slider_values_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        self.size_name = InputLine("size_name", label=translate_ui("ui_size_name"), enabled=False)
+        self.size_name = InputLine("size_name", label=translate("ui_size_name"), enabled=False)
         size_slider_values_layout.addWidget(self.size_name)
-        self.size_modifier = InputLine("size_modifier", label=translate_ui("ui_size_mod"), enabled=False)
+        self.size_modifier = InputLine("size_modifier", label=translate("ui_size_mod"), enabled=False)
         size_slider_values_layout.addWidget(self.size_modifier)
         size_slider_values_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         size_slider_layout.addLayout(size_slider_slider_layout)
@@ -156,9 +156,9 @@ class ShootingWidget(QWidget):
         cover_slider_slider_layout = QVBoxLayout()
         cover_slider_layout.addLayout(cover_slider_values_layout)
         cover_slider_values_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        self.cover_name = InputLine("cover_name", label=translate_ui("ui_cover_name"), enabled=False)
+        self.cover_name = InputLine("cover_name", label=translate("ui_cover_name"), enabled=False)
         cover_slider_values_layout.addWidget(self.cover_name)
-        self.cover_modifier = InputLine("cover_modifier", label=translate_ui("ui_cover_mod"), enabled=False)
+        self.cover_modifier = InputLine("cover_modifier", label=translate("ui_cover_mod"), enabled=False)
         cover_slider_values_layout.addWidget(self.cover_modifier)
         cover_slider_values_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         cover_slider_layout.addLayout(cover_slider_slider_layout)
@@ -174,12 +174,12 @@ class ShootingWidget(QWidget):
 
         # Buttons
         self.current_hit_chance = InputLine("hit_chance", enabled=False, dtype="int",
-                                            label=translate_ui("ui_hit_chance"))
-        shoot_one_button = QPushButton(translate_ui("ui_shoot_once"))
+                                            label=translate("ui_hit_chance"))
+        shoot_one_button = QPushButton(translate("ui_shoot_once"))
         shoot_one_button.clicked.connect(self.shoot_one)
-        shoot_series_button = QPushButton(translate_ui("ui_shoot_series"))
+        shoot_series_button = QPushButton(translate("ui_shoot_series"))
         shoot_series_button.clicked.connect(self.shoot_series)
-        cancel_button = QPushButton(translate_ui("ui_cancel"))
+        cancel_button = QPushButton(translate("ui_cancel"))
         cancel_button.clicked.connect(self.close_self)
         buttons_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         buttons_layout.addWidget(self.current_hit_chance)
@@ -201,14 +201,14 @@ class ShootingWidget(QWidget):
         self.current_distance.setText(distances[index])
         self.current_distance_mod.setText((str(slider_value) if slider_value <= 0 else "+"+str(slider_value)))
         distance_type = [key for key in distance_types if distances[index] in distance_types[key]][0]
-        self.current_distance_type.setText(translate_parameter(distance_type))
+        self.current_distance_type.setText(translate(distance_type))
         self.icon.update_to_size(int(150/(len(distances)-index)))
         if not warmup:
             self.update_chance()
 
     def update_size(self, warmup=False):
         sizes = [-20, -10, 0, 10, 30, 50]
-        size_names = [translate_parameter(a) for a in ["param_size_tiny", "param_size_small", "param_size_normal",
+        size_names = [translate(a) for a in ["param_size_tiny", "param_size_small", "param_size_normal",
                       "param_size_large", "param_size_giant", "param_size_enormous"]]
         slider_value = self.size_slider.value()
         self.size_name.setText(size_names[slider_value])
@@ -303,28 +303,28 @@ class OutcomeWidget(QWidget):
 
     def __init__(self, num_shots, success_first, success_remain, overheat):
         QWidget.__init__(self)
-        self.setWindowTitle(translate_ui("ui_outcome_widget_name"))
+        self.setWindowTitle(translate("ui_outcome_widget_name"))
         layout = QVBoxLayout()
         values_layout = QVBoxLayout()
         ok_button_layout = QVBoxLayout()
         layout.addLayout(values_layout)
         layout.addLayout(ok_button_layout)
 
-        shots = "{}: {}".format(translate_ui("ui_num_shots_fired"), num_shots)
+        shots = "{}: {}".format(translate("ui_num_shots_fired"), num_shots)
         label = QLabel(shots)
         values_layout.addWidget(label)
 
-        success_first_shot = "{}: {}".format(translate_ui("ui_num_successes_first"), success_first)
+        success_first_shot = "{}: {}".format(translate("ui_num_successes_first"), success_first)
         label_hit_1 = QLabel(success_first_shot)
         values_layout.addWidget(label_hit_1)
 
         if num_shots > 1:
-            success_remaining_shots = "{}: {}".format(translate_ui("ui_num_successes_remaining"), success_remain)
+            success_remaining_shots = "{}: {}".format(translate("ui_num_successes_remaining"), success_remain)
             label_hit_rem = QLabel(success_remaining_shots)
             values_layout.addWidget(label_hit_rem)
 
         if overheat:
-            overheat = "{}: {}".format(translate_ui("ui_overheated_on"), overheat)
+            overheat = "{}: {}".format(translate("ui_overheated_on"), overheat)
             label_overheat = QLabel(overheat)
             values_layout.addWidget(label_overheat)
 

@@ -1,0 +1,36 @@
+blaster:ranged_weapon
+damage_type = damage_e
+damage = 6
+base_skill = skill_ranged_light
+hands = 1
+power_magazine = 100
+max_magazine = 100
+shot_cost = 2
+weight = 1
+price = 500
+fire_modes = fire_multi
+trait = trait_short
+////
+
+holdout_blaster:blaster
+damage = 5
+power_magazine = 5
+max_magazine = 5
+shot_cost = 1
+price = 600
+trait = trait_short, trait_balanced, trait_small
+////
+
+blaster_rifle:blaster
+damage = 8
+ap = 1
+hands = 1.5
+shot_cost = 4
+power_magazine = 100
+max_magazine = 100
+shot_cost = 2
+weight = 1
+price = 500
+fire_modes = fire_multi, fire_auto
+////
+

@@ -1,0 +1,480 @@
+ability_analysis1:ability
+requirements = skill_analysis 15
+description = desc_ability_analysis1
+tier = 1
+////
+
+ability_analysis2:ability
+requirements = skill_analysis 20
+description = desc_ability_analysis2
+tier = 2
+////
+
+ability_analysis3:ability
+requirements = skill_analysis 15
+description = desc_ability_analysis3
+tier = 1
+////
+
+ability_athletics1:ability
+requirements = skill_athletics 15
+description = desc_ability_athletics1
+tier = 1
+////
+
+ability_athletics2:ability
+requirements = skill_athletics 15
+description = desc_ability_athletics2
+tier = 1
+////
+
+ability_cyber1:ability
+requirements = skill_cybernetics  10
+description = desc_ability_cyber1
+tier = 1
+////
+
+ability_dipl1:ability
+requirements = skill_diplomacy  10
+description = desc_ability_dipl1
+tier = 1
+////
+
+ability_commerce1:ability
+requirements = skill_commerce 15, attrib_charisma 15
+description = desc_ability_commerce1
+tier = 1
+////
+
+ability_commerce2:ability
+requirements = ability_commerce1, skill_commerce 20
+description = desc_ability_commerce2
+tier = 2
+////
+
+ability_mech1:ability
+requirements = skill_mechanics 10
+description = desc_ability_mech1
+tier = 1
+////
+
+ability_mech2:ability
+requirements = skill_mechanics 15
+description = desc_ability_mech2
+tier = 1
+////
+
+ability_med1:ability
+requirements = skill_medicine 10
+description = desc_ability_med1
+tier = 1
+////
+
+ability_med2:ability
+requirements = skill_medicine 15
+description = desc_ability_med2
+tier = 1
+////
+
+ability_nav1:ability
+requirements = skill_navigation 15
+description = desc_ability_nav1
+tier = 1
+////
+
+ability_nav2:ability
+requirements = skill_navigation 15
+description = desc_ability_nav2
+tier = 1
+////
+
+ability_nav3:ability
+requirements = skill_navigation 15
+description = desc_ability_nav3
+tier = 1
+////
+
+ability_comp1:ability
+requirements = skill_composition 15
+description = desc_ability_comp1
+tier = 1
+////
+
+ability_comp2:ability
+requirements = skill_composition 15
+description = desc_ability_comp2
+tier = 1
+////
+
+ability_comp3:ability
+requirements = skill_composition 20
+description = desc_ability_comp3
+tier = 2
+////
+
+ability_cheat1:ability
+requirements = skill_cheat 15, ability_dexterity1
+description = desc_ability_cheat1
+tier = 1
+////
+
+ability_cheat2:ability
+requirements = skill_cheat 15
+description = desc_ability_cheat2
+tier = 1
+////
+
+ability_cheat3:ability
+requirements = skill_cheat 25, skill_cybernetics  20, skill_security 20
+description = desc_ability_cheat3
+tier = 3
+////
+
+ability_cheat4:ability
+requirements = skill_cheat 10
+description = desc_ability_cheat4
+tier = 1
+////
+
+ability_cheat5:ability
+requirements = skill_cheat 15
+description = desc_ability_cheat5
+tier = 2
+////
+
+ability_pilot1:ability
+requirements = skill_pilot_spaceships 20
+description = desc_ability_pilot1
+tier = 1
+////
+
+ability_pilot2:ability
+requirements = skill_pilot_speeders 10
+description = desc_ability_pilot2
+tier = 2
+////
+
+ability_inter1:ability
+requirements = skill_interrogation 15
+description = desc_ability_inter1
+tier = 1
+////
+
+ability_inter2:ability
+requirements = skill_interrogation 15, skill_composition 15
+description = desc_ability_inter2
+tier = 2
+////
+
+ability_inter3:ability
+requirements = skill_interrogation 10
+description = desc_ability_inter3
+tier = 1
+////
+
+ability_perception1:ability
+requirements = skill_perception 15
+description = desc_ability_perception1
+tier = 1
+////
+
+ability_perception2:ability
+requirements = skill_perception 10
+description = desc_ability_perception2
+tier = 1
+////
+
+ability_ranged_light2:ability
+requirements = skill_ranged_light 15
+description = desc_ability_ranged_light2
+tier = 1
+////
+
+ability_ranged_light3:ability
+requirements = skill_ranged_light 20
+description = desc_ability_ranged_light3
+tier = 1
+////
+
+ability_ranged_light4:ability
+requirements = skill_ranged_light 20
+description = desc_ability_ranged_light4
+tier = 2
+////
+
+ability_ranged_light5:ability
+requirements = skill_ranged_light 20
+description = desc_ability_ranged_light5
+tier = 2
+////
+
+ability_ranged_light6:ability
+requirements = attrib_agility 15, skill_ranged_light 20
+description = desc_ability_ranged_light6
+tier = 1
+////
+
+ability_ranged_light7:ability
+requirements = skill_ranged_light 30
+description = desc_ability_ranged_light7
+tier = 3
+////
+
+ability_ranged_light8:ability
+requirements = skill_ranged_light 25
+description = desc_ability_ranged_light8
+tier = 3
+////
+
+ability_ranged_light9:ability
+requirements = skill_ranged_light 25
+description = desc_ability_ranged_light9
+tier = 3
+////
+
+ability_ranged_light10:ability
+requirements = skill_ranged_light 20
+description = desc_ability_ranged_light10
+tier = 2
+////
+
+ability_ranged_heavy1:ability
+requirements = skill_ranged_heavy 15, attrib_agility 10
+description = desc_ability_ranged_heavy1
+tier = 1
+////
+
+ability_ranged_heavy2:ability
+requirements = skill_ranged_heavy 10, attrib_strength 20
+description = desc_ability_ranged_heavy2
+tier = 2
+////
+
+ability_ranged_heavy3:ability
+requirements = skill_ranged_heavy 20
+description = desc_ability_ranged_heavy3
+tier = 1
+////
+
+ability_ranged_heavy4:ability
+requirements = skill_ranged_heavy 15
+description = desc_ability_ranged_heavy4
+tier = 1
+////
+
+ability_ranged_heavy5:ability
+requirements = skill_ranged_heavy 20
+description = desc_ability_ranged_heavy5
+tier = 2
+////
+
+ability_ranged_stationary1:ability
+requirements = skill_ranged_stationary 10
+description = desc_ability_ranged_stationary1
+tier = 1
+////
+
+ability_survival1:ability
+requirements = skill_survival 10
+description = desc_ability_survival1
+tier = 1
+////
+
+ability_survival2:ability
+requirements = skill_survival 10
+description = desc_ability_survival2
+tier = 1
+////
+
+ability_survival3:ability
+requirements = skill_survival 15
+description = desc_ability_survival3
+tier = 2
+////
+
+ability_survival4:ability
+requirements = skill_survival 20
+description = desc_ability_survival4
+tier = 3
+////
+
+ability_hide1:ability
+requirements = skill_conceal 15
+description = desc_ability_hide1
+tier = 1
+////
+
+ability_hide2:ability
+requirements = skill_conceal 15
+description = desc_ability_hide2
+tier = 1
+////
+
+ability_evade1:ability
+requirements = skill_dodge 15
+description = desc_ability_evade1
+tier = 1
+////
+
+ability_melee_unarmed1:ability
+requirements = attrib_agility 15, skill_melee_unarmed 10
+description = desc_ability_melee_unarmed1
+tier = 1
+////
+
+ability_melee_unarmed2:ability
+requirements = skill_melee_unarmed 20
+description = desc_ability_melee_unarmed2
+tier = 1
+////
+
+ability_armed1:ability
+requirements = skill_melee_armed 15
+description = desc_ability_armed1
+tier = 1
+////
+
+ability_armed2:ability
+requirements = skill_melee_armed 20
+description = desc_ability_armed2
+tier = 2
+////
+
+ability_influence1:ability
+requirements = skill_influence 20
+description = desc_ability_influence1
+tier = 2
+////
+
+ability_influence2:ability
+requirements = skill_influence 20
+description = desc_ability_influence2
+tier = 2
+////
+
+ability_influence3:ability
+requirements = skill_influence 15
+description = desc_ability_influence3
+tier = 1
+////
+
+ability_influence4:ability
+requirements = skill_influence 15
+description = desc_ability_influence4
+tier = 1
+////
+
+ability_influence5:ability
+requirements = attrib_charisma 15
+description = desc_ability_influence5
+tier = 1
+////
+
+ability_persistence1:ability
+requirements = skill_persistence 15
+description = desc_ability_persistence1
+tier = 1
+////
+
+ability_persistence2:ability
+requirements = skill_persistence 10
+description = desc_ability_persistence2
+tier = 1
+////
+
+ability_persistence3:ability
+requirements = skill_persistence 20
+description = desc_ability_persistence3
+tier = 2
+////
+
+ability_resistance1:ability
+requirements = skill_resistance 15
+description = desc_ability_resistance1
+tier = 2
+////
+
+ability_security1:ability
+requirements = skill_security 10
+description = desc_ability_security1
+tier = 1
+////
+
+ability_security2:ability
+requirements = skill_security 15
+description = desc_ability_security2
+tier = 1
+////
+
+ability_security3:ability
+requirements = skill_security 15
+description = desc_ability_security3
+tier = 2
+////
+
+ability_security4:ability
+requirements = skill_security 20
+description = desc_ability_security4
+tier = 2
+////
+
+ability_security5:ability
+requirements = skill_security 30
+description = desc_ability_security5
+tier = 3
+////
+
+ability_security6:ability
+requirements = skill_security 25
+description = desc_ability_security6
+tier = 2
+////
+
+ability_security7:ability
+requirements = skill_security 15, ability_dexterity3
+description = desc_ability_security7
+tier = 2
+////
+
+ability_dexterity1:ability
+requirements = skill_dexterity 15
+description = desc_ability_dexterity1
+tier = 1
+////
+
+ability_dexterity2:ability
+requirements = attrib_agility 15, skill_dexterity 15
+description = desc_ability_dexterity2
+tier = 2
+////
+
+ability_dexterity3:ability
+requirements = attrib_agility 20
+description = desc_ability_dexterity3
+tier = 1
+////
+
+ability_dexterity4:ability
+requirements = ability_dexterity1
+description = desc_ability_dexterity4
+tier = 1
+////
+
+ability_willpower1:ability
+requirements = attrib_willpower 25
+description = desc_ability_willpower1
+tier = 2
+////
+
+ability_general1:ability
+requirements = 
+description = desc_ability_general1
+tier = 1
+////
+
+ability_general2:ability
+requirements = 
+description = desc_ability_general2
+tier = 1
+////
+

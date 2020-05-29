@@ -61,10 +61,11 @@ class Character:
         for name in self.character_names:
             self.character[name] = ""
 
-        self.armor = set()
-        self.weapons = set()
-        self.modifier_items = set()
-        self.items = set()
+        # self.armor = set()
+        # self.weapons = set()
+        # self.modifier_items = set()
+        self.objects = set()
+        self.items = set()  # TODO remove later
         self.notes = {}
         for note in self.notes_names:
             self.notes[note] = ""
@@ -114,8 +115,10 @@ class Character:
         armor_dict = {}
         for armor_slot in self.armor_names:
             armor_dict[armor_slot] = self.calculate_attribute("attrib_toughness") // 10
-        for armor in self.armor:
-            if not armor.equipped:
+        for armor in self.items:
+            if armor.type != "armor":
+                continue
+            if not armor.equipped_quantity:
                 continue
             for armor_slot in self.armor_names:
                 armor_dict[armor_slot] += armor.armor[armor_slot]
@@ -124,50 +127,63 @@ class Character:
             armor_dict[armor_slot] += modifier
         return armor_dict
 
+    def add_object(self, obj):
+        self.objects.add(obj)
+
+    def remove_object(self, obj):
+        for element in self.objects:
+            pass
+
     def add_ability(self, ability):
-        if ability in self.abilities:
+        if self.has_ability(ability.name):
             return
         self.abilities.add(ability)
 
     def remove_ability(self, ability):
-        if ability not in self.abilities:
-            return
+        # ab = self.has_ability(ability)
+        # if not ability:
+        #     return
         self.abilities.remove(ability)
 
     def get_abilities(self):
-        abilities = self.get_modifier_item_abilities()
+        abilities = set()  # TODO fix later
+        # for object in self.objects:
+        #     if object.type == "ability":
+        #         abilities.append(object)
+        # return abilities
+        # abilities = self.get_modifier_item_abilities()
         return self.abilities | abilities
 
     def add_weapon(self, weapon):
-        if weapon in self.weapons:
+        if weapon in self.items:
             return False
-        self.weapons.add(weapon)
+        self.items.add(weapon)
         return True
 
     def remove_weapon(self, item):
         found = False
-        for weapon in self.weapons:
+        for weapon in self.items:
             if item.ID == weapon.ID:
                 found = True
                 break
         if found:
-            self.weapons.remove(weapon)
+            self.items.remove(weapon)
         return found
 
     def add_armor(self, armor):
-        if armor in self.armor:
+        if armor in self.items:
             return False
-        self.armor.add(armor)
+        self.items.add(armor)
         return True
 
     def remove_armor(self, item):
         found = False
-        for armor in self.armor:
+        for armor in self.items:
             if item.ID == armor.ID:
                 found = True
                 break
         if found:
-            self.armor.remove(armor)
+            self.items.remove(armor)
         return found
 
     def find_item_with_id(self, _id):
@@ -181,9 +197,6 @@ class Character:
             if name == item.name:
                 return item
         return
-
-    def change_armor(self, slot, armor_dict):
-        self.armor[slot] = armor_dict
 
     def change_notes(self, name, value):
         self.notes[name] = value
@@ -214,8 +227,8 @@ class Character:
 
     def get_modifier_item_abilities(self):
         abilities = set()
-        for item in self.modifier_items:
-            if not item.equipped:
+        for item in self.items:
+            if not item.equipped_quantity:
                 continue
             for bonus in item.bonuses:
                 if bonus.startswith("ability_"):
@@ -224,8 +237,10 @@ class Character:
 
     def read_modifier_items(self, param, mod_type="modifier"):
         out = 0
-        for item in self.modifier_items:
-            if not item.equipped:
+        for item in self.items:
+            if not item.equipped_quantity:
+                continue
+            if item.type not in ["modifier", "bionic", "implant", "part", "module"]:
                 continue
             if item.bonus_type != mod_type:
                 continue
@@ -235,33 +250,26 @@ class Character:
         return out
 
     def add_modifier_item(self, item):
-        if item in self.modifier_items:
+        if item in self.items:
             return
-        self.modifier_items.add(item)
+        self.items.add(item)
 
     def remove_modifier_item(self, item):
         found = False
-        for modifier in self.modifier_items:
+        for modifier in self.items:
             if item.ID == modifier.ID:
                 found = True
                 break
         if found:
             self.equip_modifier_item(modifier, False)
-            self.modifier_items.remove(modifier)
+            self.items.remove(modifier)
         return found
 
     def calculate_current_encumbrance(self):
         curr_weight = 0
         for item in self.items:
             curr_weight += item.equipped_quantity * item.weight
-        for weapon in self.weapons:
-            if weapon.equipped:
-                curr_weight += weapon.weight
-        for armor in self.armor:
-            if armor.equipped:
-                curr_weight += armor.weight
         return curr_weight
-        # for modifi
 
     def equip_modifier_item(self, item, equip):
         if item.equipped == equip:
@@ -271,7 +279,7 @@ class Character:
             return
         if not equip:
             return
-        for other_item in self.modifier_items:
+        for other_item in self.items:
             if other_item.ID == item.ID:
                 continue
             if not other_item.equipped:
@@ -335,5 +343,12 @@ class Character:
                                                     int(self.parameters["param_reputation_bad"])
 
     def has_ability(self, ability):
-        return ability in self.abilities
+
+        for obj in self.abilities:
+            if obj.type != "ability":
+                continue
+            if obj.name == ability:
+                return True
+        return False
+        # return ability in self.abilities
 

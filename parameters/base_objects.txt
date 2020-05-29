@@ -1,0 +1,80 @@
+base_object:
+name = 
+tooltip = 
+description = 
+display = 
+bonuses = 
+type = base
+image =
+////
+
+ability:base_object
+type = ability
+requirements =
+tier = 1
+////
+
+trait:base_object
+type = trait
+value = 
+////
+
+item:base_object
+total_quantity = 0
+equipped_quantity = 0
+type = item
+price = 0
+weight = 0
+availability = 5		# 1 - blackmarket, 2 - very rare, 3 - rare, 4 - uncommon, 5 - common
+availability_era = 
+////
+
+modifier_item:item
+type = modfifier		# implant, bionic, part, module1, module2
+////
+
+equipment_item:item
+available_modifications = 
+addon = 
+available_addons = 
+trait = 
+modification = 
+////
+
+modification:item
+type = modification		# addon
+damage = 0
+ap = 0
+shot_cost = 0
+trait = 
+////
+
+armor:equipment_item
+type = armor
+////
+
+weapon:equipment_item
+type = weapon
+damage = 0
+damage_type = damage_p		# damage_e, damage_x, damage_el, damage_i, damage_ammo
+ap = 0
+base_skill = 			# skill_melee_unarmed, skill_melee_armed, skill_ranged_light, skill_ranged_heavy, skill_ranged_stationary, 
+hands = 0
+weapon_type = 		# melee, ranged
+type = weapon
+////
+
+ranged_weapon:weapon
+power_magazine = 0
+max_magazine = 0
+shot_cost = 0
+weapon_type = ranged
+fire_modes = fire_single  # fire_single, fire_multi, fire_burst, fire_auto
+type = ranged_weapon
+////
+
+melee_weapon:weapon
+weapon_type = melee
+////
+
+

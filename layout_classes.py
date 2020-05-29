@@ -4,8 +4,8 @@ from PyQt5.QtWidgets import (QPushButton, QWidget, QAction, QSpacerItem, QSizePo
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QValidator, QColor, QDoubleValidator
-from parameters import translate_ability, translate_ui, translate_parameter
-from parameters import load_parameters
+# from parameters import translate, translate
+from parameters import load_parameters, translate
 from item_classes import Item
 
 param_dict = load_parameters()
@@ -28,7 +28,7 @@ class ScrollContainer(QWidget):
         self.name = name
         self.kwargs = kwargs
         self.layout = QVBoxLayout()
-        self.label = QLabel(translate_ui(name))
+        self.label = QLabel(translate(name))
         self.label.setStyleSheet("font: bold 14px")
         self.layout.addWidget(self.label)
         self.scroll = QScrollArea()
@@ -48,10 +48,13 @@ class ScrollContainer(QWidget):
         self.scroll.setWidget(self.scroll_widget)
         self.scroll_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
+    def format_label(self, size=14, bold=True, italic=False):
+        self.label.setStyleSheet("font: {} {} {}px".format("bold" if bold else "", "italic" if italic else "", size))
+
     def open_popup(self, edit=None):
         if self.popup is not None:
             self.kwargs["edit"] = edit
-            self.current_popup = self.popup(self.kwargs)
+            self.current_popup = self.popup(kwargs=self.kwargs)
             if edit is None:
                 self.current_popup.popup_ok.connect(self.ok_clicked)
             else:
@@ -177,6 +180,9 @@ class InputLine(QWidget):
             self.layout.insertSpacerItem(0, QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
+
+    def format_label(self, size=14, bold=True, italic=False):
+        self.label.setStyleSheet("font: {} {} {}px".format("bold" if bold else "", "italic" if italic else "", size))
 
     def emit_changed(self):
         self.value_changed.emit(self.name, self.text())
@@ -395,18 +401,18 @@ class AbilityView(View):
 
     def __init__(self, ability):
         View.__init__(self)
-        self.name = ability
+        self.item = ability
+        self.name = ability.name
         layout = QVBoxLayout()
-        display, desc = translate_ability(ability)
-        self.display_name = display
-        self.description = desc
-        self.setToolTip(self.description)
+        # display, desc = translate_ability(ability)
+        self.display_name = translate(ability.name)  # TODO
+        self.description = translate(ability.description)
+        self.setToolTip(translate(ability.tooltip))
         self.display = QLineEdit()
         layout.addWidget(self.display)
         self.display.setText(self.display_name)
         self.display.setEnabled(False)
         self.setLayout(layout)
-        self.item = self.name
         self.layout().setContentsMargins(0, 0, 0, 0)
 
 
@@ -427,27 +433,27 @@ class WeaponView(View):
         self.equipped_checkbox.setChecked(self.item.equipped)
         self.equipped_checkbox.stateChanged.connect(self.equip)
         line1_layout.addWidget(self.equipped_checkbox)
-        self.weapon_name = LabelledLabel(label=translate_ui("ui_item_name"))
+        self.weapon_name = LabelledLabel(label=translate("ui_item_name"))
         # self.weapon_name.setFixedWidth(120
         self.weapon_name.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         line1_layout.addWidget(self.weapon_name, stretch=0)
-        self.weapon_type = LabelledLabel(label=translate_ui("ui_weapon_type"))
+        self.weapon_type = LabelledLabel(label=translate("ui_weapon_type"))
         line1_layout.addWidget(self.weapon_type, stretch=0)
-        self.weapon_damage = LabelledLabel(label=translate_ui("ui_weapon_damage"))
+        self.weapon_damage = LabelledLabel(label=translate("ui_weapon_damage"))
         line1_layout.addWidget(self.weapon_damage, stretch=0)
-        self.weapon_pp = LabelledLabel(label=translate_ui("ui_weapon_ap"))
+        self.weapon_pp = LabelledLabel(label=translate("ui_weapon_ap"))
         line1_layout.addWidget(self.weapon_pp, stretch=0)
-        self.weapon_damage_type = LabelledLabel(label=translate_ui("ui_weapon_damage_type"))
+        self.weapon_damage_type = LabelledLabel(label=translate("ui_weapon_damage_type"))
         line1_layout.addWidget(self.weapon_damage_type, stretch=0)
-        self.weapon_ammo_cost = LabelledLabel(label=translate_ui("ui_weapon_shotcost"))
+        self.weapon_ammo_cost = LabelledLabel(label=translate("ui_weapon_shotcost"))
         line1_layout.addWidget(self.weapon_ammo_cost, stretch=0)
-        self.weapon_current_power = LabelledLabel(label=translate_ui("ui_weapon_magazine"))
+        self.weapon_current_power = LabelledLabel(label=translate("ui_weapon_magazine"))
         line1_layout.addWidget(self.weapon_current_power, stretch=0)
-        self.weapon_weight = LabelledLabel(label=translate_ui("ui_item_weight"))
+        self.weapon_weight = LabelledLabel(label=translate("ui_item_weight"))
         line2_layout.addWidget(self.weapon_weight, stretch=0)
-        self.weapon_value = LabelledLabel(label=translate_ui("ui_item_price"))
+        self.weapon_value = LabelledLabel(label=translate("ui_item_price"))
         line2_layout.addWidget(self.weapon_value, stretch=0)
-        self.weapon_traits = LabelledLabel(label=translate_ui("ui_item_traits"))
+        self.weapon_traits = LabelledLabel(label=translate("ui_item_traits"))
         self.weapon_traits.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         line2_layout.addWidget(self.weapon_traits, stretch=0)
         layout.addLayout(line1_layout, stretch=0)
@@ -473,8 +479,8 @@ class WeaponView(View):
         self.weapon_current_power.set_text(str(self.item.power_magazine))
         self.weapon_value.set_text(str(self.item.price))
         self.weapon_weight.set_text(str(self.item.weight))
-        self.equipped_checkbox.setChecked(self.item.equipped)
-        self.weapon_type.set_text(translate_parameter(self.item.weapon_type))
+        self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
+        self.weapon_type.set_text(translate(self.item.weapon_type))
 
 
 class ArmorView(View):
@@ -495,17 +501,17 @@ class ArmorView(View):
         self.equipped_checkbox.stateChanged.connect(self.equip)
         line1_layout.addWidget(self.equipped_checkbox)
 
-        self.armor_name = LabelledLabel(label=translate_ui("ui_item_name"))
+        self.armor_name = LabelledLabel(label=translate("ui_item_name"))
         self.armor_name.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         line1_layout.addWidget(self.armor_name)
         self.armor_parts = {}
         for armor_name in armor_names:
-            armor_piece = LabelledLabel(label=translate_parameter(armor_name))
+            armor_piece = LabelledLabel(label=translate(armor_name))
             self.armor_parts[armor_name] = armor_piece
             line1_layout.addWidget(armor_piece)
-        self.weight = LabelledLabel(label=translate_ui("ui_item_weight"))
+        self.weight = LabelledLabel(label=translate("ui_item_weight"))
         line1_layout.addWidget(self.weight)
-        self.value = LabelledLabel(label=translate_ui("ui_item_price"))
+        self.value = LabelledLabel(label=translate("ui_item_price"))
         line1_layout.addWidget(self.value)
 
         layout.addLayout(line1_layout)
@@ -526,7 +532,7 @@ class ArmorView(View):
             self.armor_parts[armor_name].set_text(str(self.item.armor[armor_name]))
         self.value.set_text(str(self.item.price))
         self.weight.set_text(str(self.item.weight))
-        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
 
 
 class EquipmentView(QWidget):
@@ -555,7 +561,7 @@ class EquippedCheckbox(QWidget):
     def __init__(self):
         QWidget.__init__(self)
         self.layout = QVBoxLayout()
-        self.label = QLabel(translate_ui("ui_item_equipped"))
+        self.label = QLabel(translate("ui_item_equipped"))
         self.label.setStyleSheet("font: 8px")
         self.label.setContentsMargins(0, 0, 0, 0)
         self.layout.addWidget(self.label)
@@ -685,6 +691,9 @@ class LabelledTextEdit(QWidget):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
 
+    def format_label(self, size=14, bold=True, italic=False):
+        self.label.setStyleSheet("font: {} {} {}px".format("bold" if bold else "", "italic" if italic else "", size))
+
     def get_text(self):
         return self.text_edit.toPlainText()
 
@@ -739,7 +748,7 @@ class EquipmentWidget(QWidget):
         self.equipped_table.delete_item.connect(self.signal_delete)
         self.equipped_table.edit_item.connect(self.item_edit)
         equipped_table_layout = QVBoxLayout()
-        label = QLabel(translate_ui("ui_equipped_items"))
+        label = QLabel(translate("ui_equipped_items"))
         label.setStyleSheet("font: bold 12px")
         label.setAlignment(Qt.AlignCenter)
         equipped_table_layout.addWidget(label)
@@ -750,7 +759,7 @@ class EquipmentWidget(QWidget):
         self.stash_table.delete_item.connect(self.signal_delete)
         self.stash_table.edit_item.connect(self.item_edit)
         stash_table_layout = QVBoxLayout()
-        label = QLabel(translate_ui("ui_stashed_items"))
+        label = QLabel(translate("ui_stashed_items"))
         label.setStyleSheet("font: bold 12px")
         label.setAlignment(Qt.AlignCenter)
         stash_table_layout.addWidget(label)
@@ -763,7 +772,7 @@ class EquipmentWidget(QWidget):
         button_right.setArrowType(Qt.DownArrow)
         button_right.clicked.connect(lambda: self.open_transfer_popup(False))
         button_right.setFixedWidth(40)
-        button_add = QPushButton(translate_ui("ui_add_item_button"))
+        button_add = QPushButton(translate("ui_add_item_button"))
         button_add.clicked.connect(self.open_popup)
         button_add.setFixedWidth(60)
         buttons_layout = QHBoxLayout()
@@ -941,7 +950,7 @@ class ItemTable(QWidget):
 
     def item_edit(self):
         current_item_id = self.table.cellWidget(self.table.currentRow(), 0).text()
-        self.edit_item.emit(current_item_id)  # TODO fix to item id later
+        self.edit_item.emit(current_item_id)
 
     def remove_item(self):
         if self.table.currentRow() == -1:
@@ -956,10 +965,10 @@ class ItemTable(QWidget):
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.table.setColumnHidden(0, True)
         self.table.verticalHeader().setVisible(False)
-        self.table.setHorizontalHeaderLabels([translate_ui("ui_item_name"), translate_ui("ui_item_quantity"),
-                                              translate_ui("ui_item_name"),
-                                              translate_ui("ui_item_weight"),
-                                              translate_ui("ui_item_total_weight")])
+        self.table.setHorizontalHeaderLabels([translate("ui_item_name"), translate("ui_item_quantity"),
+                                              translate("ui_item_name"),
+                                              translate("ui_item_weight"),
+                                              translate("ui_item_total_weight")])
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
@@ -968,6 +977,7 @@ class ItemTable(QWidget):
         header.setSectionResizeMode(4, QHeaderView.ResizeToContents)
 
     def fill_table(self, data):
+        data = [item for item in data if item.type == "item"]
         data_len = len([item for item in data if item.equipped_quantity > 0]) if self.equipped else \
             len([item for item in data if (item.total_quantity != item.equipped_quantity) or item.total_quantity == 0])
         self.table.setRowCount(data_len)
@@ -1056,13 +1066,13 @@ class PropertyView(QWidget):
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         names = [name for name in bonuses]
-        self.label = QLabel(translate_parameter(names[0]))
+        self.label = QLabel(translate(names[0]))
         self.value = QLabel(str(bonuses[names[0]]))
         self.cont = QLabel("...")
         layout.addWidget(self.label)
         layout.addWidget(self.value)
         if len(bonuses) > 1:
             layout.addWidget(self.cont)
-        self.setToolTip("\n".join([translate_parameter(name)+": "+str(value) for name, value in bonuses.items()]))
+        self.setToolTip("\n".join([translate(name)+": "+str(value) for name, value in bonuses.items()]))
         self.setLayout(layout)
 

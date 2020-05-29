@@ -1,5 +1,9 @@
 import codecs
 from os import path
+from item_classes import *
+
+
+ALL_OBJECTS_DICT = {}
 
 
 def load_parameters(alternative=False):
@@ -31,77 +35,13 @@ def load_parameters(alternative=False):
     return parameters
 
 
-def load_modifiers(alternative=False):
-    from item_classes import modifier_from_line
-    modifiers = {}
-    filepath = path.join("parameters", "modifiers.csv")
-    if alternative:
-        filepath = path.join("parameters", "modifiers_alternative.csv")
-
-    with codecs.open(filepath, "r", encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.strip():
-                continue
-            if line.strip().startswith("#"):
-                continue
-            modifier = modifier_from_line(line)
-            modifiers[modifier.arch_name] = modifier
-    return modifiers
-
-
-def load_abilities():
-    abilities = {}
-    with codecs.open(path.join("parameters", "abilities.csv"), "r", encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.strip():
-                continue
-            name, requirements, tier = line.strip().split(";")
-            if name in abilities:
-                print("Ability '{}' already defined, check the config files!".format(name))
-                continue
-            abilities[name] = {
-                "name": name,
-                "requirements": {},
-                "tier": tier
-                }
-            if not requirements:
-                continue
-            for requirement in requirements.split(","):
-                requirement = requirement.strip()
-                if len(requirement.split()) == 1:
-                    abilities[name]["requirements"][requirement] = True
-                else:
-                    requirement, value = requirement.split()
-                    abilities[name]["requirements"][requirement] = int(value)
-    return abilities
-
-
-def translate_ability(name, locale="PL"):
+def translate(name, locale="PL"):
     if not name.strip():
         return ""
-    locale_file = path.join("locales", "ability_names_{}.csv".format(locale))
+    locale_file = path.join("locales", "translations_{}.csv".format(locale))
     if not path.exists(locale_file):
         print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = path.join("locales", "ability_names_{}.csv".format("EN"))
-        if not path.exists(locale_file):
-            return name, ""
-    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.startswith(name):
-                continue
-            name, display_name, description = line.strip().split(";")
-            return display_name, description
-        print("No translation found for ability '{}' and locale '{}'".format(name, locale))
-        return name, ""
-
-
-def translate_parameter(name, locale="PL"):
-    if not name.strip():
-        return ""
-    locale_file = path.join("locales", "parameter_names_{}.csv".format(locale))
-    if not path.exists(locale_file):
-        print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = path.join("locales", "parameter_names_{}.csv".format("EN"))
+        locale_file = path.join("locales", "translations_{}.csv".format("EN"))
         if not path.exists(locale_file):
             return name
     with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
@@ -111,47 +51,7 @@ def translate_parameter(name, locale="PL"):
             read_name, translation = line.strip().split(";")
             if read_name == name:
                 return translation
-        print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
-        return name
-
-
-def translate_ui(name, locale="PL"):
-    if not name.strip():
-        return ""
-    locale_file = path.join("locales", "ui_names_{}.csv".format(locale))
-    if not path.exists(locale_file):
-        print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = path.join("locales", "ui_names_{}.csv".format("EN"))
-        if not path.exists(locale_file):
-            return name
-    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.startswith(name):
-                continue
-            read_name, translation = line.strip().split(";")
-            if read_name == name:
-                return translation
-        print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
-        return name
-
-
-def translate_item(name, locale="PL"):
-    if not name.strip():
-        return ""
-    locale_file = path.join("locales", "item_names_{}.csv".format(locale))
-    if not path.exists(locale_file):
-        print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = path.join("locales", "item_names_{}.csv".format("EN"))
-        if not path.exists(locale_file):
-            return name
-    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.startswith(name):
-                continue
-            read_name, translation = line.strip().split(";")
-            if read_name == name:
-                return translation
-        print("No translation found for parameter '{}' and locale '{}'".format(name, locale))
+        print("No translation found for value '{}' and locale '{}'".format(name, locale))
         return name
 
 
@@ -186,3 +86,146 @@ def load_armors():
             armor = armor_from_line(line)
             armors[armor.arch_name] = armor
     return armors
+
+
+def read_objects(filepath):
+    objects = {}
+    with open(filepath, "r") as infile:
+        current_object = None
+        for line in infile:
+            valid_line = line.split("#")[0].strip()
+            if not valid_line.strip():
+                continue
+            if "////" in valid_line:
+                current_object = None
+                continue
+            if current_object is None:
+                if ":" not in valid_line:
+                    continue
+                current_object, parent = valid_line.split(":")
+                objects[current_object] = {"parent": parent}
+                continue
+            parameter, value = valid_line.split("=")
+            parameter = parameter.strip()
+            value = value.strip()
+            objects[current_object]["name"] = current_object
+            objects[current_object][parameter] = value
+    return objects
+
+
+def get_objects_of_type(object_type):
+    global ALL_OBJECTS_DICT
+    if not ALL_OBJECTS_DICT:
+        read_all_objects()
+    children = get_all_children(ALL_OBJECTS_DICT, object_type)
+    output = {}
+    for child in children:
+        output[child] = ALL_OBJECTS_DICT[child]
+    return output
+
+
+def get_object_data(object_name):
+    global ALL_OBJECTS_DICT
+    if not ALL_OBJECTS_DICT:
+        read_all_objects()
+    if object_name not in ALL_OBJECTS_DICT:
+        return
+    return ALL_OBJECTS_DICT[object_name]
+
+
+def get_all_children(object_dict, name):
+    all_children = []
+
+    def get_children(name):
+        for child_name, item_dict in object_dict.items():
+            if item_dict["parent"] != name:
+                continue
+            all_children.append(child_name)
+            get_children(child_name)
+    get_children(name)
+    return all_children
+
+
+def get_children(object_type):
+    children = {}
+    objects = get_objects_of_type(object_type)
+    for object_name, object_data in objects.items():
+        if object_data["parent"] != object_type:
+            continue
+        children[object_name] = object_data
+    return children
+
+
+def get_full_data(object_dict, item):
+    item_dict = {}
+
+    def get_data(item):
+        if not item:
+            return
+        parent_dict = object_dict[item]
+        for key in parent_dict:
+            if key in item_dict:
+                continue
+            item_dict[key] = parent_dict[key]
+        get_data(parent_dict["parent"])
+    get_data(item)
+    return item_dict
+
+
+def get_parent(object_data):
+    global ALL_OBJECTS_DICT
+    if not ALL_OBJECTS_DICT:
+        read_all_objects()
+    parent_object_name = object_data["parent"]
+    if parent_object_name not in ALL_OBJECTS_DICT:
+        return
+    return ALL_OBJECTS_DICT[parent_object_name]
+
+
+def create_item(data):
+    item = None
+    if data["type"] == "weapon":
+        item = Weapon()
+    if data["type"] == "armor":
+        item = Armor()
+    if data["type"] == "ability":
+        item = Ability()
+    if data["type"] == "ranged_weapon":
+        item = RangedWeapon()
+    if data["type"] == "trait":
+        item = Trait()
+    if item is None:
+        return
+
+    for key in data:
+        if key not in item.__dict__:
+            continue
+        if key == "requirements":
+            item.set_requirements(data[key])
+            continue
+        item.__dict__[key] = data[key]
+    return item
+
+
+def read_all_objects():
+    global ALL_OBJECTS_DICT
+    final_dict = {}
+    base_dict = read_objects("parameters/base_objects.txt")
+    for key, item in base_dict.items():
+        full_data = get_full_data(base_dict, key)
+        final_dict[key] = full_data
+    for filename in ["abilities", "modifiers", "weapons", "armors"]:
+        objects = read_objects("parameters/{}.txt".format(filename))
+        current_dict = dict(final_dict)
+        for key, item in objects.items():
+            current_dict[key] = item
+        for key, item in objects.items():
+            full_data = get_full_data(current_dict, key)
+            final_dict[key] = full_data
+    ALL_OBJECTS_DICT = final_dict
+
+
+def reload_objects():
+    read_all_objects()
+
+read_all_objects()

@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QFileDialog, QTabWidget)
 from layout_classes import *
 from popups import *
-from parameters import translate_parameter, translate_ui
+from parameters import translate
 from shooting import ShootingWidget
 
 colors = [Qt.white, Qt.black, Qt.red, Qt.darkRed, Qt.green, Qt.darkGreen, Qt.blue, Qt.darkBlue, Qt.cyan, Qt.darkCyan,
@@ -18,32 +18,32 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.title = translate_ui("ui_window_name")
+        self.title = translate("ui_window_name")
         self.setWindowTitle(self.title)
         self.current_file_path = None
         self.popup = None
 
         # Add menu bar
         bar = self.menuBar()
-        file = bar.addMenu(translate_ui("ui_menu_file"))
-        new_sheet = QAction(translate_ui("ui_new_sheet"), self)
+        file = bar.addMenu(translate("ui_menu_file"))
+        new_sheet = QAction(translate("ui_new_sheet"), self)
         new_sheet.setShortcut("Ctrl+N")
         file.addAction(new_sheet)
-        open_file = QAction(translate_ui("ui_menu_load_sheet"), self)
+        open_file = QAction(translate("ui_menu_load_sheet"), self)
         open_file.setShortcut("Ctrl+O")
         file.addAction(open_file)
-        save = QAction(translate_ui("ui_menu_save_sheet"), self)
+        save = QAction(translate("ui_menu_save_sheet"), self)
         save.setShortcut("Ctrl+S")
         file.addAction(save)
         file.addSeparator()
-        calc = QAction(translate_ui("ui_menu_open_calculator"), self)
+        calc = QAction(translate("ui_menu_open_calculator"), self)
         calc.setShortcut("Ctrl+K")
         file.addAction(calc)
         file.addSeparator()
-        save_as = QAction(translate_ui("ui_menu_save_sheet_as"), self)
+        save_as = QAction(translate("ui_menu_save_sheet_as"), self)
         save_as.setShortcut("Ctrl+Shift+S")
         file.addAction(save_as)
-        exit_action = QAction(translate_ui("ui_menu_quit"), self)
+        exit_action = QAction(translate("ui_menu_quit"), self)
         file.addAction(exit_action)
         file.triggered[QAction].connect(self.process_trigger)
         # Add main widget
@@ -67,11 +67,11 @@ class MainWindow(QMainWindow):
         options = QFileDialog.Options()
         filepath = ""
         if pop_type == "open":
-            filepath = self.popup.getOpenFileName(self, translate_ui("ui_load_sheet_window_title"), os.getcwd(),
+            filepath = self.popup.getOpenFileName(self, translate("ui_load_sheet_window_title"), os.getcwd(),
                                                    "Character files (*.cht)", options=options)
 
         if pop_type == "save":
-            filepath = self.popup.getSaveFileName(self, translate_ui("ui_save_sheet_window_title"), os.getcwd(),
+            filepath = self.popup.getSaveFileName(self, translate("ui_save_sheet_window_title"), os.getcwd(),
                                                    "Character files (*.cht)", options=options)
         self.popup = None
         if not filepath[0]:
@@ -80,20 +80,20 @@ class MainWindow(QMainWindow):
         self.directory_signal.emit(filepath[0], pop_type)
 
     def process_trigger(self, q):
-        if q.text() == translate_ui("ui_menu_load_sheet"):
+        if q.text() == translate("ui_menu_load_sheet"):
             self.open_file_name_dialog("open")
-        if q.text() == translate_ui("ui_menu_save_sheet"):
+        if q.text() == translate("ui_menu_save_sheet"):
             if self.current_file_path is None:
                 self.open_file_name_dialog("save")
             else:
                 self.directory_signal.emit(self.current_file_path, "save")
-        if q.text() == translate_ui("ui_menu_save_sheet_as"):
+        if q.text() == translate("ui_menu_save_sheet_as"):
             self.open_file_name_dialog("save")
-        if q.text() == translate_ui("ui_new_sheet"):
+        if q.text() == translate("ui_new_sheet"):
             self.open_new_sheet_popup()
-        if q.text() == translate_ui("ui_menu_quit"):
+        if q.text() == translate("ui_menu_quit"):
             self.exit.emit()
-        if q.text() == translate_ui("ui_menu_open_calculator"):
+        if q.text() == translate("ui_menu_open_calculator"):
             self.open_calculator()
 
     def open_new_sheet_popup(self):
@@ -147,9 +147,9 @@ class MyWindowWidget(QWidget):
         self.tab1 = QWidget()
         self.tab2 = QWidget()
         self.tab3 = QWidget()
-        self.tabs.addTab(self.tab1, translate_ui("ui_character_tab"))
-        self.tabs.addTab(self.tab2, translate_ui("ui_equipment_tab"))
-        self.tabs.addTab(self.tab3, translate_ui("ui_misc_tab"))
+        self.tabs.addTab(self.tab1, translate("ui_character_tab"))
+        self.tabs.addTab(self.tab2, translate("ui_equipment_tab"))
+        self.tabs.addTab(self.tab3, translate("ui_misc_tab"))
 
     def fill_tab1(self, character_names, attribute_names, skill_names, armor_names, validator, alternative=False):
         page1 = QVBoxLayout()
@@ -185,7 +185,7 @@ class MyWindowWidget(QWidget):
         # Set Attributes
         self.fill_attributes(attributes_layout, attribute_names, alternative)
         # Set skills
-        abilities = ScrollContainer("ui_abilities", translate_ui("ui_ability_add_button"), AbilityView,
+        abilities = ScrollContainer("ui_abilities", translate("ui_ability_add_button"), AbilityView,
                                     validator=validator, alternative=alternative, popup=AbilityPopup)
         self.scrolls["abilities"] = abilities
         abilities_layout.addWidget(abilities)
@@ -193,19 +193,19 @@ class MyWindowWidget(QWidget):
     def fill_parameters(self):
         parameters_layout = QHBoxLayout()
         encumbrance_layout = QVBoxLayout()
-        label = QLabel(translate_ui("ui_encumbrance"))
+        label = QLabel(translate("ui_encumbrance"))
         label.setStyleSheet("font: bold 12px")
         label.setAlignment(Qt.AlignCenter)
         encumbrance_layout.addWidget(label)
         encumbrance_values_layout = QHBoxLayout()
         encumbrance_current = InputLine("param_encumbrance_current", enabled=False, val_dict=self.params_dict,
-                                        dtype="float", label=translate_parameter("param_encumbrance_current"), maxwidth=50)
+                                        dtype="float", label=translate("param_encumbrance_current"), maxwidth=50)
         encumbrance_low = InputLine("param_encumbrance_low", enabled=False, val_dict=self.params_dict, dtype="int",
-                                    label=translate_parameter("param_encumbrance_low"), maxwidth=50)
+                                    label=translate("param_encumbrance_low"), maxwidth=50)
         encumbrance_med = InputLine("param_encumbrance_med", enabled=False, val_dict=self.params_dict, dtype="int",
-                                    label=translate_parameter("param_encumbrance_med"), maxwidth=50)
+                                    label=translate("param_encumbrance_med"), maxwidth=50)
         encumbrance_high = InputLine("param_encumbrance_high", enabled=False, val_dict=self.params_dict, dtype="int",
-                                     label=translate_parameter("param_encumbrance_high"), maxwidth=50)
+                                     label=translate("param_encumbrance_high"), maxwidth=50)
         encumbrance_values_layout.addWidget(encumbrance_current)
         encumbrance_values_layout.addWidget(encumbrance_low)
         encumbrance_values_layout.addWidget(encumbrance_med)
@@ -213,34 +213,34 @@ class MyWindowWidget(QWidget):
         encumbrance_layout.addLayout(encumbrance_values_layout)
 
         reputation_layout = QVBoxLayout()
-        label = QLabel(translate_ui("ui_reputation"))
+        label = QLabel(translate("ui_reputation"))
         label.setStyleSheet("font: bold 12px")
         label.setAlignment(Qt.AlignCenter)
         reputation_layout.addWidget(label)
         reputation_values_layout = QHBoxLayout()
         reputation_bad = InputLine("param_reputation_bad", val_dict=self.params_dict, dtype="int",
-                                   label=translate_parameter("param_reputation_bad"), maxwidth=50)
+                                   label=translate("param_reputation_bad"), maxwidth=50)
         reputation_good = InputLine("param_reputation_good", val_dict=self.params_dict, dtype="int",
-                                    label=translate_parameter("param_reputation_good"), maxwidth=50)
+                                    label=translate("param_reputation_good"), maxwidth=50)
         reputation_total = InputLine("param_reputation_total", val_dict=self.params_dict, dtype="int", enabled=False,
-                                     label=translate_parameter("param_reputation_total"), maxwidth=50)
+                                     label=translate("param_reputation_total"), maxwidth=50)
         reputation_values_layout.addWidget(reputation_bad)
         reputation_values_layout.addWidget(reputation_total)
         reputation_values_layout.addWidget(reputation_good)
         reputation_layout.addLayout(reputation_values_layout)
 
         speed_layout = QVBoxLayout()
-        label = QLabel(translate_ui("ui_speed"))
+        label = QLabel(translate("ui_speed"))
         label.setStyleSheet("font: bold 12px")
         label.setAlignment(Qt.AlignCenter)
         speed_layout.addWidget(label)
         speed_values_layout = QHBoxLayout()
         speed_low = InputLine("param_speed_low", enabled=False, val_dict=self.params_dict, dtype="int",
-                              label=translate_parameter("param_speed_low"), maxwidth=50)
+                              label=translate("param_speed_low"), maxwidth=50)
         speed_med = InputLine("param_speed_med", enabled=False, val_dict=self.params_dict, dtype="int",
-                              label=translate_parameter("param_speed_med"), maxwidth=50)
+                              label=translate("param_speed_med"), maxwidth=50)
         speed_high = InputLine("param_speed_high", enabled=False, val_dict=self.params_dict, dtype="int",
-                               label=translate_parameter("param_speed_high"), maxwidth=50)
+                               label=translate("param_speed_high"), maxwidth=50)
         speed_values_layout.addWidget(speed_low)
         speed_values_layout.addWidget(speed_med)
         speed_values_layout.addWidget(speed_high)
@@ -254,7 +254,7 @@ class MyWindowWidget(QWidget):
     def fill_skills(self, skill_names, alternative):
         skills1_layout = QVBoxLayout()
         skills2_layout = QVBoxLayout()
-        label = QLabel(translate_ui("ui_skills"))
+        label = QLabel(translate("ui_skills"))
         label.setStyleSheet("font: bold 14px")
         skills1_layout.addWidget(label)
         label = QLabel(" ")
@@ -262,7 +262,7 @@ class MyWindowWidget(QWidget):
         skills2_layout.addWidget(label)
         max_per_column = 15 if alternative else 25
         for index, skill in enumerate(sorted(skill_names)):
-            ski = SkillView(name=skill, display_name=translate_parameter(skill),
+            ski = SkillView(name=skill, display_name=translate(skill),
                             val_dict=self.skills_dict, alternative=alternative)
             if index < max_per_column:
                 skills1_layout.addWidget(ski)
@@ -274,7 +274,7 @@ class MyWindowWidget(QWidget):
 
     def fill_attributes(self, attributes_layout, attribute_names, alternative):
         for attribute in attribute_names:
-            att = AttributeView(name=attribute, display_name=translate_parameter(attribute),
+            att = AttributeView(name=attribute, display_name=translate(attribute),
                                 val_dict=self.attribute_dict, alternative=alternative)
             attributes_layout.addWidget(att, stretch=0)
 
@@ -287,15 +287,15 @@ class MyWindowWidget(QWidget):
         inner_names_layout.addLayout(layout_2, 4)
         inner_names_layout.addLayout(layout_3, 1)
         for index, name in enumerate(character_names):
-            na = NameView(name=name, display_name=translate_parameter(name), val_dict=self.params_dict)
+            na = NameView(name=name, display_name=translate(name), val_dict=self.params_dict)
             if index < 3:
                 layout_1.addWidget(na)
             else:
                 layout_2.addWidget(na)
         total_xp = InputLine("param_xp_total", dtype="int", val_dict=self.params_dict,
-                             label=translate_parameter("param_xp_total"), maxwidth=60)
+                             label=translate("param_xp_total"), maxwidth=60)
         free_xp = InputLine("param_xp_free", dtype="int", val_dict=self.params_dict,
-                            label=translate_parameter("param_xp_free"), maxwidth=60)
+                            label=translate("param_xp_free"), maxwidth=60)
         layout_3.addWidget(total_xp)
         layout_3.addWidget(free_xp)
         return inner_names_layout
@@ -311,7 +311,7 @@ class MyWindowWidget(QWidget):
         life = QHBoxLayout()
         life.setContentsMargins(0, 0, 0, 0)
         label_layout = QHBoxLayout()
-        label = QLabel(translate_ui("ui_armor"))
+        label = QLabel(translate("ui_armor"))
         label.setStyleSheet("font: bold 14px")
         label.setContentsMargins(0, 0, 0, 0)
         label.setAlignment(Qt.AlignCenter)
@@ -323,15 +323,15 @@ class MyWindowWidget(QWidget):
         inner_armor_layout.addLayout(legs, 2)
         inner_armor_layout.addLayout(life, 1)
         total_hp = InputLine("param_hp_max", val_dict=self.params_dict,
-                             label=translate_parameter("param_hp_max"), maxwidth=35, spacer="upper")
+                             label=translate("param_hp_max"), maxwidth=35, spacer="upper")
         current_hp = InputLine("param_hp_current", val_dict=self.params_dict,
-                               label=translate_parameter("param_hp_current"), maxwidth=35, spacer="upper")
+                               label=translate("param_hp_current"), maxwidth=35, spacer="upper")
         total_pp = InputLine("param_pp_total", val_dict=self.params_dict,
-                             label=translate_parameter("param_pp_total"), maxwidth=35, spacer="upper")
+                             label=translate("param_pp_total"), maxwidth=35, spacer="upper")
         current_pp = InputLine("param_pp_curr", val_dict=self.params_dict,
-                               label=translate_parameter("param_pp_curr"), maxwidth=35, spacer="upper")
+                               label=translate("param_pp_curr"), maxwidth=35, spacer="upper")
         fatigue = InputLine("param_fatigue", val_dict=self.params_dict,
-                            label=translate_parameter("param_fatigue"), maxwidth=35, spacer="upper")
+                            label=translate("param_fatigue"), maxwidth=35, spacer="upper")
         life.addWidget(total_hp)
         life.addWidget(current_hp)
         life.addWidget(total_pp)
@@ -339,7 +339,7 @@ class MyWindowWidget(QWidget):
         life.addWidget(fatigue)
         for index, name in enumerate(armor_names):
             na = InputLine(name=name, val_dict=self.params_dict, enabled=False,
-                           label=translate_parameter(name), maxwidth=30, spacer="lower")
+                           label=translate(name), maxwidth=30, spacer="lower")
             na.setContentsMargins(0, 0, 0, 0)
             if index < 1:
                 head.addWidget(na)
@@ -358,9 +358,9 @@ class MyWindowWidget(QWidget):
         tab1 = QWidget()
         tab2 = QWidget()
         tab3 = QWidget()
-        equipment_tabs.addTab(tab1, translate_ui("ui_weapons"))
-        equipment_tabs.addTab(tab2, translate_ui("ui_armors"))
-        equipment_tabs.addTab(tab3, translate_ui("ui_modifiers"))
+        equipment_tabs.addTab(tab1, translate("ui_weapons"))
+        equipment_tabs.addTab(tab2, translate("ui_armors"))
+        equipment_tabs.addTab(tab3, translate("ui_modifiers"))
         tab1_layout = QVBoxLayout()
         tab2_layout = QVBoxLayout()
         tab3_layout = QVBoxLayout()
@@ -368,16 +368,16 @@ class MyWindowWidget(QWidget):
         tab2.setLayout(tab2_layout)
         tab3.setLayout(tab3_layout)
 
-        weapons_scroll = ConditionalScrollContainer("ui_weapons", translate_ui("ui_weapons_add_button"), WeaponView,
-                                                    popup=WeaponPopup, conditions=["weapon"])
+        weapons_scroll = ConditionalScrollContainer("ui_weapons", translate("ui_weapons_add_button"), WeaponView,
+                                                    popup=ItemListPopup, conditions=["weapon"])
         self.scrolls["weapons"] = weapons_scroll
         tab1_layout.addWidget(weapons_scroll)
-        armor_scroll = ConditionalScrollContainer("ui_armors", translate_ui("ui_armor_add_button"), ArmorView,
+        armor_scroll = ConditionalScrollContainer("ui_armors", translate("ui_armor_add_button"), ArmorView,
                                                   popup=ArmorPopup, conditions=["armor"])
         self.scrolls["armor"] = armor_scroll
         tab2_layout.addWidget(armor_scroll)
 
-        modifier_scroll = ConditionalScrollContainer("ui_modifiers", translate_ui("ui_modifier_add_button"),
+        modifier_scroll = ConditionalScrollContainer("ui_modifiers", translate("ui_modifier_add_button"),
                                                      ModifierItemView, conditions=["implant", "modifier", "bionic"],
                                                      popup=ModifierItemPopup, alternative=alternative)
         self.scrolls["modifiers"] = modifier_scroll
@@ -386,20 +386,20 @@ class MyWindowWidget(QWidget):
         if alternative:
             tab4 = QWidget()
             tab5 = QWidget()
-            equipment_tabs.addTab(tab4, translate_ui("ui_modules"))
-            equipment_tabs.addTab(tab5, translate_ui("ui_parts"))
+            equipment_tabs.addTab(tab4, translate("ui_modules"))
+            equipment_tabs.addTab(tab5, translate("ui_parts"))
             tab4_layout = QVBoxLayout()
             tab5_layout = QVBoxLayout()
             tab4.setLayout(tab4_layout)
             tab5.setLayout(tab5_layout)
 
-            modules_scroll = ConditionalScrollContainer("ui_modules", translate_ui("ui_module_add_button"),
+            modules_scroll = ConditionalScrollContainer("ui_modules", translate("ui_module_add_button"),
                                                         ModifierItemView, conditions=["module"],
                                                         popup=ModifierItemPopup, alternative=alternative)
             self.scrolls["modules"] = modules_scroll
             tab4_layout.addWidget(modules_scroll)
 
-            parts_scroll = ConditionalScrollContainer("ui_parts", translate_ui("ui_part_add_button"),
+            parts_scroll = ConditionalScrollContainer("ui_parts", translate("ui_part_add_button"),
                                                       ModifierItemView, conditions=["part"],
                                                       popup=ModifierItemPopup, alternative=alternative)
             self.scrolls["parts"] = parts_scroll
@@ -408,7 +408,7 @@ class MyWindowWidget(QWidget):
         # items
         equipment_and_money = QHBoxLayout()
         name = "notes_money"
-        money = LabelledTextEdit(name, label=translate_ui("ui_{}".format(name)))
+        money = LabelledTextEdit(name, label=translate("ui_{}".format(name)))
         self.notes_dict[name] = money
         self.equipment_tables = EquipmentWidget(ItemPopup, ItemMovePopup)
         equipment_and_money.addWidget(self.equipment_tables, 3)
@@ -419,7 +419,7 @@ class MyWindowWidget(QWidget):
     def fill_tab3(self, notes_names):
         page3 = QVBoxLayout()
         for name in notes_names:
-            field = LabelledTextEdit(name, label=translate_ui("ui_{}".format(name)))
+            field = LabelledTextEdit(name, label=translate("ui_{}".format(name)))
             self.notes_dict[name] = field
             page3.addWidget(field)
         self.tab3.setLayout(page3)
