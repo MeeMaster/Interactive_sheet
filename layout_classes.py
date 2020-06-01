@@ -22,13 +22,15 @@ class ScrollContainer(QWidget):
     item_removed = pyqtSignal(object)
     item_edited = pyqtSignal()
 
-    def __init__(self, name, button_text, content_widget, popup=None, **kwargs):
+    def __init__(self, name, button_text, content_widget, popup=None, label=None, **kwargs):
         QWidget.__init__(self)
         # self.parent = parent
         self.name = name
         self.kwargs = kwargs
         self.layout = QVBoxLayout()
         self.label = QLabel(translate(name))
+        if label is not None:
+            self.label = QLabel(translate(label))
         self.label.setStyleSheet("font: bold 14px")
         self.layout.addWidget(self.label)
         self.scroll = QScrollArea()
@@ -698,6 +700,10 @@ class LabelledTextEdit(QWidget):
         return self.text_edit.toPlainText()
 
     def set_text(self, text):
+        if not text:
+            return
+        if isinstance(text, list):
+            text = text[0]
         self.text_edit.setText(text)
 
 

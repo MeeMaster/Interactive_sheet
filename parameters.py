@@ -107,9 +107,12 @@ def read_objects(filepath):
                 continue
             parameter, value = valid_line.split("=")
             parameter = parameter.strip()
-            value = value.strip()
+            values = value.strip().split(",")
+            for index, value in enumerate([a for a in values]):
+                if not value:
+                    del values[index]
             objects[current_object]["name"] = current_object
-            objects[current_object][parameter] = value
+            objects[current_object][parameter] = values
     return objects
 
 

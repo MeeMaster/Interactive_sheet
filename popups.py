@@ -673,13 +673,15 @@ class ItemListPopup(BasePopup):
         tree_view.setMinimumWidth(200)
         inner_layout.addWidget(tree_view, 1)
         self.grid_widget = MyGridWidget()
+        self.grid_widget.multiselect_updated.connect(self.update_current_item_data)
         inner_layout.addWidget(self.grid_widget, 2)
         self.full_dict = {}
+        self.current_item_data = {}
         for item_type in item_types:
             objects = get_children(item_type)
             for object_name, object_data in objects.items():
                 self.full_dict[object_name] = object_data
-        tree_view.itemClicked.connect(self.get_data)
+        tree_view.itemClicked.connect(self.get_item)
 
         def get_tree_objects(parent, child):
             widget = MyTreeWidgetItem(parent)
@@ -693,9 +695,27 @@ class ItemListPopup(BasePopup):
                 get_tree_objects(tree_view, item)
         self.show()
 
-    def get_data(self, item, column):
+    def get_item(self, item, column):
+        self.get_data(item)
+        self.update_grid()
+
+    def get_data(self, item):
         full_data = get_object_data(item.name)
-        self.grid_widget.fill_grid(full_data)
+        self.current_item_data = full_data
+
+    def update_grid(self):
+        self.grid_widget.clear()
+        self.grid_widget.fill_grid(self.current_item_data)
+
+    def update_current_item_data(self, name, created, item):
+        item_name = item.name
+        if created:
+            if item_name not in self.current_item_data[name]:
+                self.current_item_data[name].append(item_name)
+        else:
+            if item_name in self.current_item_data[name]:
+                self.current_item_data[name].remove(item_name)
+        self.update_grid()
 
     def ok_pressed(self):
         for name, widget in self.grid_widget.fields.items():
@@ -715,7 +735,7 @@ class MyTreeWidgetItem(QTreeWidgetItem):
 
 
 class MyGridWidget(QWidget):
-    field_updated = pyqtSignal(str, object)
+    multiselect_updated = pyqtSignal(str, bool, BaseObject)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -741,6 +761,7 @@ class MyGridWidget(QWidget):
             field.setEnabled(False)
             field.setText(data[key])
             field.format_label(8, True)
+
             self.fields[key] = field
             self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
             index += 1
@@ -791,7 +812,11 @@ class MyGridWidget(QWidget):
         for key in multiselects:
             if key not in data:
                 continue
-            field = ScrollContainer("ui_"+key, "ui_add_item", AbilityView, popup=ItemSelectPopup, item_type=key)
+            field = ScrollContainer(key,  "ui_add_item", AbilityView, label="ui_"+key,
+                                    popup=ItemSelectPopup, item_type=key)
+            field.item_created.connect(lambda x: self.multiselect_updated.emit(key, True, x))
+            field.item_removed.connect(lambda x: self.multiselect_updated.emit(key, False, x))
+            field.fill(data[key])
             field.format_label(8)
             self.fields[key] = field
             self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
