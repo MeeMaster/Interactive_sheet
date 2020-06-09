@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import (QMainWindow, QApplication)
 from shooting import ShootingWidget
 import sys
-from parameters import translate_ui
+from parameters import translate
 
 
 class MainWindow(QMainWindow):

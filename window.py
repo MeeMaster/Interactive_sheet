@@ -373,13 +373,13 @@ class MyWindowWidget(QWidget):
         self.scrolls["weapons"] = weapons_scroll
         tab1_layout.addWidget(weapons_scroll)
         armor_scroll = ConditionalScrollContainer("ui_armors", translate("ui_armor_add_button"), ArmorView,
-                                                  popup=ArmorPopup, conditions=["armor"])
+                                                  popup=ItemListPopup, conditions=["armor"])
         self.scrolls["armor"] = armor_scroll
         tab2_layout.addWidget(armor_scroll)
 
         modifier_scroll = ConditionalScrollContainer("ui_modifiers", translate("ui_modifier_add_button"),
                                                      ModifierItemView, conditions=["implant", "modifier", "bionic"],
-                                                     popup=ModifierItemPopup, alternative=alternative)
+                                                     popup=ItemListPopup, alternative=alternative)
         self.scrolls["modifiers"] = modifier_scroll
         tab3_layout.addWidget(modifier_scroll)
 
@@ -395,13 +395,13 @@ class MyWindowWidget(QWidget):
 
             modules_scroll = ConditionalScrollContainer("ui_modules", translate("ui_module_add_button"),
                                                         ModifierItemView, conditions=["module"],
-                                                        popup=ModifierItemPopup, alternative=alternative)
+                                                        popup=ItemListPopup, alternative=alternative)
             self.scrolls["modules"] = modules_scroll
             tab4_layout.addWidget(modules_scroll)
 
             parts_scroll = ConditionalScrollContainer("ui_parts", translate("ui_part_add_button"),
                                                       ModifierItemView, conditions=["part"],
-                                                      popup=ModifierItemPopup, alternative=alternative)
+                                                      popup=ItemListPopup, alternative=alternative)
             self.scrolls["parts"] = parts_scroll
             tab5_layout.addWidget(parts_scroll)
 

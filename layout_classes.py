@@ -5,8 +5,8 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QValidator, QColor, QDoubleValidator
 # from parameters import translate, translate
-from parameters import load_parameters, translate
-from item_classes import Item
+from parameters import load_parameters, translate, is_type
+from item_classes import BaseObject
 
 param_dict = load_parameters()
 armor_names = param_dict["armor"]
@@ -17,10 +17,10 @@ line_edit_style = "QLineEdit { background: rgba(255, 255, 255, 100); border-widt
 
 
 class ScrollContainer(QWidget):
-    item_created = pyqtSignal(object)
-    item_equipped = pyqtSignal(object, bool)
-    item_removed = pyqtSignal(object)
-    item_edited = pyqtSignal()
+    item_created = pyqtSignal(str, object)
+    item_equipped = pyqtSignal(str, object, bool)
+    item_removed = pyqtSignal(str, object)
+    item_edited = pyqtSignal(str)
 
     def __init__(self, name, button_text, content_widget, popup=None, label=None, **kwargs):
         QWidget.__init__(self)
@@ -64,7 +64,7 @@ class ScrollContainer(QWidget):
             self.current_popup.popup_cancel.connect(self.close_popup)
 
     def ok_clicked(self, obj):
-        self.item_created.emit(obj)
+        self.item_created.emit(self.name, obj)
         self.close_popup()
 
     def close_popup(self):
@@ -111,8 +111,8 @@ class ScrollContainer(QWidget):
         child_index = self.find_child_index(widget)
         if child_index is not None:
             return
-        widget.delete.connect(lambda x: self.item_removed.emit(x))
-        widget.item_equipped.connect(lambda x, y: self.item_equipped.emit(x, y))
+        widget.delete.connect(lambda x: self.item_removed.emit(self.name, x))
+        widget.item_equipped.connect(lambda x, y: self.item_equipped.emit(self.name, x, y))
         widget.edit_item.connect(self.edit_item)
         self.scroll_layout.insertWidget(-2, widget)
 
@@ -131,6 +131,9 @@ class ScrollContainer(QWidget):
         for item in items:
             self.add_widget(item)
 
+    def get_data(self):
+        return [child.item for child in self.get_children()]
+
 
 class ConditionalScrollContainer(ScrollContainer):
 
@@ -142,7 +145,13 @@ class ConditionalScrollContainer(ScrollContainer):
 
     def fill(self, items):
         for item in items:
-            if item.type not in self.conditions:
+            print(item, item.type)
+            ok = False
+            for item_type in self.conditions:
+                if is_type(item, item_type):
+                    ok = True
+                    break
+            if not ok:
                 continue
             self.add_widget(item)
 
@@ -202,6 +211,15 @@ class InputLine(QWidget):
 
     def set_enabled(self, enabled):
         self.line.setEnabled(enabled)
+
+    def get_data(self):
+        text = self.text()
+        if self.dtype == "int":
+            return int(text)
+        if self.dtype == "float":
+            return float(text)
+        return text
+
 
 
 class AttributeView(QWidget):
@@ -432,7 +450,7 @@ class WeaponView(View):
         line1_layout = QHBoxLayout()
         line2_layout = QHBoxLayout()
         self.equipped_checkbox = EquippedCheckbox()
-        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
         self.equipped_checkbox.stateChanged.connect(self.equip)
         line1_layout.addWidget(self.equipped_checkbox)
         self.weapon_name = LabelledLabel(label=translate("ui_item_name"))
@@ -706,6 +724,9 @@ class LabelledTextEdit(QWidget):
             text = text[0]
         self.text_edit.setText(text)
 
+    def get_data(self):
+        return self.get_text()
+
 
 class LabelledLabel(QWidget):
 
@@ -736,9 +757,9 @@ class LabelledLabel(QWidget):
 
 class EquipmentWidget(QWidget):
     item_qty_changed = pyqtSignal(bool, str, int, bool)
-    item_create = pyqtSignal(Item)
+    item_create = pyqtSignal(BaseObject)
     move_item = pyqtSignal(object, int)
-    delete_item = pyqtSignal(bool, Item)
+    delete_item = pyqtSignal(bool, BaseObject)
     edit_item = pyqtSignal(str)
 
     def __init__(self, popup=None, transfer_popup=None):
@@ -1044,7 +1065,7 @@ class ModifierItemView(View):
         layout.addLayout(cost_layout)
         checkbox_layout = QVBoxLayout()
         self.equipped_checkbox = QCheckBox()
-        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
         self.equipped_checkbox.stateChanged.connect(lambda x: self.update_parameters("equipped", x))
         checkbox_layout.addWidget(self.equipped_checkbox)
         layout.addLayout(checkbox_layout)
@@ -1072,11 +1093,12 @@ class PropertyView(QWidget):
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         names = [name for name in bonuses]
-        self.label = QLabel(translate(names[0]))
-        self.value = QLabel(str(bonuses[names[0]]))
-        self.cont = QLabel("...")
-        layout.addWidget(self.label)
-        layout.addWidget(self.value)
+        if names:
+            self.label = QLabel(translate(names[0]))
+            self.value = QLabel(str(bonuses[names[0]]))
+            self.cont = QLabel("...")
+            layout.addWidget(self.label)
+            layout.addWidget(self.value)
         if len(bonuses) > 1:
             layout.addWidget(self.cont)
         self.setToolTip("\n".join([translate(name)+": "+str(value) for name, value in bonuses.items()]))

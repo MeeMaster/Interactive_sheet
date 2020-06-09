@@ -1,36 +1,49 @@
 blaster:ranged_weapon
-damage_type = damage_e
-damage = 6
-base_skill = skill_ranged_light
-hands = 1
-power_magazine = 100
-max_magazine = 100
-shot_cost = 2
-weight = 1
-price = 500
-fire_modes = fire_multi
-trait = trait_short
+t_damage_type = damage_e
+i_damage = 6
+t_base_skill = skill_ranged_light
+f_hands = 1
+i_power_magazine = 100
+i_max_magazine = 100
+i_shot_cost = 2
+f_weight = 1
+i_price = 500
+l_fire_mode = fire_multi
+l_trait = trait_short
 ////
 
 holdout_blaster:blaster
-damage = 5
-power_magazine = 5
-max_magazine = 5
-shot_cost = 1
-price = 600
-trait = trait_short, trait_balanced, trait_small
+i_damage = 5
+i_power_magazine = 5
+i_max_magazine = 5
+i_shot_cost = 1
+i_price = 600
+l_trait = trait_short, trait_balanced, trait_small
+l_fire_mode = fire_single
 ////
 
 blaster_rifle:blaster
-damage = 8
-ap = 1
-hands = 1.5
-shot_cost = 4
-power_magazine = 100
-max_magazine = 100
-shot_cost = 2
-weight = 1
-price = 500
-fire_modes = fire_multi, fire_auto
+i_damage = 8
+i_ap = 1
+f_hands = 1.5
+i_shot_cost = 4
+i_power_magazine = 100
+i_max_magazine = 100
+f_weight = 1
+i_price = 500
+l_fire_mode = fire_multi, fire_auto
+////
+
+blaster_sniper:blaster
+i_damage = 10
+i_ap = 3
+f_hands = 2
+i_shot_cost = 5
+i_power_magazine = 100
+i_max_magazine = 100
+f_weight = 3
+i_price = 1200
+l_fire_mode = fire_single
+l_addon = long_scope
 ////
 

@@ -40,7 +40,7 @@ def translate(name, locale="PL"):
         return ""
     locale_file = path.join("locales", "translations_{}.csv".format(locale))
     if not path.exists(locale_file):
-        print("Could not localize locale file '{}'".format(locale_file))
+        # print("Could not localize locale file '{}'".format(locale_file))
         locale_file = path.join("locales", "translations_{}.csv".format("EN"))
         if not path.exists(locale_file):
             return name
@@ -51,7 +51,7 @@ def translate(name, locale="PL"):
             read_name, translation = line.strip().split(";")
             if read_name == name:
                 return translation
-        print("No translation found for value '{}' and locale '{}'".format(name, locale))
+        # print("No translation found for value '{}' and locale '{}'".format(name, locale))
         return name
 
 
@@ -103,55 +103,90 @@ def read_objects(filepath):
                 if ":" not in valid_line:
                     continue
                 current_object, parent = valid_line.split(":")
-                objects[current_object] = {"parent": parent}
+                objects[current_object] = {"parent": parent, "name": current_object}
                 continue
             parameter, value = valid_line.split("=")
+            parameter_type = parameter.split("_")[0]
+            parameter = "_".join(parameter.split("_")[1:])
             parameter = parameter.strip()
-            values = value.strip().split(",")
-            for index, value in enumerate([a for a in values]):
-                if not value:
-                    del values[index]
-            objects[current_object]["name"] = current_object
-            objects[current_object][parameter] = values
+            value = value.strip()
+
+            if parameter_type == "i":
+                try:
+                    value = int(value)
+                except:
+                    value = 0
+            elif parameter_type == "f":
+                try:
+                    value = float(value)
+                except:
+                    value = 0.0
+            if parameter_type == "l":
+                value = value.split(",")
+                for index in reversed(range(len(value))):
+                    value[index] = value[index].strip()
+                    if not value[index]:
+                        del value[index]
+            objects[current_object][parameter] = value
     return objects
 
 
-def get_objects_of_type(object_type):
+def get_objects_of_type(object_type, other_dict=None):
     global ALL_OBJECTS_DICT
     if not ALL_OBJECTS_DICT:
         read_all_objects()
-    children = get_all_children(ALL_OBJECTS_DICT, object_type)
+    children = get_all_children(ALL_OBJECTS_DICT if other_dict is None else other_dict, object_type)
     output = {}
     for child in children:
         output[child] = ALL_OBJECTS_DICT[child]
     return output
 
 
-def get_object_data(object_name):
-    global ALL_OBJECTS_DICT
-    if not ALL_OBJECTS_DICT:
-        read_all_objects()
-    if object_name not in ALL_OBJECTS_DICT:
-        return
-    return ALL_OBJECTS_DICT[object_name]
+def is_type(item, item_type):
+    result = False
+
+    def get_data(item):
+        if not item:
+            return
+        if isinstance(item, BaseObject):
+            parent_dict = {"type": item.type, "parent": item.parent}
+        else:
+            parent_dict = ALL_OBJECTS_DICT[item]
+        parent_type = parent_dict["type"]
+        if parent_type == item_type:
+            return True
+        return get_data(parent_dict["parent"])
+    result = get_data(item)
+    return result
+
+
+def get_object_data(object_name, other_dict=None):
+    if other_dict is None:
+        global ALL_OBJECTS_DICT
+        if not ALL_OBJECTS_DICT:
+            read_all_objects()
+        if object_name not in ALL_OBJECTS_DICT:
+            return
+        return ALL_OBJECTS_DICT[object_name]
+    return other_dict[object_name]
 
 
 def get_all_children(object_dict, name):
     all_children = []
 
-    def get_children(name):
+    def get_this_children(name):
         for child_name, item_dict in object_dict.items():
             if item_dict["parent"] != name:
                 continue
             all_children.append(child_name)
-            get_children(child_name)
-    get_children(name)
+            get_this_children(child_name)
+    get_this_children(name)
     return all_children
 
 
-def get_children(object_type):
+def get_children(object_type, other_dict=None):
     children = {}
-    objects = get_objects_of_type(object_type)
+    objects = get_objects_of_type(object_type, other_dict)
     for object_name, object_data in objects.items():
         if object_data["parent"] != object_type:
             continue
@@ -186,45 +221,41 @@ def get_parent(object_data):
 
 
 def create_item(data):
-    item = None
-    if data["type"] == "weapon":
-        item = Weapon()
-    if data["type"] == "armor":
-        item = Armor()
-    if data["type"] == "ability":
-        item = Ability()
-    if data["type"] == "ranged_weapon":
-        item = RangedWeapon()
-    if data["type"] == "trait":
-        item = Trait()
-    if item is None:
-        return
-
+    item = BaseObject()
     for key in data:
-        if key not in item.__dict__:
-            continue
         if key == "requirements":
             item.set_requirements(data[key])
             continue
+        if isinstance(data[key], list):
+            for index, obj in enumerate(data[key]):
+                if not isinstance(obj, str):
+                    continue
+                item_data = get_object_data(obj, ALL_OBJECTS_DICT)
+                obj_item = create_item(item_data)
+                data[key][index] = obj_item
         item.__dict__[key] = data[key]
     return item
 
 
-def read_all_objects():
+def read_all_objects(full_data=True):
     global ALL_OBJECTS_DICT
     final_dict = {}
     base_dict = read_objects("parameters/base_objects.txt")
-    for key, item in base_dict.items():
-        full_data = get_full_data(base_dict, key)
-        final_dict[key] = full_data
-    for filename in ["abilities", "modifiers", "weapons", "armors"]:
+    for key, data in base_dict.items():
+        if full_data:
+            data = get_full_data(base_dict, key)
+        data["source"] = "base_objects.txt"
+        final_dict[key] = data
+    for filename in ["abilities", "modifiers", "items"]:
         objects = read_objects("parameters/{}.txt".format(filename))
         current_dict = dict(final_dict)
         for key, item in objects.items():
             current_dict[key] = item
-        for key, item in objects.items():
-            full_data = get_full_data(current_dict, key)
-            final_dict[key] = full_data
+        for key, data in objects.items():
+            if full_data:
+                data = get_full_data(current_dict, key)
+            data["source"] = "{}.txt".format(filename)
+            final_dict[key] = data
     ALL_OBJECTS_DICT = final_dict
 
 

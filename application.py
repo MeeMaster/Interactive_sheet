@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QApplication
 import pickle
 from sheet import Character
 from window import MainWindow
-from popups import ItemPopup
-from item_classes import Item, Weapon, Armor, ModifierItem
+# from popups import ItemPopup
+# from item_classes import BaseObject #  Item, Weapon, Armor, ModifierItem
 
 # from layout_classes import ArmorView, ModifierItemView, WeaponView, AbilityView
 version = 0.96
@@ -70,7 +70,7 @@ class Application:
         self.main_widget.equipment_tables.item_create.connect(self.create_item)
         self.main_widget.equipment_tables.item_qty_changed.connect(self.change_item_quantity)
         self.main_widget.equipment_tables.move_item.connect(self.move_item)
-        self.main_widget.equipment_tables.delete_item.connect(self.delete_item)
+        self.main_widget.equipment_tables.delete_item.connect(self.remove_item)
         # self.main_widget.equipment_tables.edit_item.connect(self.edit_item)
         # self.main_widget.equipment_tables.delete_item.connect(self.delete_item)
 
@@ -169,42 +169,25 @@ class Application:
         self.update_character_field(name)
 
     # Handle all scrolls items
-    def equip_item(self, item, equip):
-        # Weapon
-        if isinstance(item, Weapon):
+    def equip_item(self, name, item, equip):
+        item.equipped_quantity = int(equip)
+        self.update_form()
 
-            item.equipped = equip
-            self.update_weapons()
-            self.update_parameters()
-        # Armor
-        elif isinstance(item, Armor):
-            item.equipped = equip
-            self.update_armor()
-            self.update_parameters()
-            pass
-        # Modifier
-        elif isinstance(item, ModifierItem):
-            self.sheet.equip_modifier_item(item, equip)
-            self.update_modifiers()
-            self.update_attributes()
-            self.update_parameters()
-            self.update_abilities()
-
-    def create_item(self, item):
+    def create_item(self, name, item):
         # Ability
         if item.type == "ability":
             self.sheet.add_ability(item)
             self.update_form()
             return
-        self.sheet.add_object(item)
+        self.sheet.add_item(item)
         self.update_form()
 
-    def remove_item(self, item):
+    def remove_item(self, name, item):
         if item.type == "ability":
             self.sheet.remove_ability(item)
             self.update_form()
             return
-        self.sheet.remove_object(item)
+        self.sheet.remove_item(item)
         self.update_form()
 
     def delete_item(self, equipped, item):
