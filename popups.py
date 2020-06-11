@@ -11,8 +11,8 @@ from item_classes import BaseObject
 from layout_classes import InputLine, LabelledComboBox, View, ScrollContainer, AbilityView, LabelledTextEdit
 
 param_dict = load_parameters()
-damage_types = param_dict["damage"]
-armor_names = param_dict["armor"]
+# damage_types = param_dict["damage"]
+# armor_names = param_dict["armor"]
 
 
 class BasePopup(QWidget):
@@ -106,7 +106,6 @@ class AbilityPopup(BasePopup):
             row_enabled = True
             already_bought = False
             ability_status = self.validator(self.abilities[ability])
-            # print(ability, ability_status)
             if ability_status[0]:
                 already_bought = True
                 row_enabled = False
@@ -839,8 +838,7 @@ class MyGridWidget(QWidget):
         lines = ["name"]
         texts = ["display", "tooltip", "description"]
         ints = ["price", "ap", "damage", "max_magazine", "power_magazine", "shot_cost", "availability", "armor_head",
-                "armor_rh", "armor_chest", "armor_lh", "armor_rl", "armor_ll"]
-        floats = ["weight"]
+                "armor_rh", "armor_chest", "armor_lh", "armor_rl", "armor_ll", "weight"]
         multiselects = ["available_addon", "addon", "bonuses", "available_modification", "modification",
                         "trait", "fire_mode"]
         row = 0
@@ -869,19 +867,13 @@ class MyGridWidget(QWidget):
         for key in ints:
             if key not in data:
                 continue
-            field = InputLine(key, label=translate("param_"+key), dtype="int")
+            field = InputLine(key, label=translate("param_"+key), dtype="int" if key != "weight" else "float")
             value = data[key]
             field.setText(value)
             field.format_label(8, True)
             self.fields[key] = field
             self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
             index += 1
-        key = "weight"
-        field = InputLine(key, label=translate("param_"+key), dtype="float")
-        field.format_label(8, True)
-        field.setText(data[key])
-        self.fields[key] = field
-        self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
 
         row = index // num_columns + row + 1
         index = 0
@@ -903,21 +895,11 @@ class MyGridWidget(QWidget):
 
         row = index // num_columns + row + 1
         index = 0
-        # field = LabelledTextEdit("display", label="display")
-        # value = translate(data["name"])
-        # print(value, translate(value))
-        # field.set_text(translate(value))
-        # field.format_label(8)
-        # self.fields[key] = field
-        # self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
-        # index += 1
         for key in texts:
             if key not in data:
                 continue
-            print(key)
             field = LabelledTextEdit(key, label=key)
             value = data[key]
-            print(value, translate(value))
             field.set_text(translate(value))
             field.format_label(8)
             self.fields[key] = field
@@ -961,6 +943,18 @@ class ItemSelectPopup(BasePopup):
 
     def __init__(self, kwargs):
         item_types = kwargs["item_type"]
+        local_param_dict = load_parameters()
+        alternative_params = load_parameters(True)
+        for key in alternative_params:
+            if key == "skill":
+                for skill_name in alternative_params[key]:
+                    if skill_name in local_param_dict[key]:
+                        continue
+                    local_param_dict[key][skill_name] = alternative_params[key][skill_name]
+                continue
+            for item in alternative_params[key]:
+                if item not in local_param_dict[key]:
+                    local_param_dict[key].append(item)
         self.include = None
         self.exclude = None
         if "include_only" in kwargs:
@@ -971,43 +965,60 @@ class ItemSelectPopup(BasePopup):
         self.items = {}
         layout = QHBoxLayout()
         self.value_input = QLineEdit()
-        self.item_list = QListWidget()
+        # self.item_list = QListWidget()
+        self.item_list = QTreeWidget()
         layout.addWidget(self.item_list)
         layout.addWidget(self.value_input)
         self.main_layout.addLayout(layout)
-
         for item_type in item_types:
+
+            par_widget = MyTreeWidgetItem(self.item_list)
+            par_widget.set_text(item_type)
             if item_type == "skill":
-                for skill_name in param_dict["skill"]:
+                for skill_name in local_param_dict["skill"]:
+                    child_widget = MyTreeWidgetItem(par_widget)
+                    child_widget.set_text(skill_name)
                     self.items[skill_name] = 0
                 continue
             if item_type == "attribute":
-                for attrib_name in param_dict["attrib"]:
+                for attrib_name in local_param_dict["attrib"]:
+                    child_widget = MyTreeWidgetItem(par_widget)
+                    child_widget.set_text(attrib_name)
                     self.items[attrib_name] = 0
                 continue
-            self.items = get_children(item_type)
+            items = get_children(item_type)
             if self.include is not None:
-                for name, data in list(self.items.items()):
+                for name, data in list(items.items()):
                     if name not in self.include:
-                        del self.items[name]
-            elif self.exclude is not None:
-                for name, data in list(self.items.items()):
-                    if name in self.exclude:
-                        del self.items[name]
+                        del items[name]
+                        continue
 
-        self.items_names = []
-        for item in self.items:
-            self.items_names.append(item)
-        self.item_list.addItems([translate(name) for name in self.items_names])
+            elif self.exclude is not None:
+                for name, data in list(items.items()):
+                    if name in self.exclude:
+                        del items[name]
+                        continue
+            for name, data in items.items():
+                self.items[name] = data
+                child_widget = MyTreeWidgetItem(par_widget)
+                child_widget.set_text(name)
+
+        # self.items_names = []
+        # for item in self.items:
+        #     self.items_names.append(item)
+        # self.item_list.addItems([translate(name) for name in self.items_names])
         self.item_list.currentItemChanged.connect(self.show_selection)
         self.main_layout.addWidget(self.item_list)
         self.show()
 
     def show_selection(self, current, previous):
-        current_index = self.item_list.currentIndex().row()
-        if current_index == -1:
+
+        # current_index = self.item_list.currentIndex().row()
+        # if current_index == -1:
+        #     return
+        item_name = self.item_list.currentItem().name
+        if item_name not in self.items:
             return
-        item_name = self.items_names[current_index]
         if isinstance(self.items[item_name], int):
             self.value_input.setText(str(self.items[item_name]))
             self.value_input.setVisible(True)
@@ -1015,10 +1026,7 @@ class ItemSelectPopup(BasePopup):
         self.value_input.setVisible(False)
 
     def ok_pressed(self):
-        current_index = self.item_list.currentIndex().row()
-        if current_index == -1:
-            return
-        item_name = self.items_names[current_index]
+        item_name = item_name = self.item_list.currentItem().name
         if isinstance(self.items[item_name], int):
             value = int(self.value_input.text())
             if not value:

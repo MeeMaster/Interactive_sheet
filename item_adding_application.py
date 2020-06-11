@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         save.setShortcut("Ctrl+S")
         file.addAction(save)
         # Add main widget
-        self.window_widget = ItemList(kwargs={"include": ["item"]})
+        self.window_widget = ItemList(kwargs={"include": ["base_object"]})
         self.setCentralWidget(self.window_widget)
         self.setWindowTitle(translate("ui_item_creation_app"))
         file.triggered[QAction].connect(self.process_trigger)
@@ -62,7 +62,8 @@ class ItemList(ItemListPopup):
 
     def translate(self, name):
         if name in self.translations:
-            return self.translations[name]
+            if self.translations[name].strip():
+                return self.translations[name]
         return name
 
     def get_item(self, item, column):
@@ -79,7 +80,6 @@ class ItemList(ItemListPopup):
 
     def update_object_fields(self, new_name):
         for field_name, field in self.grid_widget.fields.items():
-            print(field_name)
             if field_name == "name" or field_name == "parent":
                 continue
             if field_name == "tooltip" or field_name == "description" or field_name == "display":
@@ -90,7 +90,6 @@ class ItemList(ItemListPopup):
                 elif field_name == "display":
                     prefix = ""
                 translation_name = prefix+new_name
-                print(translation_name, field.get_data())
                 self.full_data_dict[new_name][field_name] = translation_name
                 self.translations[translation_name] = field.get_data()
                 continue
@@ -132,9 +131,11 @@ class ItemList(ItemListPopup):
                     string_block = item.to_string_block()
                     outfile.write(string_block)
 
-        with open("locales/translations_{}.csv".format("PL"), "w") as outfile:
+        with codecs.open("locales/translations_{}.csv".format("PL"),
+                         "w", encoding="windows-1250", errors='ignore') as outfile:
             for key in sorted(self.translations.keys()):
                 outfile.write(key+";"+self.translations[key]+"\n")
+
 
 class ClassWriterObject:
 
@@ -156,7 +157,13 @@ class ClassWriterObject:
             if isinstance(value, str):
                 string_block += "t_{} = {}\n".format(key, value)
             if isinstance(value, list):
-                string_block += "l_{} = {}\n".format(key, ", ".join([item for item in value]))
+                output_list = []
+                for item in value:
+                    if isinstance(item, str):
+                        output_list.append(item)
+                    elif isinstance(item, BaseObject):
+                        output_list.append(item.name + " {}".format(item.value) if item.value else item.name)
+                string_block += "l_{} = {}\n".format(key, ", ".join(output_list))
         string_block += "////\n\n"
         return string_block
 
