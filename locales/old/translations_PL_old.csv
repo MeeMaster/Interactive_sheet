@@ -1,0 +1,615 @@
+ui_armor;Pancerz
+ui_equipment;Wyposa¿enie
+ui_skills;Umiejêtnoœci
+ui_abilities;Zdolnoœci
+ui_character_tab;Postaæ
+ui_equipment_tab;Ekwipunek
+ui_misc_tab;Pozosta³e
+ui_ability_add_button;Dodaj zdolnoœæ
+ui_weapons;Broñ
+ui_weapons_add_button;Dodaj broñ
+ui_armors;Pancerz
+ui_armor_add_button;Dodaj pancerz
+ui_menu_file;Plik
+ui_new_sheet;Nowa
+ui_menu_load_sheet;Otwórz
+ui_menu_save_sheet;Zapisz
+ui_menu_save_sheet_as;Zapisz jako
+ui_menu_quit;WyjdŸ
+ui_window_name;Karta postaci
+ui_load_sheet_window_title;Wczytaj kartê
+ui_save_sheet_window_title;Zapisz kartê
+ui_ability_display_name;Nazwa
+ui_ability_requirements;Wymagania
+ui_ability_description;Opis
+ui_ranged_skill_value;Umiejêtnoœæ strzelecka
+ui_gm_modifier;Modyfikator MG
+ui_break_chance;Szansa przegrzania
+ui_break_increment;Wzrost szansy pzregrzania/strza³
+ui_distance_value;Odleg³oœci
+ui_distance_type;Grupa odleg³oœci
+ui_distance_modifier;Modyfikator odleg³oœci
+ui_size_name;Rozmiar
+ui_size_mod;Modyfikator
+ui_cover_name;Stopieñ zas³oniêcia
+ui_cover_mod;Modyfikator
+ui_hit_chance;Szansa na trafienie
+ui_shoot_once;Strzel pojedynczo
+ui_shoot_series;Strzel seri¹
+ui_cancel;Anuluj
+ui_shooting_app;Kalkulator strza³ów
+ui_menu_open_calculator;Kalkulator strza³ów
+ui_outcome_widget_name;Wynik
+ui_num_shots_fired;Pocisków do wystrzelenia
+ui_num_successes_first;Iloœæ sukcesów pierwszego pocisku
+ui_num_successes_remaining;Iloœæ trafieñ pozosta³ych pocisków
+ui_overheated_on;Broñ przegrzana przys strzale
+ui_weapon_type;Typ
+ui_weapon_damage;Obra¿enia
+ui_weapon_ap;PP
+ui_weapon_damage_type;Rodzaj obra¿eñ
+ui_weapon_shotcost;Energia/strza³
+ui_weapon_magazine;Stan baterii
+ui_weapon_max_magazine;Pojemnoœæ baterii
+ui_weapon_fire_mode;Tryb strza³u
+ui_notes_notes;Notatki
+ui_notes_contacts;Kontakty
+ui_notes_knowledge;Wiedza
+ui_notes_money;Pieni¹dze
+ui_item_archetype;Archetyp
+ui_item_name;Nazwa
+ui_item_traits;Cechy
+ui_item_price;Cena
+ui_item_weight;Waga
+ui_item_equipped;W u¿yciu
+ui_item_quantity;Iloœæ
+ui_item_description;Opis
+ui_item_total_weight;Ca³kowita
+ui_item_transfer_dialog;Przenosisz przedmiot
+ui_items_in_inventory;Dostêpna iloœæ
+ui_items_to_transfer;Do przeniesienia
+ui_add_item_button;Dodaj
+ui_modifiers;Modyfikatory
+ui_modifier_add_button;Dodaj modyfikator
+ui_normal_character;Normalna
+ui_alternative_character;Droid
+ui_add_property;Dodaj w³aœciwoœæ
+ui_equipped_items;Ekwipunek
+ui_stashed_items;Schowek
+ui_encumbrance;Obci¹¿enie
+ui_reputation;Reputacja
+ui_speed;Ruch
+ui_num_shots;Iloœæ pocisków
+ui_modules;Modu³y
+ui_parts;Czêœci
+ui_module_add_button;Dodaj modu³
+ui_part_add_button;Dodaj czêœæ
+available_addon;Dodatek
+ui_available_addon;Dostêpne dodatki
+addon;Dodatek
+ui_addon;Dodatki
+bonuses;Bonusy
+ui_bonuses;Bonusy
+available_modification;Modyfikacja
+ui_available_modification;Dostêpne modyfikacje
+modification;Modyfikacja
+ui_modification;Dodatki
+trait;Cecha
+ui_trait;Cechy
+fire_mode;Tryb ognia
+ui_fire_mode;Tryby ognia
+fire_single;Pojedynczy
+fire_multi;Wielokrotny
+fire_burst;Seria
+fire_auto;Automatyczny
+#Wewnêtrzna nazwa;Wyœwietlana nazwa
+armor_tact_vest;Kamizelka taktyczna
+armor_bh_armor;Zbroja ³owcy nagród
+armor_ball_vest;Kamizelka balistyczna
+armor_ball_helm;He³m balistyczny
+armor_storm_armor;Zbroja szturmowca
+armor_lamel_armor;Zbroja laminatowa
+#
+#Metalowe czêœci zbroi:;
+#Korpus/Rêce/Nogi;
+#Durastal;
+armor_dust_vest;Napierœnik durastalowy
+armor_dust_rh;Prawa rêkawica durastalowa
+armor_dust_lh;Lewa rêkawica durastalowa
+armor_dust_legs;Nogawice durastalowe
+;
+#Duraplast;
+armor_dupl_vest;Napierœnik duraplastowy
+armor_dupl_rh;Prawa rêkawica duraplastowa
+armor_dupl_lh;Lewa rêkawica duraplastowa
+armor_dupl_legs;Nogawice duraplastowe
+armor_dupl_helm;He³m duraplastowy
+;
+#DuraPancerz;
+armor_duar_vest;Napierœnik durapancerzowy
+armor_duar_rh;Prawa rêkawica durapancerzowa
+armor_duar_lh;Lewa rêkawica durapancerzowa
+armor_duar_legs;Nogawice durapancerzowe
+armor_duar_helm;He³m durapancerzowy
+;
+#Beskar;
+armor_besk_vest;Napierœnik beskarowy
+armor_besk_rh;Prawa rêkawica beskarowa
+armor_besk_lh;Lewa rêkawica beskarowa
+armor_besk_legs;Nogawice beskarowe
+armor_besk_helm;He³m beskarowy
+;
+#Wzmacniane ubranie;
+armor_cloth_shirt;Wzmacniana koszula
+armor_cloth_legs;Wzmacniane spodnie
+;
+armor_other;Inna
+;
+#Broñ;
+weapon_holdout_blaster;Blaster podrêczny
+weapon_blaster;Blaster
+weapon_heavy_blaster;Ciê¿ki blaster
+weapon_blaster_rifle;Karabin blasterowy
+weapon_blaster_carbine;Karabinek blasterowy
+weapon_cartridge_rifle;Karabin ³adunkowy
+weapon_stun_rifle;Karabin og³uszaj¹cy
+weapon_ion_rifle;Karabinek jonowy
+weapon_blaster_chaingun;Powtarzacz blasterowy
+weapon_blaster_cannon;Dzia³o blasterowe
+weapon_portable_launcher;Wyrzutnia rakiet
+weapon_blaster_sniper;Blasterowy karabin snajperski
+weapon_blaster_shotgun;Czyœciciel pok³adów
+weapon_flamer;Miotacz ognia
+weapon_sound_rifle;Karabin dŸwiêkowy
+weapon_disintegrator_rifle;Karabin dezintegracyjny
+weapon_fletchette_rifle;Karabin kasetkowy
+weapon_imperial_repeater;Powtarzacz imperialny
+;
+#Broñ rêczna;
+weapon_dagger;Nó¿
+weapon_vibroblade;Wibronó¿
+weapon_sword;Miecz
+weapon_vibrosword;Wibromiecz
+weapon_lightsaber;Miecz œwietlny
+weapon_offhand_lightsaber;Krótki miecz œwietlny
+weapon_vibrolance;Wibrolanca
+weapon_vibroaxe;Wibrotopór
+weapon_forcepike;Pika mocy
+weapon_electrostaff;Elektrolaska
+weapon_stun_baton;Pa³ka og³uszaj¹ca
+weapon_stun_gloves;Rêkawice og³uszaj¹ce
+weapon_vibro_knuckles;Wibrokastet
+weapon_vibro_doublesword;Wibromiecz podwójny
+weapon_light_doublesaber;Podwójny miecz œwietlny
+weapon_ryyk_blade;Ostrze Ryyk
+weapon_other;Inna
+;
+#Modu³y droidów;
+modifier_droid_ability1_1;Modu³ inteligencji
+modifier_droid_ability1_2;Modu³ kognitywny
+modifier_droid_ability2_1;Translator protoko³ów
+modifier_droid_ability2_2;Modu³ komunikacji
+modifier_droid_ability3_1;Modu³ analizy widocznoœci
+modifier_droid_ability3_2;Modu³ wyszukiwania trasy
+modifier_droid_ability4_1;Firewall
+modifier_droid_ability4_2;Modu³ kontroli
+modifier_droid_ability5_1;Modu³ cybernetyki
+modifier_droid_ability5_2;Modu³ zaaw. elektroniki
+modifier_droid_ability6_1;Modu³ równowagi
+modifier_droid_ability6_2;Modu³ koordynacji
+modifier_droid_ability7_1;Modu³ oceny zagro¿enia
+modifier_droid_ability7_2;Modu³ orientacji takt.
+modifier_droid_ability8_1;Silnik wyszukiwania
+modifier_droid_ability8_2;Modu³ analizy jêzyka
+modifier_droid_ability9_1;Modu³ mechaniki
+modifier_droid_ability9_2;Modu³ systemów mech.
+modifier_droid_ability10_1;Analizator medyczny
+modifier_droid_ability10_2;Modu³ zabiegowy
+modifier_droid_ability11_1;Modu³ broni bia³ej
+modifier_droid_ability11_2;Modu³ szermierki
+modifier_droid_ability12_1;Symulator walki
+modifier_droid_ability12_2;Modu³ sztuk walki
+modifier_droid_ability13_1;Kontrola nawigacji
+modifier_droid_ability13_2;Modu³ naprowadzania
+modifier_droid_ability14_1;Ulep. sensory optyczne
+modifier_droid_ability14_2;Dodatkowe sensory
+modifier_droid_ability15_1;Sterownik speederów
+modifier_droid_ability15_2;Modu³ wyœcigowy
+modifier_droid_ability16_1;Modu³ koordynacji m.k.
+modifier_droid_ability16_2;Modu³ ciê¿kich pojazdów
+modifier_droid_ability17_1;Modu³ pilota¿u
+modifier_droid_ability17_2;Modu³ manewrów lotniczych
+modifier_droid_ability18_1;System uzbrojenia
+modifier_droid_ability18_2;Komputer celuj¹cy
+modifier_droid_ability19_1;Modu³ stabilizuj¹cy
+modifier_droid_ability19_2;Sys. uzbrojenia ciê¿kiego
+modifier_droid_ability20_1;System œledzenia celu
+modifier_droid_ability20_2;System przewidywania
+modifier_droid_ability21_1;Modu³ analizy zabezpieczeñ
+modifier_droid_ability21_2;Modu³ przeci¹¿enia zab.
+modifier_droid_ability22_1;Modu³ analizy systemów
+modifier_droid_ability22_2;Modu³ nadpisania systemów
+item_other;Inny
+;
+#Czesci droidów;
+
+#Mózg
+droid_brain_assasin;Mózg Droid Zabójca
+droid_brain_combat;Mózg Droid Bojowy
+droid_brain_engineer;Mózg Droid In¿ynieryjny 
+droid_brain_medical;Mózg Droid Medyczny
+droid_brain_worker;Mózg Droid Roboczy
+droid_brain_protocol;Mózg Droid Protokolarny
+droid_brain_pilot;Mózg Droid Pilot
+droid_brain_combatpilot;Mózg Droid Pilot Bojowy
+droid_brain_astromech;Mózg Droid Astromechaniczny
+droid_brain_slicer;Mózg Droid Hakuj¹cy
+droid_brain_gunner;Mózg Droid Dzia³onowy
+
+#G³owa
+droid_head_small;G³owa droida ma³a
+droid_head_medium;G³owa droida œrednia
+droid_head_large;G³owa droida du¿a
+droid_head_compact;G³owa droida kompaktowa
+
+#Korpus
+droid_humanoidchest_small;Korpus droida humanoidalny ma³y
+droid_humanoidchest_medium;Korpus droida humanoidalny œredni
+droid_humanoidchest_large;Korpus droida humanoidalny du¿y
+
+droid_boxchest_small;Korpus droida skrzyniowy ma³y
+droid_boxchest_medium;Korpus droida skrzyniowy œredni
+droid_boxchest_large;Korpus droida skrzyniowy du¿y
+droid_barrelchest_small;Korpus droida cylindryczny ma³y
+droid_barrelchest_medium;Korpus droida cylindryczny œredni
+droid_barrelchest_large;Korpus droida cylindryczny du¿y
+droid_nonstandardchest_small;Korpus droida niestandardowy ma³y
+droid_nonstandardchest_medium;Korpus droida niestandardowy œredni
+droid_nonstandardchest_large;Korpus droida niestandardowy du¿y
+
+#Rêce
+droid_manipulatorarms_small;Rêce droida manipulacyjne ma³e
+droid_manipulatorarms_medium;Rêce droida manipulacyjne œrednie
+droid_manipulatorarms_large;Rêce droida manipulacyjne du¿e
+
+droid_functionalarms_multitool;Rêce wielofunkcyjne droida
+droid_functionalarms_medical;Rêce medyczne droida
+droid_functionalarms_large;Rêce funkcyjne droida du¿e
+droid_weaponarms_small;Rêce droida uzbrojone ma³e
+droid_weaponarms_medium;Rêce droida uzbrojone œrednie
+droid_weaponarms_large;Rêce droida uzbrojone du¿e
+droid_heavydutyarms_small;Rêce droida robocze ma³e
+droid_heavydutyarms_medium;Rêce droida robocze œrednie
+droid_heavydutyarms_large;Rêce droida robocze du¿e
+
+#Napêd
+droid_humanoidlegs_small;Nogi droida humanoidalne ma³e
+droid_humanoidlegs_medium;Nogi droida humanoidalne œrednie
+droid_humanoidlegs_large;Nogi droida humanoidalne du¿e
+droid_rollerlegs_small;Napêd g¹sienicowy ma³y
+droid_rollerlegs_medium;Napêd g¹sienicowy œredni
+droid_rollerlegs_large;Napêd g¹sienicowy du¿y
+droid_hoverpad_small;Napêd lewitacyjny ma³y
+droid_hoverpad_medium;Napêd lewitacyjny œredni
+droid_spiderlegs_small;Nogi pajêcze ma³e
+droid_spiderlegs_medium;Nogi pajêcze œrednie
+droid_spiderlegs_large;Nogi pajêcze du¿e
+
+
+#Dodatki-rêce
+droid_power_servos;Wzmocnione serwomotory
+droid_precision_servos;Precyzyjne serwomotory
+droid_hydraulic_servos;Hydrauliczne serwomotory
+droid_data_connector;Z³¹cze informatyczne
+droid_slicer_spike;Z³¹cze hakuj¹ce
+droid_wrist-blaster;Blaster nadgarstkowy
+droid_wrist-flamethrower;Nadgarstkowy miotacz ognia
+droid_wrist-blade;Ostrze nadgarstkowe
+
+#Dodatki-nogi
+droid_overdrive_motors;Przyspieszone serwomotory
+droid_magnetized_boots;Magnetyczne buty
+droid_momentum_dampeners;T³umiki przeci¹¿eniowe
+
+#Dodatki-korpus
+droid_gas_dispenser;Emiter gazu
+droid_stabilizer_hooks;Haki stabilizuj¹ce
+droid_jet_jumper;Plecak odrzutowy
+
+#Dodatki-g³owa
+droid_long_range_antennae;Antena dalekiego zasiêgu
+droid_improved_vision_sensors;Ulepszone sensory optyczne
+droid_multi_spectrum_sensors;Rozszerzone spekrum sensorów
+droid_improved_sound_receivers;Wzmocnienie sensorów dŸwiêkowych
+
+#Rozszerzenia
+droid_redundancy_circuits;Obwody redundantne
+droid_decentralized_memory_core;Zdencentralizowany rdzeñ
+droid_short_circuit_breakers;Zabezpieczenia antyprzepieciowe
+droid_advanced_alloy_frame;Zaawansowana rama ze stopów
+
+droid_full_rotation_joints;Obrotowe stawy
+droid_recoil_dampening_pistons;T³oki t³umi¹ce
+droid_auridium_circuitry;Obwody z Auridium
+
+droid_joint_roller_blockers;Stawy przek³adniowe
+droid_strengthened_pistons;Wzmocnione t³oki
+droid_high_pressure_tubing;Przewody wysokiego ciœnienia
+
+droid_additional_computing_module;Dodatkowy modu³ obliczeniowy
+droid_additional_cognitive_core;Dodatkowy rdzeñ kognitywny
+droid_fast_data_processing_module;Uk³ad szybkiego przetwarzania danych
+
+droid_quantum_code_resolver;Kwantowy ³amacz kodów
+droid_isolated_decoding_environments;Izolowane œrodowisko dekoduj¹ce
+droid_repurposed_slicer_droid_brain;Wydzielony mózg droida hakuj¹cego
+
+droid_isolated_encryption_system;Kodowanie systemu
+droid_dispersed_decision_cores;Rozproszony rdzeñ decyzyjny
+droid_isolated_command_processing_environment;Izolowane œrodowidko procesów decyzyjnych
+droid_supplementary_system_override;Awaryjny system nadrzêdny
+droid_hardwired_firewall;Sprzêtowy firewall
+
+#Baterie
+droid_small_battery;Ma³a bateria
+droid_small_Auridium_battery;Ma³a bateria auridium
+droid_small_Nova_crystal_battery;Ma³a bateria Nova
+droid_medium_battery;Œrednia bateria
+droid_medium_Auridium_battery;Œrednia bateria auridium
+droid_medium_Nova_crystal_battery;Œrednia bateria Nova
+droid_large_battery;Du¿a bateria
+droid_large_Auridium_battery;Du¿a bateria auridium
+droid_large_Nova_crystal_battery;Du¿a bateria Nova
+
+;
+#Implanty
+implant_strength_1;Implant wydajnoœciowy
+
+ability_analysis1;Przeszywaj¹ce spojrzenie
+desc_ability_analysis1;+10 do rzutów na rozpoznanie oszustwa
+ability_analysis2;Po³¹cz kropki
+desc_ability_analysis2;+10 do rzutów analizy przy szukaniu wzorca
+ability_analysis3;Naukowiec danych
+desc_ability_analysis3;+10 do rzutów na wyszukiwanie istotnych informacji
+ability_athletics1;Sprinter
+desc_ability_athletics1;2x d³u¿szy zasiêg ruchu podczas sprintu
+ability_athletics2;¯wawy p³ywak
+desc_ability_athletics2;Mo¿e p³ywaæ z podwójn¹ prêdkoœci¹ oraz zatrzymywaæ oddech na dwa razy d³u¿szy czas
+ability_cyber1;Konstrukcja uk³adów
+desc_ability_cyber1;Pozwala na konstruowanie prostych urz¹dzeñ elektronicznych i cybernetycznych
+ability_dipl1;Znajomoœæ kultury
+desc_ability_dipl1;Znajomoœæ konkretnej kultury u³atwia kontakt z jej przedstawicielami
+ability_commerce1;Weteran targu
+desc_ability_commerce1;+10 do rzutu na Commerce podczas targowania siê o cenê
+ability_commerce2;Towar spod lady
+desc_ability_commerce2;Wszystkie towary otrzymuj¹ +1 do poziomu dostêpnoœci
+ability_mech1;Z³ota r¹czka
+desc_ability_mech1;Pozwala na budowanie prostych urz¹dzeñ mechanicznych
+ability_mech2;Naprawa pojazdów
+desc_ability_mech2;Pozwala na analizê i naprawê prostych pojazdów (speedery)
+ability_med1;Tria¿
+desc_ability_med1;Mo¿e wykonywaæ proste zabiegi medyczne w warunkach bojowych
+ability_med2;Wywiad medyczny
+desc_ability_med2;+10 do testów rozpoznania choroby
+ability_nav1;Wyczucie kierunku
+desc_ability_nav1;+10 przy nawigacji w terenie
+ability_nav2;Astrograf
+desc_ability_nav2;+10 do nawigacji w przestrzeni kosmicznej
+ability_nav3;Z nurtem ulicy
+desc_ability_nav3;+10 do nawigacji w przestrzeni miejskiej
+ability_comp1;Nieustraszony
+desc_ability_comp1;+10 do rzutów na strach
+ability_comp2;Zaprawiony w boju
+desc_ability_comp2;+10 do rzutów przy ogniu zaporowym
+ability_comp3;Spokojny umys³
+desc_ability_comp3;+20 do rzutów odpornoœci na Moce umys³u
+ability_cheat1;Szuler
+desc_ability_cheat1;+10 przy oszukiwaniu w grach
+ability_cheat2;Fa³szerz
+desc_ability_cheat2;+10 podczas podrabiania dokumentów / przedmiotów
+ability_cheat3;Klucznik
+desc_ability_cheat3;+20 do testu podrabiania kluczy dostêpu
+ability_cheat4;K³amstwo w ¿ywe oczy
+desc_ability_cheat4;+10 do próby ok³amania innej postaci
+ability_cheat5;Kim ty jesteœ?
+desc_ability_cheat5;+10 do próby podszywania siê
+ability_pilot1;As przestworzy
+desc_ability_pilot1;+10 do pilota¿u podczas kierowania ma³ymi statkami kosmicznymi
+ability_pilot2;Åšcigacz
+desc_ability_pilot2;+20 do pilota¿u podczas wyœcigów lub w warunkach przypominaj¹cych wyœcigi
+ability_inter1;Dobry glina, z³y glina
+desc_ability_inter1;Jeœli iloœæ ludzi przes³uchuj¹cych wynosi 2 lub wiêcej, +10 do przes³uchiwania
+ability_inter2;Kat
+desc_ability_inter2;Pozwala na torturowanie przes³uchiwanych, gdzie testowana jest ich resistance i composition
+ability_inter3;Znane sztuczki
+desc_ability_inter3;Postaæ otrzymuje +10 do opanowania podczas bycia przes³uchiwan¹
+ability_perception1;Koci refleks
+desc_ability_perception1;+10 do testu zaskoczenia
+ability_perception2;Czu³e ucho
+desc_ability_perception2;+10 do testu pods³uchiwania
+ability_ranged_light2;Snajper
+desc_ability_ranged_light2;Podczas celowania nie otrzymujesz kar za celowanie w konkretn¹ czêœæ cia³a
+ability_ranged_light3;Naznaczony
+desc_ability_ranged_light3;Trafienie przeciwnika daje bonus +10 do kolejnego strza³u w tego samego przeciwnika
+ability_ranged_light4;Poprawka na wiatr
+desc_ability_ranged_light4;Podczas strzelania na d³ugie dystanse (modyfikator < 0), podczas strzelania do tego samego celu, ka¿dy kolejny strza³ daje modyfikator +10 do testu trafienia, maksymalnie 2 razy.
+ability_ranged_light5;Strza³ w biegu
+desc_ability_ranged_light5;+10 do testu trafienia podczas strzelania w biegu
+ability_ranged_light6;Szybki strza³
+desc_ability_ranged_light6;W trakcie walki, podczas wyci¹gania blastera mo¿e wykonaæ pojedynczy strza³ za darmo
+ability_ranged_light7;Rewolwerowiec
+desc_ability_ranged_light7;Mo¿e u¿ywaæ dwóch blasterów naraz bez kary
+ability_ranged_light8;Praca na spuœcie
+desc_ability_ranged_light8;Pozwala na wystrzelenie wiêcej ni¿ jednego pocisku w trakcie tury
+ability_ranged_light9;Strza³ z biodra
+desc_ability_ranged_light9;Kara za strzelanie bez celowania wynosi -10 zamiast -30
+ability_ranged_light10;Wstrzymanie oddechu
+desc_ability_ranged_light10;+5 do strza³u na odleg³oœci dalekie
+ability_ranged_heavy1;Lob
+desc_ability_ranged_heavy1;+10 do trafienia przy u¿yciu granatów (granatniki równie¿)
+ability_ranged_heavy2;Ruchoma forteca
+desc_ability_ranged_heavy2;Pozwala na wykonanie strza³u w trakcie ruchu z u¿yciem broni ciê¿kiej
+ability_ranged_heavy3;Skupienie ognia
+desc_ability_ranged_heavy3;Zwiêksza szansê na trafienie podczas u¿ywania ognia automatycznego o 5
+ability_ranged_heavy4;G³owy w dó³
+desc_ability_ranged_heavy4;Ogieñ zaporowy zwiêksza trudnoœæ testu opanowania o 1
+ability_ranged_heavy5;Czu³y punkt
+desc_ability_ranged_heavy5;Bezpoœrednie trafienie rakiet¹ otrzymuje dodatkowe 2 PP
+ability_ranged_stationary1;Mechaniczne ruchy
+desc_ability_ranged_stationary1;Czas potrzebny na rozstawienie i uruchomienie dzia³ka stacjonarnego skrócony do 2 rund
+ability_survival1;Åowca
+desc_ability_survival1;+15 do spostrzegawczoœci podczas œledzenia zwierzyny
+ability_survival2;Kucharz
+desc_ability_survival2;Pozwala na stworzenie wytrzyma³ych racji ¿ywnoœciowych z podstawowego po¿ywienia
+ability_survival3;Traper
+desc_ability_survival3;Pozwala na zak³adanie trudnych do wykrycia pu³apek
+ability_survival4;Partyzant
+desc_ability_survival4;Pozwala na tworzenie materia³ów wybuchowych z powszechnie dostêpnych elementów
+ability_hide1;Zas³ona cienia
+desc_ability_hide1;+10 do ukrywania siê jeœli postaæ ukrywa siê w miejscu
+ability_hide2;Ukryte kieszenie
+desc_ability_hide2;Wykonaj test Zwinnych Palców, aby ukryæ ma³y przedmiot podczas przeszukiwania
+ability_evade1;Szybki zwód
+desc_ability_evade1;Po udanym dodgeu postaæ mo¿e przemieœciæ siê do 2 metrów w dowolnym kierunku
+ability_melee_unarmed1;Rozbrojenie
+desc_ability_melee_unarmed1;Wykonaj rzut Przewagi Zwinnoœci aby wytr¹ciæ broñ z r¹k przeciwnika
+ability_melee_unarmed2;Cios poni¿ej pasa
+desc_ability_melee_unarmed2;Mo¿e próbowaæ zadaæ cios wy³¹czaj¹cy przeciwnika z bójki. Test WW, 2+ sukcesów: Obrona: trudny dodge. Powalenie i og³uszenie. Mniej ni¿ 2 sukcesy: 0 Obr.
+ability_armed1;Celowane ciêcie
+desc_ability_armed1;Pozwala wykonaæ celowane ciêcie, z modyfikatorem 10 aby uzyskaæ 1PP
+ability_armed2;Zas³ona z ostrzy
+desc_ability_armed2;Pozwala na dodatkowe parowanie w rundzie
+ability_influence1;Autorytet
+desc_ability_influence1;Pozwala zastraszaæ z u¿yciem Charyzmy zamiast Si³y
+ability_influence2;Pod w³os
+desc_ability_influence2;Pozwala zastraszaæ z u¿yciem Inteligencji zamiast Si³y
+ability_influence3;Filtrowanie informacji
+desc_ability_influence3;Pozwala plotkowaæ z u¿yciem Inteligencji zamiast Charyzmy
+ability_influence4;M¹dre s³ówka
+desc_ability_influence4;Pozwala przekonywaæ z u¿yciem Inteligencji zamiast Charyzmy
+ability_influence5;Don¿uan/Femme Fatale
+desc_ability_influence5;+10 do rzutów Charyzmy przy oddzia³ywaniu z osobnikiem przeciwnej  p³ci (Rasa musi byæ zbie¿na)
+ability_persistence1;Nieugiêty
+desc_ability_persistence1;+10 do rzutów na odpornoœæ na interrogation
+ability_persistence2;Nieczu³y
+desc_ability_persistence2;Postaæ nie musi rzucaæ na persistence przy codziennych okropnoœciach
+ability_persistence3;Silny umys³
+desc_ability_persistence3;+20 do rzutów odpornoœci na Moce umys³u
+ability_resistance1;Mocna g³owa
+desc_ability_resistance1;+20 do Twardoœci podczas testów wytrzyma³oœci podczas spo¿ywania alkoholu lub narkotyków
+ability_security1;Znajomoœæ systemu
+desc_ability_security1;Postaæ otrzymuje +10 do prze³amywania konkretnego systemu zabezpieczeñ
+ability_security2;Szybki uczeñ
+desc_ability_security2;Determinacja daje +20 do ponownego podejœcia zamiast +10
+ability_security3;Ostro¿ne podejœcie
+desc_ability_security3;Alarm systemu zostanie wszczêty przy 5 pora¿kach zamiast 4
+ability_security4;K³ody pod nogi
+desc_ability_security4;Jeœli postaæ ma dostêp do systemu, mo¿e wykonaæ trudny test zabezpieczeñ w celu utrudnienia dostêpu innym u¿ytkownikom (modyfikator -30)
+ability_security5;Mistrz hakowania
+desc_ability_security5;Pozwala postaci na przejêcie systemów wroga (ochrona, drzwi i inne)
+ability_security6;Szybkie palce
+desc_ability_security6;Jeœli inna postaæ przeciwdzia³a postaci w hakowaniu, otrzymuje ona modyfikator -20 do przewagi zabezpieczeñ
+ability_security7;Archaiczne zamki
+desc_ability_security7;Pozwala postaci na próbê otwarcia zamków mechanicznych, przy dodatkowym modyfikatorze +10
+ability_dexterity1;Na cztery ³apy
+desc_ability_dexterity1;Pozwala na upadek z  wy¿szych wysokoœci bez utraty punktów ¿ycia
+ability_dexterity2;Rakietowiec
+desc_ability_dexterity2;Pozwala na u¿ycie plecaków rakietowych
+ability_willpower1;¯elazna wola
+desc_ability_willpower1;Pozwala na przerzut testów opartych na Sile Woli
+ability_dexterity3;Zwinne palce
+desc_ability_dexterity3;Pozwala postaci na wykonywanie szybkich, zwinnych ruchów z u¿yciem r¹k
+ability_dexterity4;Niechciany prezent
+desc_ability_dexterity4;+10 jeœli postaæ próbuje podrzuciæ komuœ ma³y przedmiot
+ability_general1;Bombowy goœæ
+desc_ability_general1;+10 do testów podczas pracy z materia³ami wybuchowymi
+ability_general2;Bieg³oœæ: He³my bojowe
+desc_ability_general2;Pozwala na u¿ywanie he³mów z interfejsem bitewnym
+
+attrib_strength;Si³a
+attrib_agility;Zrêcznoœæ
+attrib_intelligence;Inteligencja
+attrib_toughness;Twardoœæ
+attrib_willpower;Si³a Woli
+attrib_charisma;Charyzma
+attrib_hacking;Hakowanie
+attrib_integrity;Spójnoœæ
+#
+skill_athletics;Atletyka
+skill_melee_unarmed;Walka nieuzbrojona
+skill_melee_armed;Broñ bia³a
+skill_ranged_light;Broñ lekka
+skill_ranged_heavy;Broñ ciê¿ka
+skill_ranged_stationary;Broñ stacjonarna
+skill_dodge;Unik
+skill_dexterity;Zwinnoœæ
+skill_perception;Percepcja
+skill_analysis;Analiza
+skill_composition;Opanowanie
+skill_persistence;Wytrwa³oœæ
+skill_resistance;Odpornoœæ
+skill_conceal;Ukrycie
+skill_diplomacy;Dyplomacja
+skill_cheat;Oszustwo
+skill_commerce;Handel
+skill_interrogation;Przes³uchiwanie
+skill_survival;Sztuka przetrwania
+skill_cybernetics;Cybernetyka
+skill_mechanics;Mechanika
+skill_security;Zabezpieczenia
+skill_navigation;Nawigacja
+skill_medicine;Medycyna
+skill_pilot_speeders;Speedery
+skill_pilot_walkers;Maszyny krocz¹ce
+skill_pilot_spaceships;Statki kosmiczne
+skill_influence;Wp³yw
+skill_control;Kontrola systemu
+skill_holonet;Holonet
+skill_systems;Systemy
+skill_communication;Komunikacja
+#
+param_encumbrance_low;Lekkie
+param_encumbrance_med;Komfortowe
+param_encumbrance_high;Maksymalne
+param_speed_low;Wolny
+param_speed_med;Normalny
+param_speed_high;Sprint
+param_reputation_bad;Negatywna
+param_reputation_good;Pozytywna
+param_reputation_total;Ca³kowita
+param_hp_max;P¯ maks
+param_hp_current;P¯ obecne
+param_pp_total;PP ca³kowite
+param_pp_curr;PP obecne
+param_fatigue;Zmêczenie
+param_xp_total;XP wykorzystane
+param_xp_free;XP wolne
+#
+armor_head;G³owa
+armor_rh;Prawa rêka
+armor_chest;Korpus
+armor_lh;Lewa rêka
+armor_rl;Prawa noga
+armor_ll;Lewa noga
+#
+character_name;Imiê
+character_race;Rasa
+character_planet;Planeta
+character_age;Wiek
+character_traits;Cechy szczególne
+character_profession;Zawód
+character_model;Model
+character_fabricator;Wytwórca
+#
+param_size_tiny;Bardzo ma³y
+param_size_small;Ma³y
+param_size_normal;Normalny
+param_size_large;Du¿y
+param_size_giant;Ogromny
+param_size_enormous;Gargantuiczny
+param_distance_extreme;Ekstremalna
+param_distance_far;Daleka
+param_distance_mid;Åšrednia
+param_distance_close;Bliska
+param_ranged;Zasiêgowa
+param_melee;Bia³a

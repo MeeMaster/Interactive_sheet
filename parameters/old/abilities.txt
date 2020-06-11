@@ -1,507 +1,480 @@
 ability_analysis1:ability
-t_name = ability_analysis1
 l_requirements = skill_analysis 15
 t_description = desc_ability_analysis1
+i_tier = 1
 ////
 
 ability_analysis2:ability
-t_name = ability_analysis2
 l_requirements = skill_analysis 20
 t_description = desc_ability_analysis2
 i_tier = 2
 ////
 
 ability_analysis3:ability
-t_name = ability_analysis3
 l_requirements = skill_analysis 15
 t_description = desc_ability_analysis3
+i_tier = 1
 ////
 
 ability_athletics1:ability
-t_name = ability_athletics1
 l_requirements = skill_athletics 15
 t_description = desc_ability_athletics1
+i_tier = 1
 ////
 
 ability_athletics2:ability
-t_name = ability_athletics2
 l_requirements = skill_athletics 15
 t_description = desc_ability_athletics2
+i_tier = 1
 ////
 
 ability_cyber1:ability
-t_name = ability_cyber1
 l_requirements = skill_cybernetics  10
 t_description = desc_ability_cyber1
+i_tier = 1
 ////
 
 ability_dipl1:ability
-t_name = ability_dipl1
 l_requirements = skill_diplomacy  10
 t_description = desc_ability_dipl1
+i_tier = 1
 ////
 
 ability_commerce1:ability
-t_name = ability_commerce1
 l_requirements = skill_commerce 15, attrib_charisma 15
 t_description = desc_ability_commerce1
+i_tier = 1
 ////
 
 ability_commerce2:ability
-t_name = ability_commerce2
 l_requirements = ability_commerce1, skill_commerce 20
 t_description = desc_ability_commerce2
 i_tier = 2
 ////
 
 ability_mech1:ability
-t_name = ability_mech1
 l_requirements = skill_mechanics 10
 t_description = desc_ability_mech1
+i_tier = 1
 ////
 
 ability_mech2:ability
-t_name = ability_mech2
 l_requirements = skill_mechanics 15
 t_description = desc_ability_mech2
+i_tier = 1
 ////
 
 ability_med1:ability
-t_name = ability_med1
 l_requirements = skill_medicine 10
 t_description = desc_ability_med1
+i_tier = 1
 ////
 
 ability_med2:ability
-t_name = ability_med2
 l_requirements = skill_medicine 15
 t_description = desc_ability_med2
+i_tier = 1
 ////
 
 ability_nav1:ability
-t_name = ability_nav1
 l_requirements = skill_navigation 15
 t_description = desc_ability_nav1
+i_tier = 1
 ////
 
 ability_nav2:ability
-t_name = ability_nav2
 l_requirements = skill_navigation 15
 t_description = desc_ability_nav2
+i_tier = 1
 ////
 
 ability_nav3:ability
-t_name = ability_nav3
 l_requirements = skill_navigation 15
 t_description = desc_ability_nav3
+i_tier = 1
 ////
 
 ability_comp1:ability
-t_name = ability_comp1
 l_requirements = skill_composition 15
 t_description = desc_ability_comp1
+i_tier = 1
 ////
 
 ability_comp2:ability
-t_name = ability_comp2
 l_requirements = skill_composition 15
 t_description = desc_ability_comp2
+i_tier = 1
 ////
 
 ability_comp3:ability
-t_name = ability_comp3
 l_requirements = skill_composition 20
 t_description = desc_ability_comp3
 i_tier = 2
 ////
 
 ability_cheat1:ability
-t_name = ability_cheat1
 l_requirements = skill_cheat 15, ability_dexterity1
 t_description = desc_ability_cheat1
+i_tier = 1
 ////
 
 ability_cheat2:ability
-t_name = ability_cheat2
 l_requirements = skill_cheat 15
 t_description = desc_ability_cheat2
+i_tier = 1
 ////
 
 ability_cheat3:ability
-t_name = ability_cheat3
 l_requirements = skill_cheat 25, skill_cybernetics  20, skill_security 20
 t_description = desc_ability_cheat3
 i_tier = 3
 ////
 
 ability_cheat4:ability
-t_name = ability_cheat4
 l_requirements = skill_cheat 10
 t_description = desc_ability_cheat4
+i_tier = 1
 ////
 
 ability_cheat5:ability
-t_name = ability_cheat5
 l_requirements = skill_cheat 15
 t_description = desc_ability_cheat5
 i_tier = 2
 ////
 
 ability_pilot1:ability
-t_name = ability_pilot1
 l_requirements = skill_pilot_spaceships 20
 t_description = desc_ability_pilot1
+i_tier = 1
 ////
 
 ability_pilot2:ability
-t_name = ability_pilot2
 l_requirements = skill_pilot_speeders 10
 t_description = desc_ability_pilot2
 i_tier = 2
 ////
 
 ability_inter1:ability
-t_name = ability_inter1
 l_requirements = skill_interrogation 15
 t_description = desc_ability_inter1
+i_tier = 1
 ////
 
 ability_inter2:ability
-t_name = ability_inter2
 l_requirements = skill_interrogation 15, skill_composition 15
 t_description = desc_ability_inter2
 i_tier = 2
 ////
 
 ability_inter3:ability
-t_name = ability_inter3
 l_requirements = skill_interrogation 10
 t_description = desc_ability_inter3
+i_tier = 1
 ////
 
 ability_perception1:ability
-t_name = ability_perception1
 l_requirements = skill_perception 15
 t_description = desc_ability_perception1
+i_tier = 1
 ////
 
 ability_perception2:ability
-t_name = ability_perception2
 l_requirements = skill_perception 10
 t_description = desc_ability_perception2
+i_tier = 1
 ////
 
 ability_ranged_light2:ability
-t_name = ability_ranged_light2
 l_requirements = skill_ranged_light 15
 t_description = desc_ability_ranged_light2
+i_tier = 1
 ////
 
 ability_ranged_light3:ability
-t_name = ability_ranged_light3
 l_requirements = skill_ranged_light 20
 t_description = desc_ability_ranged_light3
+i_tier = 1
 ////
 
 ability_ranged_light4:ability
-t_name = ability_ranged_light4
 l_requirements = skill_ranged_light 20
 t_description = desc_ability_ranged_light4
 i_tier = 2
 ////
 
 ability_ranged_light5:ability
-t_name = ability_ranged_light5
 l_requirements = skill_ranged_light 20
 t_description = desc_ability_ranged_light5
 i_tier = 2
 ////
 
 ability_ranged_light6:ability
-t_name = ability_ranged_light6
 l_requirements = attrib_agility 15, skill_ranged_light 20
 t_description = desc_ability_ranged_light6
+i_tier = 1
 ////
 
 ability_ranged_light7:ability
-t_name = ability_ranged_light7
 l_requirements = skill_ranged_light 30
 t_description = desc_ability_ranged_light7
 i_tier = 3
 ////
 
 ability_ranged_light8:ability
-t_name = ability_ranged_light8
 l_requirements = skill_ranged_light 25
 t_description = desc_ability_ranged_light8
 i_tier = 3
 ////
 
 ability_ranged_light9:ability
-t_name = ability_ranged_light9
 l_requirements = skill_ranged_light 25
 t_description = desc_ability_ranged_light9
 i_tier = 3
 ////
 
 ability_ranged_light10:ability
-t_name = ability_ranged_light10
 l_requirements = skill_ranged_light 20
 t_description = desc_ability_ranged_light10
 i_tier = 2
 ////
 
 ability_ranged_heavy1:ability
-t_name = ability_ranged_heavy1
 l_requirements = skill_ranged_heavy 15, attrib_agility 10
 t_description = desc_ability_ranged_heavy1
+i_tier = 1
 ////
 
 ability_ranged_heavy2:ability
-t_name = ability_ranged_heavy2
 l_requirements = skill_ranged_heavy 10, attrib_strength 20
 t_description = desc_ability_ranged_heavy2
 i_tier = 2
 ////
 
 ability_ranged_heavy3:ability
-t_name = ability_ranged_heavy3
 l_requirements = skill_ranged_heavy 20
 t_description = desc_ability_ranged_heavy3
+i_tier = 1
 ////
 
 ability_ranged_heavy4:ability
-t_name = ability_ranged_heavy4
 l_requirements = skill_ranged_heavy 15
 t_description = desc_ability_ranged_heavy4
+i_tier = 1
 ////
 
 ability_ranged_heavy5:ability
-t_name = ability_ranged_heavy5
 l_requirements = skill_ranged_heavy 20
 t_description = desc_ability_ranged_heavy5
 i_tier = 2
 ////
 
 ability_ranged_stationary1:ability
-t_name = ability_ranged_stationary1
 l_requirements = skill_ranged_stationary 10
 t_description = desc_ability_ranged_stationary1
+i_tier = 1
 ////
 
 ability_survival1:ability
-t_name = ability_survival1
 l_requirements = skill_survival 10
 t_description = desc_ability_survival1
+i_tier = 1
 ////
 
 ability_survival2:ability
-t_name = ability_survival2
 l_requirements = skill_survival 10
 t_description = desc_ability_survival2
+i_tier = 1
 ////
 
 ability_survival3:ability
-t_name = ability_survival3
 l_requirements = skill_survival 15
 t_description = desc_ability_survival3
 i_tier = 2
 ////
 
 ability_survival4:ability
-t_name = ability_survival4
 l_requirements = skill_survival 20
 t_description = desc_ability_survival4
 i_tier = 3
 ////
 
 ability_hide1:ability
-t_name = ability_hide1
 l_requirements = skill_conceal 15
 t_description = desc_ability_hide1
+i_tier = 1
 ////
 
 ability_hide2:ability
-t_name = ability_hide2
 l_requirements = skill_conceal 15
 t_description = desc_ability_hide2
+i_tier = 1
 ////
 
 ability_evade1:ability
-t_name = ability_evade1
 l_requirements = skill_dodge 15
 t_description = desc_ability_evade1
+i_tier = 1
 ////
 
 ability_melee_unarmed1:ability
-t_name = ability_melee_unarmed1
 l_requirements = attrib_agility 15, skill_melee_unarmed 10
 t_description = desc_ability_melee_unarmed1
+i_tier = 1
 ////
 
 ability_melee_unarmed2:ability
-t_name = ability_melee_unarmed2
 l_requirements = skill_melee_unarmed 20
 t_description = desc_ability_melee_unarmed2
+i_tier = 1
 ////
 
 ability_armed1:ability
-t_name = ability_armed1
 l_requirements = skill_melee_armed 15
 t_description = desc_ability_armed1
+i_tier = 1
 ////
 
 ability_armed2:ability
-t_name = ability_armed2
 l_requirements = skill_melee_armed 20
 t_description = desc_ability_armed2
 i_tier = 2
 ////
 
 ability_influence1:ability
-t_name = ability_influence1
 l_requirements = skill_influence 20
 t_description = desc_ability_influence1
 i_tier = 2
 ////
 
 ability_influence2:ability
-t_name = ability_influence2
 l_requirements = skill_influence 20
 t_description = desc_ability_influence2
 i_tier = 2
 ////
 
 ability_influence3:ability
-t_name = ability_influence3
 l_requirements = skill_influence 15
 t_description = desc_ability_influence3
+i_tier = 1
 ////
 
 ability_influence4:ability
-t_name = ability_influence4
 l_requirements = skill_influence 15
 t_description = desc_ability_influence4
+i_tier = 1
 ////
 
 ability_influence5:ability
-t_name = ability_influence5
 l_requirements = attrib_charisma 15
 t_description = desc_ability_influence5
+i_tier = 1
 ////
 
 ability_persistence1:ability
-t_name = ability_persistence1
 l_requirements = skill_persistence 15
 t_description = desc_ability_persistence1
+i_tier = 1
 ////
 
 ability_persistence2:ability
-t_name = ability_persistence2
 l_requirements = skill_persistence 10
 t_description = desc_ability_persistence2
+i_tier = 1
 ////
 
 ability_persistence3:ability
-t_name = ability_persistence3
 l_requirements = skill_persistence 20
 t_description = desc_ability_persistence3
 i_tier = 2
 ////
 
 ability_resistance1:ability
-t_name = ability_resistance1
 l_requirements = skill_resistance 15
 t_description = desc_ability_resistance1
 i_tier = 2
 ////
 
 ability_security1:ability
-t_name = ability_security1
 l_requirements = skill_security 10
 t_description = desc_ability_security1
+i_tier = 1
 ////
 
 ability_security2:ability
-t_name = ability_security2
 l_requirements = skill_security 15
 t_description = desc_ability_security2
+i_tier = 1
 ////
 
 ability_security3:ability
-t_name = ability_security3
 l_requirements = skill_security 15
 t_description = desc_ability_security3
 i_tier = 2
 ////
 
 ability_security4:ability
-t_name = ability_security4
 l_requirements = skill_security 20
 t_description = desc_ability_security4
 i_tier = 2
 ////
 
 ability_security5:ability
-t_name = ability_security5
 l_requirements = skill_security 30
 t_description = desc_ability_security5
 i_tier = 3
 ////
 
 ability_security6:ability
-t_name = ability_security6
 l_requirements = skill_security 25
 t_description = desc_ability_security6
 i_tier = 2
 ////
 
 ability_security7:ability
-t_name = ability_security7
 l_requirements = skill_security 15, ability_dexterity3
 t_description = desc_ability_security7
 i_tier = 2
 ////
 
 ability_dexterity1:ability
-t_name = ability_dexterity1
 l_requirements = skill_dexterity 15
 t_description = desc_ability_dexterity1
+i_tier = 1
 ////
 
 ability_dexterity2:ability
-t_name = ability_dexterity2
 l_requirements = attrib_agility 15, skill_dexterity 15
 t_description = desc_ability_dexterity2
 i_tier = 2
 ////
 
 ability_dexterity3:ability
-t_name = ability_dexterity3
 l_requirements = attrib_agility 20
 t_description = desc_ability_dexterity3
+i_tier = 1
 ////
 
 ability_dexterity4:ability
-t_name = ability_dexterity4
 l_requirements = ability_dexterity1
 t_description = desc_ability_dexterity4
+i_tier = 1
 ////
 
 ability_willpower1:ability
-t_name = ability_willpower1
 l_requirements = attrib_willpower 25
 t_description = desc_ability_willpower1
 i_tier = 2
 ////
 
 ability_general1:ability
-t_name = ability_general1
+l_requirements = 
 t_description = desc_ability_general1
+i_tier = 1
 ////
 
 ability_general2:ability
-t_name = ability_general2
+l_requirements = 
 t_description = desc_ability_general2
+i_tier = 1
 ////
 

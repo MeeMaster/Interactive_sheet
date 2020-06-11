@@ -1,0 +1,82 @@
+heavy_clothes:armor
+i_armor_chest = 1
+i_armor_ll = 1
+i_armor_rl = 1
+i_armor_lh = 1
+i_armor_rh = 1
+////
+
+lamellar_armor:armor
+////
+
+lamellar_legs:lamellar_armor
+i_armor_ll = 2
+i_armor_rl = 2
+////
+
+lamellar_arms:lamellar_armor
+i_armor_lh = 1
+i_armor_rh = 1
+////
+
+lamellar_chest:lamellar_armor
+i_armor_chest = 2
+////
+
+lamellar_helm:lamellar_armor
+i_armor_head = 2
+////
+
+
+blaster:ranged_weapon
+t_damage_type = damage_e
+i_damage = 6
+t_base_skill = skill_ranged_light
+f_hands = 1
+i_power_magazine = 100
+i_max_magazine = 100
+i_shot_cost = 2
+f_weight = 1
+i_price = 500
+l_fire_mode = fire_multi
+l_trait = trait_short
+////
+
+holdout_blaster:blaster
+i_damage = 5
+i_power_magazine = 5
+i_max_magazine = 5
+i_shot_cost = 1
+i_price = 600
+l_trait = trait_short, trait_balanced, trait_small
+l_fire_mode = fire_single
+////
+
+blaster_rifle:blaster
+i_damage = 8
+i_ap = 1
+f_hands = 1.5
+i_shot_cost = 4
+i_power_magazine = 100
+i_max_magazine = 100
+f_weight = 1
+i_price = 500
+l_fire_mode = fire_multi, fire_auto
+////
+
+blaster_sniper:blaster
+i_damage = 10
+i_ap = 3
+f_hands = 2
+i_shot_cost = 5
+i_power_magazine = 100
+i_max_magazine = 100
+f_weight = 3
+i_price = 1200
+l_fire_mode = fire_single
+l_addon = long_scope
+////
+
+# Addons
+long_scope:addon
+////

@@ -221,7 +221,6 @@ class InputLine(QWidget):
         return text
 
 
-
 class AttributeView(QWidget):
     attribute_changed = pyqtSignal(str, str, int)
 
@@ -424,12 +423,12 @@ class AbilityView(View):
         self.item = ability
         self.name = ability.name
         layout = QVBoxLayout()
-        # display, desc = translate_ability(ability)
         self.display_name = translate(ability.name)  # TODO
         self.description = translate(ability.description)
         self.setToolTip(translate(ability.tooltip))
         self.display = QLineEdit()
         layout.addWidget(self.display)
+        self.display_name += " {}".format(ability.value) if ability.value else ""
         self.display.setText(self.display_name)
         self.display.setEnabled(False)
         self.setLayout(layout)

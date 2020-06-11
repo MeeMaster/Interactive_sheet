@@ -35,57 +35,34 @@ def load_parameters(alternative=False):
     return parameters
 
 
-def translate(name, locale="PL"):
+def get_all_data():
+    global ALL_OBJECTS_DICT
+    if not ALL_OBJECTS_DICT:
+        read_all_objects()
+    return ALL_OBJECTS_DICT
+
+
+def translate(name, locale="PL", supp_dict=None):
     if not name.strip():
         return ""
-    locale_file = path.join("locales", "translations_{}.csv".format(locale))
-    if not path.exists(locale_file):
-        # print("Could not localize locale file '{}'".format(locale_file))
-        locale_file = path.join("locales", "translations_{}.csv".format("EN"))
+    if supp_dict is None:
+        locale_file = path.join("locales", "translations_{}.csv".format(locale))
         if not path.exists(locale_file):
+            # print("Could not localize locale file '{}'".format(locale_file))
+            locale_file = path.join("locales", "translations_{}.csv".format("EN"))
+            if not path.exists(locale_file):
+                return name
+        with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
+            for line in infile:
+                if not line.startswith(name):
+                    continue
+                read_name, translation = line.strip().split(";")
+                if read_name == name:
+                    return translation
+            print("No translation found for value '{}' and locale '{}'".format(name, locale))
             return name
-    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.startswith(name):
-                continue
-            read_name, translation = line.strip().split(";")
-            if read_name == name:
-                return translation
-        # print("No translation found for value '{}' and locale '{}'".format(name, locale))
-        return name
-
-
-def load_weapons():
-    from item_classes import weapon_from_line
-    weapons = {}
-    with codecs.open(path.join("parameters", "weapons.csv"), "r",
-                     encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.strip():
-                continue
-            if line.startswith("#") or line.startswith(";"):
-                continue
-            weapon = weapon_from_line(line)
-            if weapon.arch_name in weapons:
-                print("Weapon '{}' already defined, check the config files!".format(weapon.arch_name))
-                continue
-            weapons[weapon.arch_name] = weapon
-    return weapons
-
-
-def load_armors():
-    from item_classes import armor_from_line
-    armors = {}
-    with codecs.open(path.join("parameters", "armors.csv"), "r",
-                     encoding="windows-1250", errors='ignore') as infile:
-        for line in infile:
-            if not line.strip():
-                continue
-            if line.startswith("#") or line.startswith(";"):
-                continue
-            armor = armor_from_line(line)
-            armors[armor.arch_name] = armor
-    return armors
+    else:
+        return supp_dict[name]
 
 
 def read_objects(filepath):
@@ -131,11 +108,20 @@ def read_objects(filepath):
     return objects
 
 
+def is_leaf(object_name, other_dict=None):
+    global ALL_OBJECTS_DICT
+    if not ALL_OBJECTS_DICT:
+        read_all_objects()
+    children = get_all_children(object_name, ALL_OBJECTS_DICT if other_dict is None else other_dict)
+    # print(children, len(children) > 0)
+    return not len(children) > 0
+
+
 def get_objects_of_type(object_type, other_dict=None):
     global ALL_OBJECTS_DICT
     if not ALL_OBJECTS_DICT:
         read_all_objects()
-    children = get_all_children(ALL_OBJECTS_DICT if other_dict is None else other_dict, object_type)
+    children = get_all_children(object_type, ALL_OBJECTS_DICT if other_dict is None else other_dict)
     output = {}
     for child in children:
         output[child] = ALL_OBJECTS_DICT[child]
@@ -171,7 +157,7 @@ def get_object_data(object_name, other_dict=None):
     return other_dict[object_name]
 
 
-def get_all_children(object_dict, name):
+def get_all_children(name, object_dict):
     all_children = []
 
     def get_this_children(name):

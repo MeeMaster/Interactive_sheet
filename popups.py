@@ -5,8 +5,8 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
-from parameters import (load_parameters, load_weapons, load_armors, translate, read_objects, get_children,
-                        get_all_children, get_full_data, get_objects_of_type, create_item, get_object_data)
+from parameters import (load_parameters, translate, read_all_objects, get_children,
+                        get_all_children, get_all_data, get_objects_of_type, create_item, get_object_data, is_leaf)
 from item_classes import BaseObject
 from layout_classes import InputLine, LabelledComboBox, View, ScrollContainer, AbilityView, LabelledTextEdit
 
@@ -50,7 +50,7 @@ class AbilityPopup(BasePopup):
 
     def __init__(self, kwargs):
         BasePopup.__init__(self)
-        self.abilities = get_objects_of_type("ability")#load_abilities()
+        self.abilities = get_objects_of_type("ability")
 
         for name, data in self.abilities.items():
             self.abilities[name] = create_item(data)
@@ -665,6 +665,12 @@ class ItemListPopup(BasePopup):
     def __init__(self, kwargs=None):
         BasePopup.__init__(self)
         inner_layout = QHBoxLayout()
+        self.full_data_dict = {}
+        self.inheritance_dict = {}
+        self.read_all_items()
+        button = QPushButton(translate("ui_add_item"))
+        button.clicked.connect(self.add_item_field)
+        self.button_layout.insertWidget(1, button)
         self.item_types = kwargs["include"]
         self.main_layout.addLayout(inner_layout)
         self.tree_view = QTreeWidget()
@@ -677,16 +683,66 @@ class ItemListPopup(BasePopup):
         inner_layout.addWidget(self.grid_widget, 2)
         self.tree_view.itemClicked.connect(self.get_item)
         self.current_item_data = {}
-        self.full_dict = {}
+        # self.full_dict = {}
         self.update_tree()
         self.show()
 
+    def read_all_items(self):
+        read_all_objects(False)
+        self.inheritance_dict = dict(get_all_data())
+        read_all_objects(True)
+        self.full_data_dict = dict(get_all_data())
+
+    def add_item_field(self):
+        new_name = "new_item"
+        index = 0
+        while new_name in self.full_data_dict:
+            index += 1
+            new_name = "new_item_{}".format(index)
+        self.full_data_dict[new_name] = dict(self.current_item_data)
+        self.inheritance_dict[new_name] = {"name": new_name, }
+        self.full_data_dict[new_name]["parent"] = self.current_item_data["name"]
+        self.inheritance_dict[new_name]["parent"] = self.current_item_data["name"]
+        self.full_data_dict[new_name]["name"] = new_name
+        widget = MyTreeWidgetItem(self.tree_view.currentItem())
+        widget.set_text(new_name)
+
+    def update_object_fields(self, new_name):
+        for field_name, field in self.grid_widget.fields.items():
+            if field_name == "name" or field_name == "parent":
+                continue
+            values = field.get_data()
+            self.full_data_dict[new_name][field_name] = values
+            for child in get_all_children(new_name, self.full_data_dict):
+                if field_name not in self.inheritance_dict[child]:
+                    self.full_data_dict[child][field_name] = values
+
+    def update_inheritance(self):
+        name = self.current_item_data["name"]
+        new_name = self.grid_widget.fields["name"].get_data()
+
+        if new_name != name:
+            self.full_data_dict[new_name] = self.full_data_dict[name]
+            self.inheritance_dict[new_name] = self.inheritance_dict[name]
+            self.full_data_dict[new_name]["name"] = new_name
+            self.inheritance_dict[new_name]["name"] = new_name
+            del self.full_data_dict[name]
+            del self.inheritance_dict[name]
+            for child in get_children(name, self.full_data_dict):
+                self.full_data_dict[child]["parent"] = new_name
+                self.inheritance_dict[child]["parent"] = new_name
+            self.tree_view.currentItem().set_text(new_name)
+        return new_name
+
     def update_tree(self, other_dict=None):
         self.tree_view.clear()
+        objects_list = []
         for item_type in self.item_types:
-            objects = get_children(item_type, other_dict)
-            for object_name, object_data in objects.items():
-                self.full_dict[object_name] = object_data
+            objects = get_all_children(item_type, self.full_data_dict)
+            objects_list.extend(objects)
+        for item in list(self.full_data_dict.keys()):
+            if item not in objects_list:
+                del self.full_data_dict[item]
 
         def get_tree_objects(parent, child):
             widget = MyTreeWidgetItem(parent)
@@ -700,11 +756,14 @@ class ItemListPopup(BasePopup):
                 get_tree_objects(self.tree_view, item)
 
     def get_item(self, item, column):
-        self.get_data(item)
+        self.get_data(item, self.full_data_dict)
+        self.ok_button.setEnabled(True)
+        if not is_leaf(self.current_item_data["name"], self.full_data_dict):
+            self.ok_button.setEnabled(False)
         self.update_grid()
 
     def get_data(self, item, other_dict=None):
-        full_data = get_object_data(item.name, other_dict=None)
+        full_data = get_object_data(item.name, other_dict=other_dict)
         for key, values in full_data.items():
             if isinstance(values, list):
                 for index, item in reversed(list(enumerate(values))):
@@ -740,6 +799,10 @@ class ItemListPopup(BasePopup):
         self.update_grid()
 
     def ok_pressed(self):
+        new_name = self.update_inheritance()
+        # Change other fields
+        self.update_object_fields(new_name)
+
         final_item = BaseObject()
         for name, widget in self.grid_widget.fields.items():
             final_item.__dict__[name] = widget.get_data()
@@ -768,12 +831,13 @@ class MyGridWidget(QWidget):
 
     def fill_grid(self, data: dict):
         self.clear()
+        self.fields = {}
         index = 0
         num_columns = 4
         immutables = ["type", "base_skill", "parent", "weapon_type"]
         combos = ["damage_type", "hands"]
         lines = ["name"]
-        texts = ["tooltip", "description", "empty"]
+        texts = ["display", "tooltip", "description"]
         ints = ["price", "ap", "damage", "max_magazine", "power_magazine", "shot_cost", "availability", "armor_head",
                 "armor_rh", "armor_chest", "armor_lh", "armor_rl", "armor_ll"]
         floats = ["weight"]
@@ -839,12 +903,22 @@ class MyGridWidget(QWidget):
 
         row = index // num_columns + row + 1
         index = 0
+        # field = LabelledTextEdit("display", label="display")
+        # value = translate(data["name"])
+        # print(value, translate(value))
+        # field.set_text(translate(value))
+        # field.format_label(8)
+        # self.fields[key] = field
+        # self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
+        # index += 1
         for key in texts:
             if key not in data:
                 continue
+            print(key)
             field = LabelledTextEdit(key, label=key)
             value = data[key]
-            field.set_text(value)
+            print(value, translate(value))
+            field.set_text(translate(value))
             field.format_label(8)
             self.fields[key] = field
             self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
@@ -859,7 +933,9 @@ class MyGridWidget(QWidget):
             if key == "addon" or key == "modifier":
                 includes = [obj.name for obj in data["available_"+key]]
 
-            item_type = key.replace("available_", "")
+            item_type = [key.replace("available_", "")]
+            if key == "bonuses":
+                item_type = ["ability", "skill", "attribute"]
             field = ScrollContainer(key,  "ui_add_item", AbilityView, label="ui_"+key,
                                     popup=ItemSelectPopup, item_type=item_type, include_only=includes)
             field.item_created.connect(lambda x, y: self.multiselect_updated.emit(x, True, y))
@@ -884,7 +960,7 @@ class MyGridWidget(QWidget):
 class ItemSelectPopup(BasePopup):
 
     def __init__(self, kwargs):
-        item_type = kwargs["item_type"]
+        item_types = kwargs["item_type"]
         self.include = None
         self.exclude = None
         if "include_only" in kwargs:
@@ -892,30 +968,66 @@ class ItemSelectPopup(BasePopup):
         if "exclude" in kwargs:
             self.include = kwargs["exclude"]
         BasePopup.__init__(self)
+        self.items = {}
+        layout = QHBoxLayout()
+        self.value_input = QLineEdit()
         self.item_list = QListWidget()
-        self.items = get_children(item_type)
-        if self.include is not None:
-            for name, data in list(self.items.items()):
-                if name not in self.include:
-                    del self.items[name]
-        elif self.exclude is not None:
-            for name, data in list(self.items.items()):
-                if name in self.exclude:
-                    del self.items[name]
+        layout.addWidget(self.item_list)
+        layout.addWidget(self.value_input)
+        self.main_layout.addLayout(layout)
+
+        for item_type in item_types:
+            if item_type == "skill":
+                for skill_name in param_dict["skill"]:
+                    self.items[skill_name] = 0
+                continue
+            if item_type == "attribute":
+                for attrib_name in param_dict["attrib"]:
+                    self.items[attrib_name] = 0
+                continue
+            self.items = get_children(item_type)
+            if self.include is not None:
+                for name, data in list(self.items.items()):
+                    if name not in self.include:
+                        del self.items[name]
+            elif self.exclude is not None:
+                for name, data in list(self.items.items()):
+                    if name in self.exclude:
+                        del self.items[name]
 
         self.items_names = []
         for item in self.items:
             self.items_names.append(item)
-        self.item_list.addItems(self.items_names)
+        self.item_list.addItems([translate(name) for name in self.items_names])
+        self.item_list.currentItemChanged.connect(self.show_selection)
         self.main_layout.addWidget(self.item_list)
         self.show()
+
+    def show_selection(self, current, previous):
+        current_index = self.item_list.currentIndex().row()
+        if current_index == -1:
+            return
+        item_name = self.items_names[current_index]
+        if isinstance(self.items[item_name], int):
+            self.value_input.setText(str(self.items[item_name]))
+            self.value_input.setVisible(True)
+            return
+        self.value_input.setVisible(False)
 
     def ok_pressed(self):
         current_index = self.item_list.currentIndex().row()
         if current_index == -1:
             return
         item_name = self.items_names[current_index]
-        item = create_item(self.items[item_name])
+        if isinstance(self.items[item_name], int):
+            value = int(self.value_input.text())
+            if not value:
+                return
+            item = BaseObject()
+            item.name = item_name
+            item.value = value
+        else:
+            item = create_item(self.items[item_name])
         self.popup_ok.emit(item)
 
 

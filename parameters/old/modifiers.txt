@@ -1,53 +1,45 @@
+# Traits
+# Weapon traits
 trait_long:trait
-t_name = trait_long
 ////
 
 trait_short:trait
-t_name = trait_short
 ////
 
 trait_balanced:trait
-t_name = trait_balanced
 ////
 
 trait_accurate:trait
-t_name = trait_accurate
 ////
 
 trait_short_range:trait
-t_name = trait_short_range
+i_value = 0
 ////
 
 trait_heavy:trait
-t_name = trait_heavy
 ////
 
 trait_scoped:trait
-t_name = trait_scoped
 ////
 
 trait_disintegrating:trait
-t_name = trait_disintegrating
 ////
 
+# Armor traits
 trait_hermetic:trait
-t_name = trait_hermetic
 ////
 
 trait_fitted:trait
-t_name = trait_fitted
 ////
 
 trait_carrying:trait
-t_name = trait_carrying
-t_ = 0
+value = 0
 ////
 
 trait_heavy_armor:trait
-t_name = trait_heavy_armor
 ////
 
 trait_small:trait
-t_name = trait_small
 ////
+
 
