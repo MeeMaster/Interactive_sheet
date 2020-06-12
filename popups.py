@@ -769,8 +769,12 @@ class ItemListPopup(BasePopup):
                     if not isinstance(item, str):
                         continue
                     item_data = get_object_data(item)
-                    item = create_item(item_data)
-                    full_data[key][index] = item
+                    output_item = create_item(item_data)
+                    if item_data is None:
+                        name, value = item.split()
+                        output_item.name = name
+                        output_item.value = int(value)
+                    full_data[key][index] = output_item
         self.current_item_data = full_data
 
     def update_grid(self):

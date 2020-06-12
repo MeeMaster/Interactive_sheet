@@ -113,7 +113,6 @@ def is_leaf(object_name, other_dict=None):
     if not ALL_OBJECTS_DICT:
         read_all_objects()
     children = get_all_children(object_name, ALL_OBJECTS_DICT if other_dict is None else other_dict)
-    # print(children, len(children) > 0)
     return not len(children) > 0
 
 
@@ -208,6 +207,8 @@ def get_parent(object_data):
 
 def create_item(data):
     item = BaseObject()
+    if data is None:
+        return item
     for key in data:
         if key == "requirements":
             item.set_requirements(data[key])
