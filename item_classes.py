@@ -22,6 +22,7 @@ class BaseObject:
         self.type = "base"
         self.image = ""
         self.requirements = {}
+        self.value = 0
 
     def set_requirements(self, requirements: list):
         for requirement in requirements:
