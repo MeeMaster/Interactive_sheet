@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
-from parameters import (load_parameters, translate, read_all_objects, get_children,
+from parameters import (load_parameters, translate, read_all_objects, get_children, is_type, duplicate_dict,
                         get_all_children, get_all_data, get_objects_of_type, create_item, get_object_data, is_leaf)
 from item_classes import BaseObject
 from layout_classes import InputLine, LabelledComboBox, View, ScrollContainer, AbilityView, LabelledTextEdit
@@ -228,165 +228,6 @@ class TableDescriptionItem(QLabel):
         self.setContentsMargins(2, 2, 2, 2)
 
 
-# class WeaponPopup(BasePopup):
-#     popup_ok = pyqtSignal(Weapon)
-#
-#     def __init__(self, kwargs):
-#         BasePopup.__init__(self)
-#         self.edit = None
-#         if "edit" in kwargs:
-#             self.edit = kwargs["edit"]
-#         self.archetype_weapons = load_weapons()
-#         self.current_weapon = None
-#         combo_layout = QHBoxLayout()
-#         self.archetype_combobox = LabelledComboBox(label=translate("ui_item_archetype"))
-#         self.archetype_names = []
-#         self.fill_archetype_combobox()
-#         if self.edit is not None:
-#             self.archetype_combobox.setCurrentIndex(self.archetype_names.index(self.edit.arch_name))
-#             self.archetype_combobox.setEnabled(False)
-#         self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
-#         self.weapon_name = InputLine("weapon_name", Qt.AlignLeft, label=translate("ui_item_name"))
-#         combo_layout.addWidget(self.archetype_combobox)
-#         combo_layout.addWidget(self.weapon_name)
-#
-#         damage_layout = QHBoxLayout()
-#         self.damage_value = InputLine("weapon_damage", Qt.AlignLeft, dtype="int", label=translate("ui_weapon_damage"))
-#         self.ap_value = InputLine("weapon_ap", Qt.AlignLeft, dtype="int", label=translate("ui_weapon_ap"))
-#         self.damage_type = LabelledComboBox(label=translate("ui_weapon_damage_type"))
-#         for damage_type in damage_types:
-#             self.damage_type.addItem(damage_type)
-#         damage_layout.addWidget(self.damage_value)
-#         damage_layout.addWidget(self.damage_type)
-#         damage_layout.addWidget(self.ap_value)
-#
-#         shot_layout = QHBoxLayout()
-#         self.max_energy = InputLine("weapon_max_energy", Qt.AlignLeft,
-#                                     dtype="int", label=translate("ui_weapon_max_magazine"))
-#         self.energy_per_shot = InputLine("weapon_shot_cost", Qt.AlignLeft,
-#                                          dtype="int", label=translate("ui_weapon_shotcost"))
-#         self.shot_type = InputLine("weapon_mode", Qt.AlignLeft, label=translate("ui_weapon_fire_mode"))
-#         shot_layout.addWidget(self.max_energy)
-#         shot_layout.addWidget(self.energy_per_shot)
-#         shot_layout.addWidget(self.shot_type)
-#
-#         self.main_layout.addLayout(combo_layout)
-#         self.main_layout.addLayout(damage_layout)
-#         self.main_layout.addLayout(shot_layout)
-#         self.fill_parameters()
-#         self.show()
-#
-#     def fill_archetype_combobox(self):
-#         for weapon in self.archetype_weapons:
-#             self.archetype_combobox.addItem(translate(weapon))
-#             self.archetype_names.append(weapon)
-#         self.archetype_names.append("weapon_other")
-#         self.archetype_combobox.addItem(translate("weapon_other"))
-#
-#     def fill_parameters(self, index=None):
-#         if self.edit is None:
-#             index = self.archetype_combobox.currentIndex()
-#             weapon_name = self.archetype_names[index]
-#             weapon = Weapon()
-#             if weapon_name in self.archetype_weapons:
-#                 weapon_line = self.archetype_weapons[weapon_name]._line
-#                 weapon.load_from_line(weapon_line)
-#         else:
-#             weapon = self.edit
-#             weapon_name = weapon.name
-#         self.weapon_name.setText(translate(weapon_name))
-#         if weapon_name == "weapon_other" and self.edit is None:
-#             self.current_weapon = weapon
-#             return
-#         self.damage_value.setText(str(weapon.damage))
-#         self.ap_value.setText(str(weapon.ap))
-#         self.damage_type.setCurrentIndex(damage_types.index(weapon.damage_type))
-#         self.max_energy.setText(str(weapon.max_magazine))
-#         self.energy_per_shot.setText(str(weapon.shot_cost))
-#         self.shot_type.setText("/".join(weapon.fire_modes))
-#         self.current_weapon = weapon
-#
-#     def ok_pressed(self):
-#         self.current_weapon.name = self.weapon_name.text()
-#         self.current_weapon.damage = int(self.damage_value.text())
-#         self.current_weapon.ap = int(self.ap_value.text())
-#         self.current_weapon.damage_type = self.damage_type.currentText()
-#         self.current_weapon.max_magazine = int(self.max_energy.text())
-#         self.current_weapon.shot_cost = int(self.energy_per_shot.text())
-#         self.current_weapon.fire_modes = self.shot_type.text().split("/")
-#         self.popup_ok.emit(self.current_weapon)
-#         self.close()
-
-
-# class ArmorPopup(BasePopup):
-#     popup_ok = pyqtSignal(Armor)
-#
-#     def __init__(self, kwargs):
-#         BasePopup.__init__(self)
-#         if "edit" in kwargs:
-#             self.edit = kwargs["edit"]
-#         self.archetype_armor = load_armors()
-#         self.current_armor = None
-#         combo_layout = QHBoxLayout()
-#         self.archetype_combobox = LabelledComboBox(label=translate("ui_item_archetype"))
-#         self.archetype_names = []
-#         self.fill_archetype_combobox()
-#         if self.edit is not None:
-#             self.archetype_combobox.setCurrentIndex(self.archetype_names.index(self.edit.arch_name))
-#             self.archetype_combobox.setEnabled(False)
-#         self.archetype_combobox.currentIndexChanged.connect(self.fill_parameters)
-#         self.armor_name = InputLine("armor_name", Qt.AlignLeft, label=translate("ui_item_name"))
-#         combo_layout.addWidget(self.archetype_combobox)
-#         combo_layout.addWidget(self.armor_name)
-#
-#         armor_layout = QHBoxLayout()
-#         self.armors = {}
-#         for armor in armor_names:
-#             armor_widget = InputLine(armor, Qt.AlignLeft, dtype="int",
-#                                      label=translate(armor))
-#             self.armors[armor] = armor_widget
-#             armor_layout.addWidget(armor_widget)
-#
-#         self.main_layout.addLayout(combo_layout)
-#         self.main_layout.addLayout(armor_layout)
-#         self.fill_parameters()
-#         self.show()
-#
-#     def fill_archetype_combobox(self):
-#         for armor in self.archetype_armor:
-#             self.archetype_combobox.addItem(translate(armor))
-#             self.archetype_names.append(armor)
-#         self.archetype_names.append("armor_other")
-#         self.archetype_combobox.addItem(translate("armor_other"))
-#
-#     def fill_parameters(self, index=None):
-#         if self.edit is None:
-#             index = self.archetype_combobox.currentIndex()
-#             armor_name = self.archetype_names[index]
-#             armor = Armor()
-#             if armor_name in self.archetype_armor:
-#                 armor_line = self.archetype_armor[armor_name]._line
-#                 armor.load_from_line(armor_line)
-#         else:
-#             armor = self.edit
-#             armor_name = armor.name
-#         self.current_armor = armor
-#         self.armor_name.setText(translate(armor_name))
-#         if armor_name == "armor_other":
-#             for armor_name in armor_names:
-#                 self.armors[armor_name].setText(armor.armor[armor_name])
-#             return
-#         for armor_type in armor_names:
-#             self.armors[armor_type].setText(armor.armor[armor_type])
-#
-#     def ok_pressed(self):
-#         self.current_armor.name = self.armor_name.text()
-#         for armor_type in armor_names:
-#             self.current_armor.armor[armor_type] = int(self.armors[armor_type].text())
-#         self.popup_ok.emit(self.current_armor)
-#         self.close()
-
-
 class ItemPopup(BasePopup):
     popup_ok = pyqtSignal(BaseObject)
 
@@ -411,7 +252,7 @@ class ItemPopup(BasePopup):
         line2.addWidget(label)
         line2.addWidget(self.description)
         if self.edit is None:
-            self.item = BaseObject()
+            self.item = create_item("item") # BaseObject()
             self.quantity.setText("1")
             self.weight.setText("0")
         else:
@@ -430,6 +271,7 @@ class ItemPopup(BasePopup):
             self.item.total_quantity = int(self.quantity.text())
             self.item.equipped_quantity = int(self.quantity.text())
         self.item.name = self.name.text()
+        self.item.display = self.name.text()
         self.item.weight = float(self.weight.text())
         self.item.description = self.description.toPlainText()
         self.popup_ok.emit(self.item)
@@ -667,6 +509,7 @@ class ItemListPopup(BasePopup):
         self.full_data_dict = {}
         self.inheritance_dict = {}
         self.read_all_items()
+        self.edit = kwargs["edit"]
         button = QPushButton(translate("ui_add_item"))
         button.clicked.connect(self.add_item_field)
         self.button_layout.insertWidget(1, button)
@@ -679,11 +522,17 @@ class ItemListPopup(BasePopup):
         inner_layout.addWidget(self.tree_view, 1)
         self.grid_widget = MyGridWidget()
         self.grid_widget.multiselect_updated.connect(self.update_current_item_data)
+        self.grid_widget.values_updated.connect(self.update_grid)
         inner_layout.addWidget(self.grid_widget, 2)
         self.tree_view.itemClicked.connect(self.get_item)
         self.current_item_data = {}
         # self.full_dict = {}
-        self.update_tree()
+        if kwargs["edit"] is None:
+            self.update_tree()
+        else:
+            self.tree_view.setVisible(False)
+            self.current_item_data = self.edit.__dict__
+            self.update_grid()
         self.show()
 
     def read_all_items(self):
@@ -698,7 +547,7 @@ class ItemListPopup(BasePopup):
         while new_name in self.full_data_dict:
             index += 1
             new_name = "new_item_{}".format(index)
-        self.full_data_dict[new_name] = dict(self.current_item_data)
+        self.full_data_dict[new_name] = duplicate_dict(self.current_item_data)
         self.inheritance_dict[new_name] = {"name": new_name, }
         self.full_data_dict[new_name]["parent"] = self.current_item_data["name"]
         self.inheritance_dict[new_name]["parent"] = self.current_item_data["name"]
@@ -715,23 +564,6 @@ class ItemListPopup(BasePopup):
             for child in get_all_children(new_name, self.full_data_dict):
                 if field_name not in self.inheritance_dict[child]:
                     self.full_data_dict[child][field_name] = values
-
-    def update_inheritance(self):
-        name = self.current_item_data["name"]
-        new_name = self.grid_widget.fields["name"].get_data()
-
-        if new_name != name:
-            self.full_data_dict[new_name] = self.full_data_dict[name]
-            self.inheritance_dict[new_name] = self.inheritance_dict[name]
-            self.full_data_dict[new_name]["name"] = new_name
-            self.inheritance_dict[new_name]["name"] = new_name
-            del self.full_data_dict[name]
-            del self.inheritance_dict[name]
-            for child in get_children(name, self.full_data_dict):
-                self.full_data_dict[child]["parent"] = new_name
-                self.inheritance_dict[child]["parent"] = new_name
-            self.tree_view.currentItem().set_text(new_name)
-        return new_name
 
     def update_tree(self, other_dict=None):
         self.tree_view.clear()
@@ -762,24 +594,47 @@ class ItemListPopup(BasePopup):
         self.update_grid()
 
     def get_data(self, item, other_dict=None):
-        full_data = get_object_data(item.name, other_dict=other_dict)
+        full_data = dict(get_object_data(item.name, other_dict=other_dict))
+        print(full_data)
         for key, values in full_data.items():
             if isinstance(values, list):
                 for index, item in reversed(list(enumerate(values))):
                     if not isinstance(item, str):
                         continue
-                    item_data = get_object_data(item)
+                    object_data = get_object_data(item)
+                    if object_data is None:
+                        continue
+                    item_data = duplicate_dict(object_data)
                     output_item = create_item(item_data)
                     if item_data is None:
                         name, value = item.split()
                         output_item.name = name
                         output_item.value = int(value)
                     full_data[key][index] = output_item
-        self.current_item_data = full_data
+        full_data = calculate_final_values(full_data)
+        self.current_item_data = duplicate_dict(full_data)
 
     def update_grid(self):
         self.grid_widget.clear()
+        self.current_item_data = calculate_final_values(self.current_item_data)
         self.grid_widget.fill_grid(self.current_item_data)
+
+    def update_inheritance(self):
+        name = self.current_item_data["name"]
+        new_name = self.grid_widget.fields["name"].get_data()
+
+        if new_name != name:
+            self.full_data_dict[new_name] = self.full_data_dict[name]
+            self.inheritance_dict[new_name] = self.inheritance_dict[name]
+            self.full_data_dict[new_name]["name"] = new_name
+            self.inheritance_dict[new_name]["name"] = new_name
+            del self.full_data_dict[name]
+            del self.inheritance_dict[name]
+            for child in get_children(name, self.full_data_dict):
+                self.full_data_dict[child]["parent"] = new_name
+                self.inheritance_dict[child]["parent"] = new_name
+            self.tree_view.currentItem().set_text(new_name)
+        return new_name
 
     def update_current_item_data(self, name, created, item):
         item_name = item.name
@@ -805,11 +660,71 @@ class ItemListPopup(BasePopup):
         new_name = self.update_inheritance()
         # Change other fields
         self.update_object_fields(new_name)
-
-        final_item = BaseObject()
+        if self.edit is None:
+            final_item = BaseObject()
+        else:
+            final_item = self.edit
         for name, widget in self.grid_widget.fields.items():
             final_item.__dict__[name] = widget.get_data()
         self.popup_ok.emit(final_item)
+
+
+def calculate_final_values(item_data):
+    if not is_type(item_data["name"], "equipment_item"):
+        return item_data
+    for key, value in item_data.items():
+        if "base_" not in key:
+            continue
+        if "skill" in key:
+            continue
+        target_key = key.replace("base_", "")
+        # print(target_key)
+        if key in ["base_trait", "base_bonuses"]:
+            new_list = []
+            for item in value:
+                new_item = item.copy()
+                new_list.append(new_item)
+            item_data[target_key] = new_list
+        else:
+            item_data[target_key] = int(value) if isinstance(item_data[key], int) else float(value)
+
+    if "modification" not in item_data:
+        return item_data
+    for modifier in item_data["modification"]:
+        for key, value in modifier.__dict__.items():
+            if "base_" not in key:
+                continue
+            target_key = key.replace("base_", "")
+            if target_key not in item_data:
+                print(key, "here")
+                continue
+            final_value = item_data[target_key]
+            if key in ["base_trait", "base_bonuses"]:
+                for item in value:
+                    found = False
+                    for curr_item in item_data[target_key]:
+                        if item.name == curr_item.name:
+                            found = True
+                            curr_item.value += item.value
+                            break
+                    if not found:
+                        new_item = item.copy()
+                        item_data[target_key].append(new_item)
+                for index, item in reversed(list(enumerate(item_data[target_key]))):
+                    if item.value == 0:
+                        item_data[target_key].remove(item)
+            else:
+                if value.startswith("+"):
+                    final_value += float(value[1:])
+                if value.startswith("-"):
+                    final_value -= float(value[1:])
+                if value.startswith("*"):
+                    final_value *= float(value[1:])
+                if value.startswith("/"):
+                    final_value /= float(value[1:])
+            if isinstance(item_data[key], int):
+                final_value = int(final_value)
+    return item_data
 
 
 class MyTreeWidgetItem(QTreeWidgetItem):
@@ -825,6 +740,7 @@ class MyTreeWidgetItem(QTreeWidgetItem):
 
 class MyGridWidget(QWidget):
     multiselect_updated = pyqtSignal(str, bool, BaseObject)
+    values_updated = pyqtSignal()
 
     def __init__(self):
         QWidget.__init__(self)
@@ -836,25 +752,32 @@ class MyGridWidget(QWidget):
         self.clear()
         self.fields = {}
         index = 0
-        num_columns = 4
-        immutables = ["type", "base_skill", "parent", "weapon_type"]
+        num_columns = 5
+        immutables = ["type", "base_skill", "parent", "weapon_type", "ap", "damage", "max_magazine", "armor_head",
+                      "armor_rh", "armor_chest", "armor_lh", "armor_rl", "armor_ll", "weight", "price", "bonuses",
+                      "trait"]
         combos = ["damage_type", "hands"]
         lines = ["name"]
         texts = ["display", "tooltip", "description"]
-        ints = ["price", "ap", "damage", "max_magazine", "power_magazine", "shot_cost", "availability", "armor_head",
-                "armor_rh", "armor_chest", "armor_lh", "armor_rl", "armor_ll", "weight"]
-        multiselects = ["available_addon", "addon", "bonuses", "available_modification", "modification",
-                        "trait", "fire_mode"]
+        ints = ["base_price", "base_ap", "base_damage", "base_max_magazine", "power_magazine", "base_shot_cost",
+                "availability", "base_armor_head", "base_armor_rh", "base_armor_chest", "base_armor_lh",
+                "base_armor_rl", "base_armor_ll", "base_weight"]
+        multiselects = ["available_addon", "addon", "base_bonuses", "available_modification", "modification",
+                        "base_trait", "fire_mode"]
         row = 0
         for key in immutables:
             if key not in data:
                 continue
-            field = InputLine(key, label=translate(key))
+            if key in ["bonuses", "trait"]:
+                field = ScrollContainer(key, button_text=None, label=translate(key), content_widget=AbilityView,
+                                        popup=None)
+                field.fill(data[key])
+            else:
+                field = InputLine(key, label=translate(key))
+                value = data[key]
+                field.setText(value)
             field.setEnabled(False)
-            value = data[key]
-            field.setText(value)
             field.format_label(8, True)
-
             self.fields[key] = field
             self.grid_layout.addWidget(field, index // num_columns + row, index % num_columns)
             index += 1
@@ -863,6 +786,7 @@ class MyGridWidget(QWidget):
         index = 0
         key = "name"
         field = InputLine(key, label=translate("param_" + key))
+        # field.value_changed.connect(lambda: self.values_updated.emit())
         field.format_label(8, True)
         field.setText(data[key])
         self.fields[key] = field
@@ -871,7 +795,10 @@ class MyGridWidget(QWidget):
         for key in ints:
             if key not in data:
                 continue
-            field = InputLine(key, label=translate("param_"+key), dtype="int" if key != "weight" else "float")
+            validator_type = "equation" if is_type(data["name"], "modification") \
+                else "int" if key != "base_weight" else "float"
+            field = InputLine(key, label=translate("param_"+key), dtype=validator_type)
+            # field.value_changed.connect(lambda: self.values_updated.emit())
             value = data[key]
             field.setText(value)
             field.format_label(8, True)
@@ -885,6 +812,7 @@ class MyGridWidget(QWidget):
             if key not in data:
                 continue
             field = InputLine(key, label=translate("param_"+key))
+            # field.value_changed.connect(lambda: self.values_updated.emit())
             value = data[key]
             if isinstance(value, list):
                 if value:
@@ -916,13 +844,22 @@ class MyGridWidget(QWidget):
             if key not in data:
                 continue
             includes = None
-            if key == "addon" or key == "modifier":
-                includes = [obj.name for obj in data["available_"+key]]
+            base_item_type = ""
+            for b_item_type in ["ranged_weapon", "melee_weapon", "armor"]:
+                if is_type(data["name"], b_item_type):
+                    base_item_type = b_item_type
+                    break
+            item_type = [key.replace("available", base_item_type)]
 
-            item_type = [key.replace("available_", "")]
-            if key == "bonuses":
+            if key == "addon" or key == "modification":
+                includes = [obj.name for obj in data["available_"+key]]
+                item_type = ["_".join([base_item_type, key])]
+            if key == "base_bonuses":
                 item_type = ["ability", "skill", "attribute"]
-            field = ScrollContainer(key,  "ui_add_item", AbilityView, label="ui_"+key,
+            if key == "base_trait":
+                item_type = ["trait"]
+
+            field = ScrollContainer(key,  translate("ui_add_item"), AbilityView, label="ui_"+key,
                                     popup=ItemSelectPopup, item_type=item_type, include_only=includes)
             field.item_created.connect(lambda x, y: self.multiselect_updated.emit(x, True, y))
             field.item_removed.connect(lambda x, y: self.multiselect_updated.emit(x, False, y))
@@ -968,7 +905,7 @@ class ItemSelectPopup(BasePopup):
         BasePopup.__init__(self)
         self.items = {}
         layout = QHBoxLayout()
-        self.value_input = QLineEdit()
+        self.value_input = InputLine(name="value", dtype="int")
         # self.item_list = QListWidget()
         self.item_list = QTreeWidget()
         layout.addWidget(self.item_list)
@@ -1025,21 +962,25 @@ class ItemSelectPopup(BasePopup):
             return
         if isinstance(self.items[item_name], int):
             self.value_input.setText(str(self.items[item_name]))
-            self.value_input.setVisible(True)
-            return
-        self.value_input.setVisible(False)
+        else:
+            self.value_input.setText(str(self.items[item_name]["value"]))
+        self.value_input.setVisible(True)
+            # return
+        # self.value_input.setVisible(False)
 
     def ok_pressed(self):
-        item_name = item_name = self.item_list.currentItem().name
+        item_name = self.item_list.currentItem().name
+        value = int(self.value_input.get_data())
+        if not value:
+            return
         if isinstance(self.items[item_name], int):
-            value = int(self.value_input.text())
             if not value:
                 return
             item = BaseObject()
             item.name = item_name
-            item.value = value
         else:
             item = create_item(self.items[item_name])
+        item.value = value
         self.popup_ok.emit(item)
 
 

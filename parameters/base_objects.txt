@@ -46,16 +46,52 @@ t_name = item
 i_total_quantity = 0
 i_equipped_quantity = 0
 t_type = item
-i_price = 0
-f_weight = 0.0
+i_base_price = 0
+t_price = 0
+f_base_weight = 0.0
+t_weight = 0.0
 i_availability = 5
 i_availability_era = 0
+l_base_bonuses = 
 l_bonuses = 
+t_tooltip = tooltip_item
+t_description = desc_item
+t_display = item
 ////
 
 modifier_item:item
 t_name = modifier_item
 t_type = modfifier
+t_tooltip = tooltip_modifier_item
+t_description = desc_modifier_item
+t_display = modifier_item
+////
+
+droid_item:modifier_item
+t_name = droid_item
+t_type = droid_item
+i_comp_cost = 0
+i_energy_cost = 0
+t_tooltip = tooltip_droid_item
+t_description = desc_droid_item
+t_display = droid_item
+////
+
+droid_module:droid_item
+t_name = droid_module
+t_type = droid_module
+t_tooltip = tooltip_droid_module
+t_description = desc_droid_module
+t_display = droid_module
+////
+
+droid_part:droid_item
+t_name = droid_part
+t_type = droid_part
+t_part = 
+t_tooltip = tooltip_droid_part
+t_description = desc_droid_part
+t_display = droid_part
 ////
 
 equipment_item:item
@@ -64,58 +100,89 @@ l_available_modification =
 l_addon = 
 l_available_addon = 
 l_trait = 
+l_base_trait = 
 l_modification = 
+t_type = equipment_item
+t_tooltip = tooltip_equipment_item
+t_description = desc_equipment_item
+t_display = equipment_item
 ////
 
 addon:item
 t_name = addon
 t_type = addon
 l_trait = 
+t_tooltip = tooltip_addon
+t_description = desc_addon
+t_display = addon
 ////
 
 modification:item
 t_name = modification
 t_type = modification
-i_damage = 0
-i_ap = 0
-i_shot_cost = 0
-l_trait = 
+l_base_trait = 
+t_tooltip = tooltip_modification
+t_description = desc_modification
+t_display = modification
 ////
 
 weapon:equipment_item
 t_name = weapon
 t_type = weapon
-i_damage = 0
+t_damage = 0
+i_base_damage = 0
 t_damage_type = damage_p
-i_ap = 0
+t_ap = 0
+i_base_ap = 0
 t_base_skill = 
-f_hands = 0.0
+t_hands = 0.0
 t_weapon_type = 
+t_tooltip = tooltip_weapon
+t_description = desc_weapon
+t_display = weapon
 ////
 
 ranged_weapon:weapon
 t_name = ranged_weapon
+t_type = ranged_weapon
 i_power_magazine = 0
-i_max_magazine = 0
+i_base_max_magazine = 0
+t_max_magazine = 0
+i_base_shot_cost = 0
 i_shot_cost = 0
 t_weapon_type = ranged
 l_fire_mode = fire_single
-t_type = ranged_weapon
+t_tooltip = tooltip_ranged_weapon
+t_description = desc_ranged_weapon
+t_display = ranged_weapon
 ////
 
 melee_weapon:weapon
 t_name = melee_weapon
+t_type = melee_weapon
 t_weapon_type = melee
+t_tooltip = tooltip_melee_weapon
+t_description = desc_melee_weapon
+t_display = melee_weapon
 ////
 
 armor:equipment_item
 t_name = armor
 t_type = armor
-i_armor_chest = 0
-i_armor_ll = 0
-i_armor_rl = 0
-i_armor_lh = 0
-i_armor_rh = 0
-i_armor_head = 0
+i_base_armor_chest = 0
+i_base_armor_ll = 0
+i_base_armor_rl = 0
+i_base_armor_lh = 0
+i_base_armor_rh = 0
+i_base_armor_head = 0
+t_armor_chest = 0
+t_armor_ll = 0
+t_armor_rl = 0
+t_armor_lh = 0
+t_armor_rh = 0
+t_armor_head = 0
+t_tooltip = tooltip_armor
+t_description = desc_armor
+t_display = armor
 ////
 

@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         save.setShortcut("Ctrl+S")
         file.addAction(save)
         # Add main widget
-        self.window_widget = ItemList(kwargs={"include": ["base_object"]})
+        self.window_widget = ItemList(kwargs={"include": ["base_object"], "edit": None})
         self.setCentralWidget(self.window_widget)
         self.setWindowTitle(translate("ui_item_creation_app"))
         file.triggered[QAction].connect(self.process_trigger)
@@ -77,6 +77,7 @@ class ItemList(ItemListPopup):
         self.update_object_fields(new_name)
         curr_item = self.tree_view.currentItem()
         curr_item.set_text(curr_item.name)
+        # print(sel)
 
     def update_object_fields(self, new_name):
         for field_name, field in self.grid_widget.fields.items():

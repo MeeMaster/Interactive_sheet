@@ -187,7 +187,7 @@ class Application:
             self.sheet.remove_ability(item)
             self.update_form()
             return
-        self.sheet.remove_item(item)
+        self.sheet.remove_item(item.equipped_quantity > 0, item)
         self.update_form()
 
     def delete_item(self, equipped, item):

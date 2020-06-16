@@ -5,10 +5,18 @@ i_armor_ll = 1
 i_armor_rl = 1
 i_armor_lh = 1
 i_armor_rh = 1
+t_type = item
+t_tooltip = 
+t_description = 
+t_display = 
 ////
 
 lamellar_armor:armor
 t_name = lamellar_armor
+t_type = item
+t_tooltip = 
+t_description = 
+t_display = 
 ////
 
 lamellar_legs:lamellar_armor
@@ -36,51 +44,141 @@ i_armor_head = 2
 blaster:ranged_weapon
 t_name = blaster
 t_damage_type = damage_e
-i_damage = 6
-t_base_skill = skill_ranged_light
-f_hands = 1.0
+i_base_damage = 6
+t_skill = skill_ranged_light
+t_hands = 1.0
 i_power_magazine = 100
-i_max_magazine = 100
-i_shot_cost = 2
-f_weight = 1.0
-i_price = 500
+i_base_max_magazine = 100
+i_base_shot_cost = 2
+f_base_weight = 1.0
+i_base_price = 500
 l_fire_mode = fire_multi
 l_trait = trait_short
+t_type = item
+t_tooltip = tooltip_blaster
+t_description = desc_blaster
+t_display = blaster
 ////
 
 holdout_blaster:blaster
 t_name = holdout_blaster
-i_damage = 5
+i_base_damage = 5
 i_power_magazine = 5
-i_max_magazine = 5
-i_shot_cost = 1
-i_price = 600
-l_trait = trait_short, trait_balanced, trait_small
+i_base_max_magazine = 5
+i_base_shot_cost = 1
+i_base_price = 600
+l_trait = trait_small, trait_balanced, trait_short
 l_fire_mode = fire_single
+t_tooltip = tooltip_holdout_blaster
+t_description = desc_holdout_blaster
+t_display = holdout_blaster
+f_base_weight = 0.0
 ////
 
 blaster_rifle:blaster
 t_name = blaster_rifle
-i_damage = 8
-i_ap = 1
+i_base_damage = 8
+i_base_ap = 1
 f_hands = 1.5
-i_shot_cost = 4
+i_base_shot_cost = 4
 l_fire_mode = fire_multi, fire_auto
+f_base_weight = 0.0
+i_base_price = 0
+t_tooltip = 
+t_description = 
+t_display = 
 ////
 
 blaster_sniper:blaster
 t_name = blaster_sniper
-i_damage = 10
-i_ap = 3
+i_base_damage = 10
+i_base_ap = 3
 f_hands = 2.0
-i_shot_cost = 5
-f_weight = 3.0
-i_price = 1200
+i_base_shot_cost = 5
+f_base_weight = 3.0
+i_base_price = 1200
 l_fire_mode = fire_single
 l_addon = long_scope
+t_tooltip = 
+t_description = 
+t_display = 
 ////
 
-long_scope:addon
+ranged_weapon_addon:addon
+t_name = ranged_weapon_addon
+t_type = ranged_weapon_addon
+t_tooltip = tooltip_ranged_weapon_addon
+t_description = desc_ranged_weapon_addon
+t_display = ranged_weapon_addon
+////
+
+long_scope:ranged_weapon_addon
 t_name = long_scope
+t_type = item
+t_tooltip = tooltip_long_scope
+t_description = desc_long_scope
+t_display = long_scope
+////
+
+blaster_pistol:blaster
+t_name = blaster_pistol
+t_tooltip = tooltip_blaster_pistol
+t_description = desc_blaster_pistol
+t_display = blaster_pistol
+l_addon = long_scope
+l_available_addon = long_scope
+l_modification = large_mag
+l_available_modification = large_mag
+f_base_weight = 0.0
+i_base_price = 0
+////
+
+weapon_modification:modification
+t_name = weapon_modification
+t_base_damage = 0.0
+t_base_ap = 0.0
+t_type = item
+t_tooltip = tooltip_weapon_modification
+t_description = desc_weapon_modification
+t_display = weapon_modification
+////
+
+ranged_weapon_modification:weapon_modification
+t_name = ranged_weapon_modification
+t_type = ranged_weapon_modification
+t_base_shot_cost = 0.0
+t_base_max_magazine = 0.0
+t_tooltip = tooltip_ranged_weapon_modification
+t_description = desc_ranged_weapon_modification
+t_display = ranged_weapon_modification
+t_base_price = 0.0
+t_base_weight = 0.0
+t_availability = 5.0
+////
+
+melee_weapon_modification:weapon_modification
+t_name = melee_weapon_modification
+t_type = melee_weapon_modification
+t_tooltip = tooltip_melee_weapon_modification
+t_description = desc_melee_weapon_modification
+t_display = melee_weapon_modification
+t_base_price = 0.0
+t_base_weight = 0.0
+t_availability = 5.0
+////
+
+large_mag:ranged_weapon_modification
+t_name = large_mag
+t_base_max_magazine = *2.0
+t_base_price = 100.0
+t_tooltip = tooltip_large_mag
+t_description = desc_large_mag
+t_display = large_mag
+t_base_shot_cost = +0.0
+t_base_damage = *1.0
+t_base_ap = +0.0
+t_base_weight = +0.0
+t_availability = +5.0
+t_type = item
 ////
 

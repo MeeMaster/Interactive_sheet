@@ -1,7 +1,7 @@
 import codecs
 from os import path
 from item_classes import *
-
+# from copy import deepcopy
 
 ALL_OBJECTS_DICT = {}
 
@@ -137,9 +137,33 @@ def is_type(item, item_type):
             parent_dict = {"type": item.type, "parent": item.parent}
         else:
             parent_dict = ALL_OBJECTS_DICT[item]
+        # print(parent_dict)
         parent_type = parent_dict["type"]
+        # print(item, parent_type)
         if parent_type == item_type:
             return True
+        # print(parent_dict["parent"])
+        return get_data(parent_dict["parent"])
+    result = get_data(item)
+    return result
+
+
+def is_types(item, item_types):
+    result = False
+
+    def get_data(item):
+        if not item:
+            return
+        if isinstance(item, BaseObject):
+            parent_dict = {"type": item.type, "parent": item.parent}
+        else:
+            parent_dict = ALL_OBJECTS_DICT[item]
+        # print(parent_dict)
+        parent_type = parent_dict["type"]
+        # print(item, parent_type)
+        if parent_type in item_types:
+            return True
+        # print(parent_dict["parent"])
         return get_data(parent_dict["parent"])
     result = get_data(item)
     return result
@@ -179,6 +203,29 @@ def get_children(object_type, other_dict=None):
     return children
 
 
+def duplicate_dict(input_dict):
+    output_dict = {}
+    print(input_dict)
+    for key, value in input_dict.items():
+        if isinstance(value, int):
+            output_dict[key] = int(value)
+        if isinstance(value, float):
+            output_dict[key] = float(value)
+        if isinstance(value, str):
+            output_dict[key] = str(value)
+        if isinstance(value, list):
+            new_list = []
+            for item in value:
+                if isinstance(item, str):
+                    new_list.append(str(value))
+                if isinstance(item, BaseObject):
+                    new_list.append(item.copy())
+            output_dict[key] = new_list
+        if isinstance(value, dict):
+            output_dict[key] = duplicate_dict(value)
+    return output_dict
+
+
 def get_full_data(object_dict, item):
     item_dict = {}
 
@@ -189,7 +236,16 @@ def get_full_data(object_dict, item):
         for key in parent_dict:
             if key in item_dict:
                 continue
-            item_dict[key] = parent_dict[key]
+            if isinstance(parent_dict[key], int):
+                item_dict[key] = int(parent_dict[key])
+            elif isinstance(parent_dict[key], float):
+                item_dict[key] = float(parent_dict[key])
+            elif isinstance(parent_dict[key], str):
+                item_dict[key] = str(parent_dict[key])
+            elif isinstance(parent_dict[key], list):
+                item_dict[key] = list(parent_dict[key])
+            else:
+                print(key, type(parent_dict[key]))
         get_data(parent_dict["parent"])
     get_data(item)
     return item_dict
@@ -209,6 +265,11 @@ def create_item(data):
     item = BaseObject()
     if data is None:
         return item
+    if isinstance(data, str):
+        if data in ALL_OBJECTS_DICT:
+            data = ALL_OBJECTS_DICT[data]
+        else:
+            return item
     for key in data:
         if key == "requirements":
             item.set_requirements(data[key])

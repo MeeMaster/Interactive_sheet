@@ -24,6 +24,16 @@ class BaseObject:
         self.requirements = {}
         self.value = 0
 
+    def copy(self):
+        obj = BaseObject()
+        obj.__dict__ = dict(self.__dict__)
+        return obj
+        # for key, item in self.__dict__.items():
+        #     obj.__dict__[]
+
+    def __repr__(self):
+        return "BaseObject of type {} and name {}".format(self.type, self.name)
+
     def set_requirements(self, requirements: list):
         for requirement in requirements:
             fields = requirement.strip().split()

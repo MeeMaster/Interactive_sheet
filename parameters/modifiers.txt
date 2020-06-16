@@ -1,13 +1,22 @@
 trait_long:trait
 t_name = trait_long
+t_tooltip = tooltip_trait_long
+t_description = desc_trait_long
+t_display = trait_long
 ////
 
 trait_short:trait
 t_name = trait_short
+t_tooltip = tooltip_trait_short
+t_description = desc_trait_short
+t_display = trait_short
 ////
 
 trait_balanced:trait
 t_name = trait_balanced
+t_tooltip = tooltip_trait_balanced
+t_description = desc_trait_balanced
+t_display = trait_balanced
 ////
 
 trait_accurate:trait

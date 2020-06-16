@@ -1,4 +1,5 @@
 ;
+ability;Zdolnoœæ
 ability_analysis1;Przeszywaj¹ce spojrzenie
 ability_analysis2;Po³¹cz kropki
 ability_analysis3;Naukowiec danych
@@ -79,7 +80,9 @@ ability_survival2;Kucharz
 ability_survival3;Traper
 ability_survival4;Partyzant
 ability_willpower1;¯elazna wola
-addon;Dodatek
+addon;Dodatki
+ap;Przebicie pancerza
+armor;Pancerz
 armor_ball_helm;He³m balistyczny
 armor_ball_vest;Kamizelka balistyczna
 armor_besk_helm;He³m beskarowy
@@ -124,6 +127,8 @@ attrib_toughness;Twardoœæ
 attrib_willpower;Si³a Woli
 available_addon;Dodatek
 available_modification;Modyfikacja
+blaster;Blastery
+blaster_pistol;Pistolet
 bonuses;Bonusy
 character_age;Wiek
 character_fabricator;Wytwórca
@@ -133,6 +138,7 @@ character_planet;Planeta
 character_profession;Zawód
 character_race;Rasa
 character_traits;Cechy szczególne
+damage;Obra¿enia
 desc_ability_analysis1;+10 do rzutów na rozpoznanie oszustwa
 desc_ability_analysis2;+10 do rzutów analizy przy szukaniu wzorca
 desc_ability_analysis3;+10 do rzutów na wyszukiwanie istotnych informacji
@@ -213,6 +219,32 @@ desc_ability_survival2;Pozwala na stworzenie wytrzyma³ych racji ¿ywnoœciowych z 
 desc_ability_survival3;Pozwala na zak³adanie trudnych do wykrycia pu³apek
 desc_ability_survival4;Pozwala na tworzenie materia³ów wybuchowych z powszechnie dostêpnych elementów
 desc_ability_willpower1;Pozwala na przerzut testów opartych na Sile Woli
+desc_addon;desc_addon
+desc_armor;
+desc_blaster;
+desc_blaster_pistol;desc_blaster_pistol
+desc_droid_item;
+desc_droid_module;
+desc_droid_part;
+desc_equipment_item;
+desc_holdout_blaster;
+desc_item;desc_item
+desc_large_mag;desc_large_mag
+desc_long_scope;
+desc_melee_weapon;
+desc_melee_weapon_modification;
+desc_modification;
+desc_modifier_item;
+desc_ranged_weapon;
+desc_ranged_weapon_addon;
+desc_ranged_weapon_modification;
+desc_trait_balanced;
+desc_trait_long;desc_trait_long
+desc_trait_short;
+desc_weapon;
+desc_weapon_modification;
+description;Opis
+display;Nazwa
 droid_additional_cognitive_core;Dodatkowy rdzeñ kognitywny
 droid_additional_computing_module;Dodatkowy modu³ obliczeniowy
 droid_advanced_alloy_frame;Zaawansowana rama ze stopów
@@ -266,6 +298,7 @@ droid_improved_vision_sensors;Ulepszone sensory optyczne
 droid_isolated_command_processing_environment;Izolowane œrodowidko procesów decyzyjnych
 droid_isolated_decoding_environments;Izolowane œrodowisko dekoduj¹ce
 droid_isolated_encryption_system;Kodowanie systemu
+droid_item;Przedmioty droida
 droid_jet_jumper;Plecak odrzutowy
 droid_joint_roller_blockers;Stawy przek³adniowe
 droid_large_Auridium_battery;Du¿a bateria auridium
@@ -279,12 +312,14 @@ droid_manipulatorarms_small;Rêce droida manipulacyjne ma³e
 droid_medium_Auridium_battery;Œrednia bateria auridium
 droid_medium_Nova_crystal_battery;Œrednia bateria Nova
 droid_medium_battery;Œrednia bateria
+droid_module;Modu³y
 droid_momentum_dampeners;T³umiki przeci¹¿eniowe
 droid_multi_spectrum_sensors;Rozszerzone spekrum sensorów
 droid_nonstandardchest_large;Korpus droida niestandardowy du¿y
 droid_nonstandardchest_medium;Korpus droida niestandardowy œredni
 droid_nonstandardchest_small;Korpus droida niestandardowy ma³y
 droid_overdrive_motors;Przyspieszone serwomotory
+droid_part;Czêœci
 droid_power_servos;Wzmocnione serwomotory
 droid_precision_servos;Precyzyjne serwomotory
 droid_quantum_code_resolver;Kwantowy ³amacz kodów
@@ -311,13 +346,21 @@ droid_weaponarms_small;Rêce droida uzbrojone ma³e
 droid_wrist-blade;Ostrze nadgarstkowe
 droid_wrist-blaster;Blaster nadgarstkowy
 droid_wrist-flamethrower;Nadgarstkowy miotacz ognia
+equipment_item;Wyposa¿enie
 fire_auto;Automatyczny
 fire_burst;Seria
 fire_mode;Tryb ognia
 fire_multi;Wielokrotny
 fire_single;Pojedynczy
+holdout_blaster;
 implant_strength_1;Implant wydajnoœciowy
+item;Przedmioty
 item_other;Inny
+large_mag;Du¿y magazynek
+long_scope;Luneta
+max_magazine;Pojemnoœæ magazynka
+melee_weapon;Broñ bia³a
+melee_weapon_modification;Modyfikacje broni bia³ej
 modification;Modyfikacja
 modifier_droid_ability10_1;Analizator medyczny
 modifier_droid_ability10_2;Modu³ zabiegowy
@@ -363,6 +406,22 @@ modifier_droid_ability8_1;Silnik wyszukiwania
 modifier_droid_ability8_2;Modu³ analizy jêzyka
 modifier_droid_ability9_1;Modu³ mechaniki
 modifier_droid_ability9_2;Modu³ systemów mech.
+modifier_item;Przedmioty modyfikuj¹ce cechy
+param_availability;Dostêpnoœæ
+param_base_ap;Przebicie pancerza
+param_base_armor_chest;Korpus
+param_base_armor_head;G³owa
+param_base_armor_lh;Lewa rêka
+param_base_armor_ll;Lewa noga
+param_base_armor_other;Inna
+param_base_armor_rh;Prawa rêka
+param_base_armor_rl;Prawa noga
+param_base_damage;Obra¿enia
+param_base_max_magazine;Pojemnoœæ magazynka
+param_base_price;Cena
+param_base_shot_cost;Koszt strza³u
+param_base_weight;Waga
+param_damage_type;Typ obra¿eñ
 param_distance_close;Bliska
 param_distance_extreme;Ekstremalna
 param_distance_far;Daleka
@@ -371,9 +430,12 @@ param_encumbrance_high;Maksymalne
 param_encumbrance_low;Lekkie
 param_encumbrance_med;Komfortowe
 param_fatigue;Zmêczenie
+param_hands;Rêcznoœæ
 param_hp_current;P¯ obecne
 param_hp_max;P¯ maks
 param_melee;Bia³a
+param_name;Nazwa wewnêtrzna
+param_power_magazine;Stan magazynka
 param_pp_curr;PP obecne
 param_pp_total;PP ca³kowite
 param_ranged;Zasiêgowa
@@ -391,6 +453,11 @@ param_speed_low;Wolny
 param_speed_med;Normalny
 param_xp_free;XP wolne
 param_xp_total;XP wykorzystane
+parent;Kategoria nadrzêdna
+price;Cena ca³kowita
+ranged_weapon;Broñ zasiêgowa
+ranged_weapon_addon;Dodatki do broni zasiêgowej
+ranged_weapon_modification;Modyfikacje broni zasiêgowej
 skill_analysis;Analiza
 skill_athletics;Atletyka
 skill_cheat;Oszustwo
@@ -423,15 +490,43 @@ skill_resistance;Odpornoœæ
 skill_security;Zabezpieczenia
 skill_survival;Sztuka przetrwania
 skill_systems;Systemy
+tooltip;PodpowiedŸ
+tooltip_addon;tooltip_addon
+tooltip_armor;
+tooltip_blaster;
+tooltip_blaster_pistol;tooltip_blaster_pistol
+tooltip_droid_item;
+tooltip_droid_module;
+tooltip_droid_part;
+tooltip_equipment_item;
+tooltip_holdout_blaster;
+tooltip_item;tooltip_item
+tooltip_large_mag;tooltip_large_mag
+tooltip_long_scope;
+tooltip_melee_weapon;
+tooltip_melee_weapon_modification;
+tooltip_modification;
+tooltip_modifier_item;
+tooltip_ranged_weapon;
+tooltip_ranged_weapon_addon;
+tooltip_ranged_weapon_modification;
+tooltip_trait_balanced;
+tooltip_trait_long;tooltip_trait_long
+tooltip_trait_short;
+tooltip_weapon;
+tooltip_weapon_modification;
 trait;Cecha
+trait_balanced;Zbalansowana
+trait_long;D³uga
+trait_short;Krótka
+type;Typ
 ui_abilities;Zdolnoœci
 ui_ability_add_button;Dodaj zdolnoœæ
 ui_ability_description;Opis
 ui_ability_display_name;Nazwa
 ui_ability_requirements;Wymagania
-ui_add_item_button;Dodaj
 ui_add_item;Dodaj przedmoit
-ui_remove_item;Usuñ przedmoit
+ui_add_item_button;Dodaj
 ui_add_property;Dodaj w³aœciwoœæ
 ui_addon;Dodatki
 ui_alternative_character;Droid
@@ -457,8 +552,8 @@ ui_equipped_items;Ekwipunek
 ui_fire_mode;Tryby ognia
 ui_gm_modifier;Modyfikator MG
 ui_hit_chance;Szansa na trafienie
-ui_item_creation_app;Dodawanie przedmiotów
 ui_item_archetype;Archetyp
+ui_item_creation_app;Dodawanie przedmiotów
 ui_item_description;Opis
 ui_item_equipped;W u¿yciu
 ui_item_name;Nazwa
@@ -498,6 +593,7 @@ ui_overheated_on;Broñ przegrzana przys strzale
 ui_part_add_button;Dodaj czêœæ
 ui_parts;Czêœci
 ui_ranged_skill_value;Umiejêtnoœæ strzelecka
+ui_remove_item;Usuñ przedmoit
 ui_reputation;Reputacja
 ui_save_sheet_window_title;Zapisz kartê
 ui_shoot_once;Strzel pojedynczo
@@ -520,6 +616,7 @@ ui_weapon_type;Typ
 ui_weapons;Broñ
 ui_weapons_add_button;Dodaj broñ
 ui_window_name;Karta postaci
+weapon;Broñ
 weapon_blaster;Blaster
 weapon_blaster_cannon;Dzia³o blasterowe
 weapon_blaster_carbine;Karabinek blasterowy
@@ -540,6 +637,7 @@ weapon_imperial_repeater;Powtarzacz imperialny
 weapon_ion_rifle;Karabinek jonowy
 weapon_light_doublesaber;Podwójny miecz œwietlny
 weapon_lightsaber;Miecz œwietlny
+weapon_modification;Modyfikacja broni
 weapon_offhand_lightsaber;Krótki miecz œwietlny
 weapon_other;Inna
 weapon_portable_launcher;Wyrzutnia rakiet
@@ -549,9 +647,11 @@ weapon_stun_baton;Pa³ka og³uszaj¹ca
 weapon_stun_gloves;Rêkawice og³uszaj¹ce
 weapon_stun_rifle;Karabin og³uszaj¹cy
 weapon_sword;Miecz
+weapon_type;Typ broni
 weapon_vibro_doublesword;Wibromiecz podwójny
 weapon_vibro_knuckles;Wibrokastet
 weapon_vibroaxe;Wibrotopór
 weapon_vibroblade;Wibronó¿
 weapon_vibrolance;Wibrolanca
 weapon_vibrosword;Wibromiecz
+weight;Waga ca³kowita

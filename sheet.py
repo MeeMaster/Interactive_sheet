@@ -1,5 +1,5 @@
 import pickle
-from parameters import load_parameters
+from parameters import load_parameters, is_type
 
 
 attribute_skill_dict = None
@@ -61,9 +61,6 @@ class Character:
         for name in self.character_names:
             self.character[name] = ""
 
-        # self.armor = set()
-        # self.weapons = set()
-        # self.modifier_items = set()
         self.objects = set()
         self.items = set()  # TODO remove later
         self.notes = {}
@@ -115,16 +112,15 @@ class Character:
         armor_dict = {}
         for armor_slot in self.armor_names:
             armor_dict[armor_slot] = self.calculate_attribute("attrib_toughness") // 10
-        for armor in self.items:
-            if armor.type != "armor":
+        for item in self.items:
+            if not item.equipped_quantity:
                 continue
-            if not armor.equipped_quantity:
-                continue
-            for armor_slot in self.armor_names:
-                armor_dict[armor_slot] += armor.armor[armor_slot]
-        for armor_slot in self.armor_names:
-            modifier = self.read_modifier_items(armor_slot)
-            armor_dict[armor_slot] += modifier
+            if item.type == "armor":
+                for armor_slot in self.armor_names:
+                    armor_dict[armor_slot] += item.__dict__[armor_slot]
+            for bonus in item.bonuses:
+                if bonus.name in self.armor_names:
+                    armor_dict[bonus.name] += bonus.value
         return armor_dict
 
     def add_object(self, obj):
@@ -301,6 +297,9 @@ class Character:
                 found = True
                 break
         if not found:
+            return
+        if is_type(_item, "equipment_item"):
+            self.items.remove(item)
             return
         if equipped:
             item.total_quantity -= item.equipped_quantity

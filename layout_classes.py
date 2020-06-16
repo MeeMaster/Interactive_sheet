@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QValidator, QColor, QDoubleValidator
 # from parameters import translate, translate
-from parameters import load_parameters, translate, is_type
+from parameters import load_parameters, translate, is_types
 from item_classes import BaseObject
 
 param_dict = load_parameters()
@@ -20,7 +20,7 @@ class ScrollContainer(QWidget):
     item_created = pyqtSignal(str, object)
     item_equipped = pyqtSignal(str, object, bool)
     item_removed = pyqtSignal(str, object)
-    item_edited = pyqtSignal(str)
+    item_edited = pyqtSignal(str, object)
 
     def __init__(self, name, button_text, content_widget, popup=None, label=None, **kwargs):
         QWidget.__init__(self)
@@ -36,9 +36,10 @@ class ScrollContainer(QWidget):
         self.scroll = QScrollArea()
         self.scroll.setWidgetResizable(True)
         self.layout.addWidget(self.scroll)
-        self.button = QPushButton(button_text)
-        self.button.clicked.connect(lambda: self.open_popup())
-        self.layout.addWidget(self.button)
+        if button_text is not None:
+            self.button = QPushButton(button_text)
+            self.button.clicked.connect(lambda: self.open_popup())
+            self.layout.addWidget(self.button)
         self.setLayout(self.layout)
         self.popup = popup
         self.current_popup = None
@@ -57,14 +58,17 @@ class ScrollContainer(QWidget):
         if self.popup is not None:
             self.kwargs["edit"] = edit
             self.current_popup = self.popup(kwargs=self.kwargs)
-            if edit is None:
-                self.current_popup.popup_ok.connect(self.ok_clicked)
-            else:
-                self.current_popup.popup_ok.connect(lambda: self.item_edited.emit())
+            # if edit is None:
+            self.current_popup.popup_ok.connect(self.ok_clicked)
+            # else:
+            #     self.current_popup.popup_ok.connect(lambda: self.item_edited.emit())
             self.current_popup.popup_cancel.connect(self.close_popup)
 
     def ok_clicked(self, obj):
-        self.item_created.emit(self.name, obj)
+        if self.kwargs["edit"] is None:
+            self.item_created.emit(self.name, obj)
+        else:
+            self.item_edited.emit(self.name, obj)
         self.close_popup()
 
     def close_popup(self):
@@ -145,15 +149,9 @@ class ConditionalScrollContainer(ScrollContainer):
 
     def fill(self, items):
         for item in items:
-            print(item, item.type)
             ok = False
-            for item_type in self.conditions:
-                if is_type(item, item_type):
-                    ok = True
-                    break
-            if not ok:
-                continue
-            self.add_widget(item)
+            if is_types(item, self.conditions):
+                self.add_widget(item)
 
 
 class InputLine(QWidget):
@@ -183,6 +181,8 @@ class InputLine(QWidget):
             self.line.setValidator(MyIntValidator(min_val, max_val))
         if self.dtype == "float":
             self.line.setValidator(MyFloatValidator(min_val, max_val))
+        if self.dtype == "equation":
+            self.line.setValidator(MyEquationValidator(min_val, max_val))
         self.register_field(val_dict=val_dict)
         self.layout.addWidget(self.line)
         if spacer == "lower":
@@ -218,6 +218,8 @@ class InputLine(QWidget):
             return int(text)
         if self.dtype == "float":
             return float(text)
+        if self.dtype == "equation":
+            return text
         return text
 
 
@@ -490,7 +492,7 @@ class WeaponView(View):
         self.item_equipped.emit(self.item, equip)
 
     def fill_values(self):
-        self.weapon_name.set_text(self.item.name)
+        self.weapon_name.set_text(translate(self.item.display) if self.item.display else self.item.name)
         self.weapon_damage.set_text(str(self.item.damage))
         self.weapon_damage_type.set_text(self.item.damage_type)
         self.weapon_pp.set_text(str(self.item.ap))
@@ -516,7 +518,7 @@ class ArmorView(View):
         self.setPalette(p)
         self.setAutoFillBackground(True)
         self.equipped_checkbox = EquippedCheckbox()
-        self.equipped_checkbox.setChecked(self.item.equipped)
+        self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
         self.equipped_checkbox.stateChanged.connect(self.equip)
         line1_layout.addWidget(self.equipped_checkbox)
 
@@ -546,9 +548,9 @@ class ArmorView(View):
         self.item_equipped.emit(self.item, equip)
 
     def fill_values(self):
-        self.armor_name.set_text(self.item.name)
+        self.armor_name.set_text(self.item.display)
         for armor_name in armor_names:
-            self.armor_parts[armor_name].set_text(str(self.item.armor[armor_name]))
+            self.armor_parts[armor_name].set_text(str(self.item.__dict__[armor_name]))
         self.value.set_text(str(self.item.price))
         self.weight.set_text(str(self.item.weight))
         self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
@@ -640,6 +642,38 @@ class MyFloatValidator(QValidator):
             return QValidator.Acceptable, str(val), a1
         except:
             return QValidator.Invalid, a0, a1
+
+
+class MyEquationValidator(QValidator):
+
+    def __init__(self, m, n):
+        QValidator.__init__(self)
+
+    def validate(self, a0, a1):
+        if a1 == 0:
+            return QValidator.Acceptable, "+0.0", 1
+        if a0[0] not in ["*", "/", "+", "-"]:
+            try:
+                val = round(float(a0), 1)
+                return QValidator.Intermediate, str(val), a1
+            except:
+                return QValidator.Invalid, a0, a1
+        else:
+            try:
+                val = round(float(a0[1:]), 1)
+                return QValidator.Acceptable, a0[0]+str(val), a1
+            except:
+                return QValidator.Invalid, a0, a1
+        # return QValidator.Invalid, a0, a1
+        # if a1 > 1:
+
+    def fixup(self, a0: str) -> str:
+        try:
+            val = round(float(a0), 1)
+            return "+"+str(val)
+        except:
+            return ""
+        pass
 
 # def color_widget(widget):
 #     import random
@@ -756,7 +790,7 @@ class LabelledLabel(QWidget):
 
 class EquipmentWidget(QWidget):
     item_qty_changed = pyqtSignal(bool, str, int, bool)
-    item_create = pyqtSignal(BaseObject)
+    item_create = pyqtSignal(str, BaseObject)
     move_item = pyqtSignal(object, int)
     delete_item = pyqtSignal(bool, BaseObject)
     edit_item = pyqtSignal(str)
@@ -813,9 +847,6 @@ class EquipmentWidget(QWidget):
         layout.addLayout(stash_table_layout, 10)
         self.setLayout(layout)
 
-    def set_items(self, items):
-        self.items = items
-
     def open_popup(self, **kwargs):
         if self.current_popup is not None:
             return
@@ -855,7 +886,7 @@ class EquipmentWidget(QWidget):
         self.current_popup.popup_cancel.connect(self.close_popup)
 
     def add_item(self, item):
-        self.item_create.emit(item)
+        self.item_create.emit(item.name, item)
         self.close_popup()
 
     def move_item_func(self, item, value):
