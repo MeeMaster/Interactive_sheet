@@ -1,6 +1,6 @@
 import codecs
-from os import path
-from item_classes import *
+from os import path, listdir
+from item_classes import BaseObject
 # from copy import deepcopy
 
 ALL_OBJECTS_DICT = {}
@@ -136,13 +136,12 @@ def is_type(item, item_type):
         if isinstance(item, BaseObject):
             parent_dict = {"type": item.type, "parent": item.parent}
         else:
+            if item not in ALL_OBJECTS_DICT:
+                return False
             parent_dict = ALL_OBJECTS_DICT[item]
-        # print(parent_dict)
         parent_type = parent_dict["type"]
-        # print(item, parent_type)
         if parent_type == item_type:
             return True
-        # print(parent_dict["parent"])
         return get_data(parent_dict["parent"])
     result = get_data(item)
     return result
@@ -158,12 +157,9 @@ def is_types(item, item_types):
             parent_dict = {"type": item.type, "parent": item.parent}
         else:
             parent_dict = ALL_OBJECTS_DICT[item]
-        # print(parent_dict)
         parent_type = parent_dict["type"]
-        # print(item, parent_type)
         if parent_type in item_types:
             return True
-        # print(parent_dict["parent"])
         return get_data(parent_dict["parent"])
     result = get_data(item)
     return result
@@ -205,7 +201,6 @@ def get_children(object_type, other_dict=None):
 
 def duplicate_dict(input_dict):
     output_dict = {}
-    print(input_dict)
     for key, value in input_dict.items():
         if isinstance(value, int):
             output_dict[key] = int(value)
@@ -267,7 +262,7 @@ def create_item(data):
         return item
     if isinstance(data, str):
         if data in ALL_OBJECTS_DICT:
-            data = ALL_OBJECTS_DICT[data]
+            data = dict(ALL_OBJECTS_DICT[data])
         else:
             return item
     for key in data:
@@ -288,22 +283,24 @@ def create_item(data):
 def read_all_objects(full_data=True):
     global ALL_OBJECTS_DICT
     final_dict = {}
-    base_dict = read_objects("parameters/base_objects.txt")
+    base_dict = read_objects("base_objects.txt")
     for key, data in base_dict.items():
         if full_data:
             data = get_full_data(base_dict, key)
         data["source"] = "base_objects.txt"
         final_dict[key] = data
-    for filename in ["abilities", "modifiers", "items"]:
-        objects = read_objects("parameters/{}.txt".format(filename))
-        current_dict = dict(final_dict)
+    for filename in listdir("parameters"):
+        if ".txt" not in filename:
+            continue
+        objects = read_objects("parameters/{}".format(filename))
+        # current_dict = dict(final_dict)
         for key, item in objects.items():
-            current_dict[key] = item
-        for key, data in objects.items():
-            if full_data:
-                data = get_full_data(current_dict, key)
-            data["source"] = "{}.txt".format(filename)
-            final_dict[key] = data
+            item["source"] = "{}".format(filename)
+            final_dict[key] = item
+    for key, data in final_dict.items():
+        if full_data:
+            data = get_full_data(final_dict, key)
+        final_dict[key] = data
     ALL_OBJECTS_DICT = final_dict
 
 

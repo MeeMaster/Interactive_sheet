@@ -1,0 +1,113 @@
+ranged_weapon_addon:addon
+t_name = ranged_weapon_addon
+t_type = ranged_weapon_addon
+t_tooltip = tooltip_ranged_weapon_addon
+t_description = desc_ranged_weapon_addon
+t_display = ranged_weapon_addon
+////
+
+blaster:ranged_weapon
+t_name = blaster
+t_damage_type = damage_e
+i_base_damage = 6
+t_skill = skill_ranged_light
+t_hands = 1.0
+i_power_magazine = 100
+i_base_max_magazine = 100
+i_base_shot_cost = 2
+f_base_weight = 1.0
+i_base_price = 500
+l_fire_mode = fire_multi
+l_trait = trait_short
+t_tooltip = tooltip_blaster
+t_description = desc_blaster
+t_display = blaster
+////
+
+holdout_blaster:blaster
+t_name = holdout_blaster
+i_base_damage = 5
+i_power_magazine = 5
+i_base_max_magazine = 5
+i_base_shot_cost = 1
+i_base_price = 600
+l_trait = trait_small, trait_balanced, trait_short
+l_fire_mode = fire_single
+t_tooltip = tooltip_holdout_blaster
+t_description = desc_holdout_blaster
+t_display = holdout_blaster
+f_base_weight = 0.0
+////
+
+blaster_rifle:blaster
+t_name = blaster_rifle
+i_base_damage = 8
+i_base_ap = 1
+f_hands = 1.5
+i_base_shot_cost = 4
+l_fire_mode = fire_multi, fire_auto
+f_base_weight = 0.0
+i_base_price = 0
+t_tooltip = 
+t_description = 
+t_display = 
+////
+
+blaster_sniper:blaster
+t_name = blaster_sniper
+i_base_damage = 10
+i_base_ap = 3
+f_hands = 2.0
+i_base_shot_cost = 5
+f_base_weight = 3.0
+i_base_price = 1200
+l_fire_mode = fire_single
+l_addon = long_scope
+t_tooltip = 
+t_description = 
+t_display = 
+////
+
+ranged_weapon_addon:addon
+t_name = ranged_weapon_addon
+t_type = ranged_weapon_addon
+t_tooltip = tooltip_ranged_weapon_addon
+t_description = desc_ranged_weapon_addon
+t_display = ranged_weapon_addon
+////
+
+blaster_pistol:blaster
+t_name = blaster_pistol
+t_tooltip = tooltip_blaster_pistol
+t_description = desc_blaster_pistol
+t_display = blaster_pistol
+l_addon = long_scope
+l_available_addon = long_scope
+l_modification = large_mag
+l_available_modification = large_mag
+f_base_weight = 0.0
+i_base_price = 0
+l_fire_mode = fire_multi
+l_trait = 
+t_max_magazine = 200
+t_shot_cost = 2
+t_damage = 6
+l_base_bonuses = attrib_strength 1
+l_bonuses = attrib_strength 1
+////
+
+blades:melee_weapon
+t_name = blades
+t_type = blades
+////
+
+vibroblades:blades
+t_name = vibroblades
+t_type = vibroblades
+////
+
+vibroblade:vibroblades
+t_name = vibroblade
+t_type = vibroblade
+////
+

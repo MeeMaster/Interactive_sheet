@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QValidator, QColor, QDoubleValidator
 # from parameters import translate, translate
-from parameters import load_parameters, translate, is_types
+from parameters import load_parameters, translate, is_types, is_type
 from item_classes import BaseObject
 
 param_dict = load_parameters()
@@ -58,10 +58,7 @@ class ScrollContainer(QWidget):
         if self.popup is not None:
             self.kwargs["edit"] = edit
             self.current_popup = self.popup(kwargs=self.kwargs)
-            # if edit is None:
             self.current_popup.popup_ok.connect(self.ok_clicked)
-            # else:
-            #     self.current_popup.popup_ok.connect(lambda: self.item_edited.emit())
             self.current_popup.popup_cancel.connect(self.close_popup)
 
     def ok_clicked(self, obj):
@@ -123,13 +120,13 @@ class ScrollContainer(QWidget):
     def remove_widget(self, name):
         child = self.find_child(name)
         child.deleteLater()
-        child.setParent(None)
+        # child.setParent(None)
 
     def clear(self):
         children = self.get_children()
         for child in children:
             child.deleteLater()
-            child.setParent(None)
+            # child.setParent(None)
 
     def fill(self, items):
         for item in items:
@@ -160,6 +157,8 @@ class InputLine(QWidget):
     def __init__(self, name, align_flag=Qt.AlignCenter, enabled=True, val_dict=None, min_val=None, max_val=None,
                  dtype="str", maxwidth=None, label=None, spacer=None):
         QWidget.__init__(self)
+        self.linked = False
+        self.linked_value = None
         self.dtype = dtype
         self.layout = QVBoxLayout()
         if label is not None:
@@ -196,10 +195,18 @@ class InputLine(QWidget):
         self.label.setStyleSheet("font: {} {} {}px".format("bold" if bold else "", "italic" if italic else "", size))
 
     def emit_changed(self):
+        if self.linked:
+            data = self.get_data()
+            self.linked_value = data
         self.value_changed.emit(self.name, self.text())
 
     def text(self):
         return self.line.text()
+
+    def link_value(self, value):
+        self.linked = True
+        self.linked_value = value
+        self.setText(str(self.linked_value))
 
     def setText(self, value):
         self.line.setText(str(value))
@@ -285,8 +292,9 @@ class SkillView(QWidget):
         super(QWidget, self).__init__()
         self.setFixedWidth(220)
         # color_widget(self)
-        self.setContentsMargins(0, 0, 0, 0)
+        self.setContentsMargins(2, 0, 0, 0)
         self.name = name
+        self.natural = False
         self.display_name = display_name if display_name is not None else name
         self.layout = QHBoxLayout()
         label_layout = QVBoxLayout()
@@ -354,6 +362,16 @@ class SkillView(QWidget):
 
     def set_enabled(self, enabled):
         self.advancement.set_enabled(enabled)
+
+    def set_natural(self, val: bool):
+        self.natural = val
+        color = QColor(255, 255, 255)
+        p = self.palette()
+        if self.natural:
+            color = QColor(0, 200, 0, 80)
+        p.setColor(self.backgroundRole(), color)
+        self.setPalette(p)
+        self.setAutoFillBackground(True)
 
 
 class NameView(QWidget):
@@ -430,7 +448,8 @@ class AbilityView(View):
         self.setToolTip(translate(ability.tooltip))
         self.display = QLineEdit()
         layout.addWidget(self.display)
-        self.display_name += " {}".format(ability.value) if ability.value else ""
+
+        self.display_name += " {}".format(ability.value) if not is_types(ability, ["ability", "trait", "fire_mode"]) else ""
         self.display.setText(self.display_name)
         self.display.setEnabled(False)
         self.setLayout(layout)
@@ -466,10 +485,13 @@ class WeaponView(View):
         line1_layout.addWidget(self.weapon_pp, stretch=0)
         self.weapon_damage_type = LabelledLabel(label=translate("ui_weapon_damage_type"))
         line1_layout.addWidget(self.weapon_damage_type, stretch=0)
-        self.weapon_ammo_cost = LabelledLabel(label=translate("ui_weapon_shotcost"))
-        line1_layout.addWidget(self.weapon_ammo_cost, stretch=0)
-        self.weapon_current_power = LabelledLabel(label=translate("ui_weapon_magazine"))
-        line1_layout.addWidget(self.weapon_current_power, stretch=0)
+        if is_type(self.item, "ranged_weapon"):
+            self.weapon_ammo_cost = LabelledLabel(label=translate("ui_weapon_shotcost"))
+            line1_layout.addWidget(self.weapon_ammo_cost, stretch=0)
+            self.weapon_current_power = InputLine(name="power_magazine", label=translate("ui_weapon_magazine"),
+                                                  dtype="int", maxwidth=60)
+            line1_layout.addWidget(self.weapon_current_power, stretch=0)
+            self.weapon_current_power.value_changed.connect(self.modify_item)
         self.weapon_weight = LabelledLabel(label=translate("ui_item_weight"))
         line2_layout.addWidget(self.weapon_weight, stretch=0)
         self.weapon_value = LabelledLabel(label=translate("ui_item_price"))
@@ -485,6 +507,10 @@ class WeaponView(View):
         self.add_header_option("Edit", self.edit)
         self.setLayout(layout)
 
+    def modify_item(self, name, value):
+        if name in self.item.__dict__:
+            self.item.__dict__[name] = value
+
     def edit(self):
         self.edit_item.emit(self.item)
 
@@ -496,8 +522,9 @@ class WeaponView(View):
         self.weapon_damage.set_text(str(self.item.damage))
         self.weapon_damage_type.set_text(self.item.damage_type)
         self.weapon_pp.set_text(str(self.item.ap))
-        self.weapon_ammo_cost.set_text(str(self.item.shot_cost))
-        self.weapon_current_power.set_text(str(self.item.power_magazine))
+        if is_type(self.item, "ranged_weapon"):
+            self.weapon_ammo_cost.set_text(str(self.item.shot_cost))
+            self.weapon_current_power.link_value(self.item.power_magazine)
         self.weapon_value.set_text(str(self.item.price))
         self.weapon_weight.set_text(str(self.item.weight))
         self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
@@ -982,12 +1009,12 @@ class ItemTable(QWidget):
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.get_table()
         self.menu = QMenu(self)
-        self.menu_actions = {"Usun": self.remove_item}
+        self.menu_actions = {translate("remove_item"): self.remove_item}
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.menu.addAction(QAction("Usun", self))
+        self.menu.addAction(QAction(translate("remove_item"), self))
         self.customContextMenuRequested.connect(self.show_header_menu)
         self.item = None
-        self.add_header_option("Edit", self.item_edit)
+        self.add_header_option(translate("edit_item"), self.item_edit)
 
     def show_header_menu(self, point):
         if not self.table.selectedIndexes():
@@ -1057,7 +1084,7 @@ class ItemTable(QWidget):
             weight_label = QLabel(str(item.weight))
             weight_label.setAlignment(Qt.AlignCenter)
             self.table.setCellWidget(index, 3, weight_label)
-            total_weight_label = QLabel("{:.1f}".format(item.weight * value))
+            total_weight_label = QLabel("{:.1f}".format(float(item.weight) * value))
             total_weight_label.setAlignment(Qt.AlignCenter)
             self.table.setCellWidget(index, 4, total_weight_label)
             index += 1
@@ -1084,7 +1111,7 @@ class ModifierItemView(View):
         self.item = equipment_item
         self.name = equipment_item.ID
         name_layout = QVBoxLayout()
-        name = QLabel(equipment_item.name)
+        name = QLabel(translate(equipment_item.name))
         name_layout.addWidget(name)
         self.values_layout = QVBoxLayout()
         cost_layout = QVBoxLayout()
@@ -1122,15 +1149,15 @@ class PropertyView(QWidget):
         QWidget.__init__(self)
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        names = [name for name in bonuses]
-        if names:
-            self.label = QLabel(translate(names[0]))
-            self.value = QLabel(str(bonuses[names[0]]))
+        # bonuses
+        if bonuses:
+            self.label = QLabel(translate(bonuses[0].name))
+            self.value = QLabel(str([bonuses[0].value]))
             self.cont = QLabel("...")
             layout.addWidget(self.label)
             layout.addWidget(self.value)
         if len(bonuses) > 1:
             layout.addWidget(self.cont)
-        self.setToolTip("\n".join([translate(name)+": "+str(value) for name, value in bonuses.items()]))
+        self.setToolTip("\n".join([translate(bonus.name)+": "+str(bonus.value) for bonus in bonuses]))
         self.setLayout(layout)
 

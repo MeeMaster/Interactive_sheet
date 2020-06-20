@@ -1,0 +1,41 @@
+heavy_clothes:armor
+t_name = heavy_clothes
+i_base_armor_chest = 1
+i_base_armor_ll = 1
+i_base_armor_rl = 1
+i_base_armor_lh = 1
+i_base_armor_rh = 1
+t_tooltip = 
+t_description = 
+t_display = 
+////
+
+lamellar_armor:armor
+t_name = lamellar_armor
+t_tooltip = 
+t_description = 
+t_display = 
+////
+
+lamellar_legs:lamellar_armor
+t_name = lamellar_legs
+i_base_armor_ll = 2
+i_base_armor_rl = 2
+////
+
+lamellar_arms:lamellar_armor
+t_name = lamellar_arms
+i_base_armor_lh = 1
+i_base_armor_rh = 1
+////
+
+lamellar_chest:lamellar_armor
+t_name = lamellar_chest
+i_base_armor_chest = 2
+////
+
+lamellar_helm:lamellar_armor
+t_name = lamellar_helm
+i_base_armor_head = 2
+////
+

@@ -77,7 +77,6 @@ class ItemList(ItemListPopup):
         self.update_object_fields(new_name)
         curr_item = self.tree_view.currentItem()
         curr_item.set_text(curr_item.name)
-        # print(sel)
 
     def update_object_fields(self, new_name):
         for field_name, field in self.grid_widget.fields.items():

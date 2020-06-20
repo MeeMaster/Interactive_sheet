@@ -3,12 +3,17 @@ t_name =
 t_tooltip = 
 t_description = 
 t_display = 
-i_value = 0
 t_type = base
 t_image = 
 ////
 
-fire_mode:base_object
+parameter:base_object
+t_name = parameter
+t_type = parameter
+i_value = 0
+////
+
+fire_mode:parameter
 t_name = fire_mode
 t_type = fire_mode
 ////
@@ -29,14 +34,14 @@ fire_auto:fire_mode
 t_name = fire_auto
 ////
 
-ability:base_object
+ability:parameter
 t_name = ability
 t_type = ability
 l_requirements = 
 i_tier = 1
 ////
 
-trait:base_object
+trait:parameter
 t_name = trait
 t_type = trait
 ////
@@ -57,41 +62,6 @@ l_bonuses =
 t_tooltip = tooltip_item
 t_description = desc_item
 t_display = item
-////
-
-modifier_item:item
-t_name = modifier_item
-t_type = modfifier
-t_tooltip = tooltip_modifier_item
-t_description = desc_modifier_item
-t_display = modifier_item
-////
-
-droid_item:modifier_item
-t_name = droid_item
-t_type = droid_item
-i_comp_cost = 0
-i_energy_cost = 0
-t_tooltip = tooltip_droid_item
-t_description = desc_droid_item
-t_display = droid_item
-////
-
-droid_module:droid_item
-t_name = droid_module
-t_type = droid_module
-t_tooltip = tooltip_droid_module
-t_description = desc_droid_module
-t_display = droid_module
-////
-
-droid_part:droid_item
-t_name = droid_part
-t_type = droid_part
-t_part = 
-t_tooltip = tooltip_droid_part
-t_description = desc_droid_part
-t_display = droid_part
 ////
 
 equipment_item:item

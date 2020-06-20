@@ -1,5 +1,5 @@
 import pickle
-from parameters import load_parameters, is_type
+from parameters import load_parameters, is_type, is_types
 
 
 attribute_skill_dict = None
@@ -34,6 +34,9 @@ class Character:
         self.attributes = {}
         self.attribute_advancements = {}
         self.attribute_bonuses = {}
+        self.naturals = ["skill_athletics", "skill_melee_unarmed", "skill_ranged_light", "skill_dodge",
+                         "skill_dexterity", "skill_perception", "skill_analysis", "skill_composition",
+                         "skill_persistence", "skill_resistance"]
         read_parameters(alternative=self.is_robot)
         self.attribute_skill_dict = attribute_skill_dict
         self.armor_names = armor_names
@@ -61,14 +64,12 @@ class Character:
         for name in self.character_names:
             self.character[name] = ""
 
-        self.objects = set()
-        self.items = set()  # TODO remove later
+        self.items = set()
         self.notes = {}
         for note in self.notes_names:
             self.notes[note] = ""
 
         self.abilities = set()
-        self.implants = []
         self.free_XP = 0
         self.spent_XP = 0
 
@@ -95,8 +96,20 @@ class Character:
     def get_skill_bonuses(self, skill):
         ski_value1 = self.skill_bonuses[skill]
         ski_value2 = self.skill_bonuses2[skill]
-        ski_value1 += self.read_modifier_items(skill, "bonus")
-        ski_value2 += self.read_modifier_items(skill, "bonus2")
+        for item in self.items:
+            if not item.equipped_quantity:
+                continue
+            if is_type(item, "droid_module") and self.is_robot:
+                for bonus in item.bonuses:
+                    if bonus.name == skill:
+                        if item.slot == 0:
+                            ski_value1 += bonus.value
+                        elif item.slot == 1:
+                            ski_value2 += bonus.value
+                continue
+            for bonus in item.bonuses:
+                if bonus.name == skill:
+                    ski_value1 += bonus.value
         return ski_value1, ski_value2
 
     def calculate_attribute(self, attribute, full=True):
@@ -117,18 +130,11 @@ class Character:
                 continue
             if item.type == "armor":
                 for armor_slot in self.armor_names:
-                    armor_dict[armor_slot] += item.__dict__[armor_slot]
+                    armor_dict[armor_slot] += int(item.__dict__[armor_slot])
             for bonus in item.bonuses:
                 if bonus.name in self.armor_names:
                     armor_dict[bonus.name] += bonus.value
         return armor_dict
-
-    def add_object(self, obj):
-        self.objects.add(obj)
-
-    def remove_object(self, obj):
-        for element in self.objects:
-            pass
 
     def add_ability(self, ability):
         if self.has_ability(ability.name):
@@ -136,51 +142,15 @@ class Character:
         self.abilities.add(ability)
 
     def remove_ability(self, ability):
-        # ab = self.has_ability(ability)
-        # if not ability:
-        #     return
         self.abilities.remove(ability)
 
     def get_abilities(self):
         abilities = set()  # TODO fix later
-        # for object in self.objects:
-        #     if object.type == "ability":
-        #         abilities.append(object)
-        # return abilities
-        # abilities = self.get_modifier_item_abilities()
+        for item in self.items:
+            for bonus in item.bonuses:
+                if is_type(bonus, "ability"):
+                    abilities.add(bonus)
         return self.abilities | abilities
-
-    def add_weapon(self, weapon):
-        if weapon in self.items:
-            return False
-        self.items.add(weapon)
-        return True
-
-    def remove_weapon(self, item):
-        found = False
-        for weapon in self.items:
-            if item.ID == weapon.ID:
-                found = True
-                break
-        if found:
-            self.items.remove(weapon)
-        return found
-
-    def add_armor(self, armor):
-        if armor in self.items:
-            return False
-        self.items.add(armor)
-        return True
-
-    def remove_armor(self, item):
-        found = False
-        for armor in self.items:
-            if item.ID == armor.ID:
-                found = True
-                break
-        if found:
-            self.items.remove(armor)
-        return found
 
     def find_item_with_id(self, _id):
         for item in self.items:
@@ -221,69 +191,24 @@ class Character:
             self.attribute_advancements[name] = value
         self.update_parameters()
 
-    def get_modifier_item_abilities(self):
-        abilities = set()
-        for item in self.items:
-            if not item.equipped_quantity:
-                continue
-            for bonus in item.bonuses:
-                if bonus.startswith("ability_"):
-                    abilities.add(bonus)
-        return abilities
-
-    def read_modifier_items(self, param, mod_type="modifier"):
+    def read_modifier_items(self, param, item_types=None):
+        mod_types = ["bionic", "implant", "droid_part", "droid_module"]
         out = 0
         for item in self.items:
             if not item.equipped_quantity:
                 continue
-            if item.type not in ["modifier", "bionic", "implant", "part", "module"]:
+            if not is_types(item, mod_types):
                 continue
-            if item.bonus_type != mod_type:
-                continue
-            if param not in item.bonuses:
-                continue
-            out += item.bonuses[param]
+            for bonus in item.bonuses:
+                if param == bonus.name:
+                    out += bonus.value
         return out
-
-    def add_modifier_item(self, item):
-        if item in self.items:
-            return
-        self.items.add(item)
-
-    def remove_modifier_item(self, item):
-        found = False
-        for modifier in self.items:
-            if item.ID == modifier.ID:
-                found = True
-                break
-        if found:
-            self.equip_modifier_item(modifier, False)
-            self.items.remove(modifier)
-        return found
 
     def calculate_current_encumbrance(self):
         curr_weight = 0
         for item in self.items:
-            curr_weight += item.equipped_quantity * item.weight
+            curr_weight += item.equipped_quantity * float(item.weight)
         return curr_weight
-
-    def equip_modifier_item(self, item, equip):
-        if item.equipped == equip:
-            return
-        item.equipped = equip
-        if item.bonus_type == "modifier":
-            return
-        if not equip:
-            return
-        for other_item in self.items:
-            if other_item.ID == item.ID:
-                continue
-            if not other_item.equipped:
-                continue
-            if other_item.bonus_type != item.bonus_type:
-                continue
-            if set(other_item.bonuses.keys()) & set(item.bonuses.keys()):
-                self.equip_modifier_item(other_item, False)
 
     def add_item(self, item):
         if item in self.items:
@@ -312,11 +237,37 @@ class Character:
     def move_item(self, item, value):
         if item not in self.items:
             return
+        if value > 0:
+            if is_type(item, "droid_module"):
+                self.unequip_module(item)
+            if is_type(item, "droid_part"):
+                self.unequip_part(item)
         item.equipped_quantity += value
         if item.equipped_quantity > item.total_quantity:
             item.equipped_quantity = item.total_quantity
         if item.equipped_quantity < 0:
             item.equipped_quantity = 0
+
+    def unequip_module(self, module):
+        name = module.name
+        for item in self.items:
+            if not is_type(item, "droid_module"):
+                continue
+            if module.ID == item.ID:
+                continue
+            if name == item.name:
+                self.move_item(item, -1)
+
+    def unequip_part(self, part):
+        part_type = part.type
+        if part_type == "droid_other":
+            return
+        for item in self.items:
+            if not is_type(item, part_type):
+                continue
+            if part.ID == item.ID:
+                continue
+            self.move_item(item, -1)
 
     def update_parameters(self):
         self.update_speed()

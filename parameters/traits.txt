@@ -56,7 +56,18 @@ trait_heavy_armor:trait
 t_name = trait_heavy_armor
 ////
 
+trait_energy_resistant:trait
+t_name = trait_energy_resistant
+////
+
+trait_cutting:trait
+t_name = trait_cutting
+////
+
+trait_searing:trait
+t_name = trait_searing
+////
+
 trait_small:trait
 t_name = trait_small
 ////
-

@@ -1,0 +1,401 @@
+modifier_item:item
+t_name = modifier_item
+t_type = modfifier
+t_tooltip = tooltip_modifier_item
+t_description = desc_modifier_item
+t_display = modifier_item
+////
+
+droid_item:modifier_item
+t_name = droid_item
+t_type = droid_item
+i_comp_cost = 0
+i_energy_cost = 0
+t_tooltip = tooltip_droid_item
+t_description = desc_droid_item
+t_display = droid_item
+////
+
+droid_module:droid_item
+t_name = droid_module
+t_type = droid_module
+t_tooltip = tooltip_droid_module
+t_description = desc_droid_module
+t_display = droid_module
+i_slot = 0
+////
+
+modifier_droid_ability1_1:droid_module
+t_name = modifier_droid_ability1_1
+t_display = modifier_droid_ability1_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_analysis 5
+////
+
+modifier_droid_ability1_2:droid_module
+t_name = modifier_droid_ability1_2
+t_display = modifier_droid_ability1_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_analysis 5
+i_slot = 1
+////
+
+modifier_droid_ability2_1:droid_module
+t_name = modifier_droid_ability2_1
+t_display = modifier_droid_ability2_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_communication 5
+////
+
+modifier_droid_ability2_2:droid_module
+t_name = modifier_droid_ability2_2
+t_display = modifier_droid_ability2_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_communication 5
+i_slot = 1
+////
+
+modifier_droid_ability3_1:droid_module
+t_name = modifier_droid_ability3_1
+t_display = modifier_droid_ability3_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_conceal 5
+////
+
+modifier_droid_ability3_2:droid_module
+t_name = modifier_droid_ability3_2
+t_display = modifier_droid_ability3_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_conceal 5
+i_slot = 1
+////
+
+modifier_droid_ability4_1:droid_module
+t_name = modifier_droid_ability4_1
+t_display = modifier_droid_ability4_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_control 5
+////
+
+modifier_droid_ability4_2:droid_module
+t_name = modifier_droid_ability4_2
+t_display = modifier_droid_ability4_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_control 5
+i_slot = 1
+////
+
+modifier_droid_ability5_1:droid_module
+t_name = modifier_droid_ability5_1
+t_display = modifier_droid_ability5_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_cybernetics 5
+////
+
+modifier_droid_ability5_2:droid_module
+t_name = modifier_droid_ability5_2
+t_display = modifier_droid_ability5_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_cybernetics 5
+i_slot = 1
+////
+
+modifier_droid_ability6_1:droid_module
+t_name = modifier_droid_ability6_1
+t_display = modifier_droid_ability6_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_dexterity 5
+////
+
+modifier_droid_ability6_2:droid_module
+t_name = modifier_droid_ability6_2
+t_display = modifier_droid_ability6_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_dexterity 5
+i_slot = 1
+////
+
+modifier_droid_ability7_1:droid_module
+t_name = modifier_droid_ability7_1
+t_display = modifier_droid_ability7_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_dodge 5
+////
+
+modifier_droid_ability7_2:droid_module
+t_name = modifier_droid_ability7_2
+t_display = modifier_droid_ability7_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_dodge 5
+i_slot = 1
+////
+
+modifier_droid_ability8_1:droid_module
+t_name = modifier_droid_ability8_1
+t_display = modifier_droid_ability8_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_holonet 5
+////
+
+modifier_droid_ability8_2:droid_module
+t_name = modifier_droid_ability8_2
+t_display = modifier_droid_ability8_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_holonet 5
+i_slot = 1
+////
+
+modifier_droid_ability9_1:droid_module
+t_name = modifier_droid_ability9_1
+t_display = modifier_droid_ability9_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_mechanics 5
+////
+
+modifier_droid_ability9_2:droid_module
+t_name = modifier_droid_ability9_2
+t_display = modifier_droid_ability9_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_mechanics 5
+i_slot = 1
+////
+
+modifier_droid_ability10_1:droid_module
+t_name = modifier_droid_ability10_1
+t_display = modifier_droid_ability10_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_medicine 5
+////
+
+modifier_droid_ability10_2:droid_module
+t_name = modifier_droid_ability10_2
+t_display = modifier_droid_ability10_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_medicine 5
+i_slot = 1
+////
+
+modifier_droid_ability11_1:droid_module
+t_name = modifier_droid_ability11_1
+t_display = modifier_droid_ability11_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_melee_armed 5
+////
+
+modifier_droid_ability11_2:droid_module
+t_name = modifier_droid_ability11_2
+t_display = modifier_droid_ability11_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_melee_armed 5
+i_slot = 1
+////
+
+modifier_droid_ability12_1:droid_module
+t_name = modifier_droid_ability12_1
+t_display = modifier_droid_ability12_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_melee_unarmed 5
+////
+
+modifier_droid_ability12_2:droid_module
+t_name = modifier_droid_ability12_2
+t_display = modifier_droid_ability12_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_melee_unarmed 5
+i_slot = 1
+////
+
+modifier_droid_ability13_1:droid_module
+t_name = modifier_droid_ability13_1
+t_display = modifier_droid_ability13_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_navigation 5
+////
+
+modifier_droid_ability13_2:droid_module
+t_name = modifier_droid_ability13_2
+t_display = modifier_droid_ability13_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_navigation 5
+i_slot = 1
+////
+
+modifier_droid_ability14_1:droid_module
+t_name = modifier_droid_ability14_1
+t_display = modifier_droid_ability14_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_perception 5
+////
+
+modifier_droid_ability14_2:droid_module
+t_name = modifier_droid_ability14_2
+t_display = modifier_droid_ability14_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_perception 5
+i_slot = 1
+////
+
+modifier_droid_ability15_1:droid_module
+t_name = modifier_droid_ability15_1
+t_display = modifier_droid_ability15_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_pilot_spaceships 5
+////
+
+modifier_droid_ability15_2:droid_module
+t_name = modifier_droid_ability15_2
+t_display = modifier_droid_ability15_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_pilot_spaceships 5
+i_slot = 1
+////
+
+modifier_droid_ability16_1:droid_module
+t_name = modifier_droid_ability16_1
+t_display = modifier_droid_ability16_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_pilot_speeders 5
+////
+
+modifier_droid_ability16_2:droid_module
+t_name = modifier_droid_ability16_2
+t_display = modifier_droid_ability16_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_pilot_speeders 5
+i_slot = 1
+////
+
+modifier_droid_ability17_1:droid_module
+t_name = modifier_droid_ability17_1
+t_display = modifier_droid_ability17_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_pilot_walkers 5
+////
+
+modifier_droid_ability17_2:droid_module
+t_name = modifier_droid_ability17_2
+t_display = modifier_droid_ability17_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_pilot_walkers 5
+i_slot = 1
+////
+
+modifier_droid_ability18_1:droid_module
+t_name = modifier_droid_ability18_1
+t_display = modifier_droid_ability18_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_ranged_light 5
+////
+
+modifier_droid_ability18_2:droid_module
+t_name = modifier_droid_ability18_2
+t_display = modifier_droid_ability18_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_ranged_light 5
+i_slot = 1
+////
+
+modifier_droid_ability19_1:droid_module
+t_name = modifier_droid_ability19_1
+t_display = modifier_droid_ability19_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_ranged_heavy 5
+////
+
+modifier_droid_ability19_2:droid_module
+t_name = modifier_droid_ability19_2
+t_display = modifier_droid_ability19_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_ranged_heavy 5
+i_slot = 1
+////
+
+modifier_droid_ability20_1:droid_module
+t_name = modifier_droid_ability20_1
+t_display = modifier_droid_ability20_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_ranged_stationary 5
+////
+
+modifier_droid_ability20_2:droid_module
+t_name = modifier_droid_ability20_2
+t_display = modifier_droid_ability20_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_ranged_stationary 5
+i_slot = 1
+////
+
+modifier_droid_ability21_1:droid_module
+t_name = modifier_droid_ability21_1
+t_display = modifier_droid_ability21_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_security 5
+////
+
+modifier_droid_ability21_2:droid_module
+t_name = modifier_droid_ability21_2
+t_display = modifier_droid_ability21_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_security 5
+i_slot = 1
+////
+
+modifier_droid_ability22_1:droid_module
+t_name = modifier_droid_ability22_1
+t_display = modifier_droid_ability22_1
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_systems 5
+////
+
+modifier_droid_ability22_2:droid_module
+t_name = modifier_droid_ability22_2
+t_display = modifier_droid_ability22_2
+i_price = 0
+i_availability = 0
+l_base_bonuses = skill_systems 5
+i_slot = 1
+////
+

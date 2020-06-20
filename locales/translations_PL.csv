@@ -127,6 +127,7 @@ attrib_toughness;Twardoœæ
 attrib_willpower;Si³a Woli
 available_addon;Dodatek
 available_modification;Modyfikacja
+blades;Ostrza
 blaster;Blastery
 blaster_pistol;Pistolet
 bonuses;Bonusy
@@ -221,6 +222,7 @@ desc_ability_survival4;Pozwala na tworzenie materia³ów wybuchowych z powszechnie
 desc_ability_willpower1;Pozwala na przerzut testów opartych na Sile Woli
 desc_addon;desc_addon
 desc_armor;
+desc_blades;desc_melee_weapon
 desc_blaster;
 desc_blaster_pistol;desc_blaster_pistol
 desc_droid_item;
@@ -241,6 +243,8 @@ desc_ranged_weapon_modification;
 desc_trait_balanced;
 desc_trait_long;desc_trait_long
 desc_trait_short;
+desc_vibroblade;desc_melee_weapon
+desc_vibroblades;desc_melee_weapon
 desc_weapon;
 desc_weapon_modification;
 description;Opis
@@ -493,6 +497,7 @@ skill_systems;Systemy
 tooltip;PodpowiedŸ
 tooltip_addon;tooltip_addon
 tooltip_armor;
+tooltip_blades;tooltip_melee_weapon
 tooltip_blaster;
 tooltip_blaster_pistol;tooltip_blaster_pistol
 tooltip_droid_item;
@@ -513,6 +518,8 @@ tooltip_ranged_weapon_modification;
 tooltip_trait_balanced;
 tooltip_trait_long;tooltip_trait_long
 tooltip_trait_short;
+tooltip_vibroblade;tooltip_melee_weapon
+tooltip_vibroblades;tooltip_melee_weapon
 tooltip_weapon;
 tooltip_weapon_modification;
 trait;Cecha
@@ -616,6 +623,8 @@ ui_weapon_type;Typ
 ui_weapons;Broñ
 ui_weapons_add_button;Dodaj broñ
 ui_window_name;Karta postaci
+vibroblade;Wibromiecz
+vibroblades;Wibroostrza
 weapon;Broñ
 weapon_blaster;Blaster
 weapon_blaster_cannon;Dzia³o blasterowe

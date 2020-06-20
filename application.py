@@ -1,16 +1,11 @@
-# import os
 import sys
 from PyQt5.QtWidgets import QApplication
-# from PyQt5.QtCore import pyqtSignal
 
 import pickle
 from sheet import Character
 from window import MainWindow
-# from popups import ItemPopup
-# from item_classes import BaseObject #  Item, Weapon, Armor, ModifierItem
 
-# from layout_classes import ArmorView, ModifierItemView, WeaponView, AbilityView
-version = 0.96
+version = 0.98
 
 
 class Application:
@@ -48,6 +43,8 @@ class Application:
         # Register skills
         for skill in self.main_widget.skills_dict:
             skill_class = self.main_widget.skills_dict[skill]
+            if not self.sheet.is_robot and skill in self.sheet.naturals:
+                skill_class.set_natural(True)
             skill_class.skill_changed.connect(self.change_skill)
 
         # Register params
@@ -170,7 +167,8 @@ class Application:
 
     # Handle all scrolls items
     def equip_item(self, name, item, equip):
-        item.equipped_quantity = int(equip)
+        self.sheet.move_item(item, 1 if equip else -1)
+        # item.equipped_quantity = int(equip)
         self.update_form()
 
     def create_item(self, name, item):
