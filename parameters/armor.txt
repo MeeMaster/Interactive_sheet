@@ -1,41 +1,271 @@
-heavy_clothes:armor
-t_name = heavy_clothes
+armor_cloth:armor
+t_name = armor_cloth
+t_display = armor_cloth
+i_availability = 5
+////
+
+cloth_shirt:armor_cloth
+t_name = cloth_shirt
 i_base_armor_chest = 1
-i_base_armor_ll = 1
-i_base_armor_rl = 1
 i_base_armor_lh = 1
 i_base_armor_rh = 1
-t_tooltip = 
-t_description = 
-t_display = 
+i_price = 50
 ////
 
-lamellar_armor:armor
-t_name = lamellar_armor
-t_tooltip = 
-t_description = 
-t_display = 
+cloth_pants:armor_cloth
+t_name = cloth_shirt
+i_base_armor_ll = 1
+i_base_armor_rl = 1
+i_price = 50
 ////
 
-lamellar_legs:lamellar_armor
-t_name = lamellar_legs
+armor_tact_vest:armor
+t_name = armor_tact_vest
+t_display = armor_tact_vest
+i_price = 300
+i_availability = 5
+i_base_armor_chest = 1
+////
+
+armor_bh_armor:armor
+t_name = armor_bh_armor
+t_display = armor_bh_armor
+i_price = 2500
+i_availability = 2
+i_base_armor_chest = 2
+i_base_armor_head = 1
+i_base_armor_lh = 1
+i_base_armor_rh = 1
+i_base_armor_ll = 1
+i_base_armor_rl = 1
+////
+
+armor_ball:armor
+t_name = armor_ball
+t_display = armor_ball
+i_price = 500
+i_availability = 5
+////
+
+
+armor_ball_vest:armor_ball
+t_name = armor_ball_vest
+t_display = armor_ball_vest
+i_price = 500
+i_base_armor_chest = 1
+////
+
+armor_ball_helm:armor_ball
+t_name = armor_ball_helm
+t_display = armor_ball_helm
+i_price = 300
+i_base_armor_head = 1
+////
+
+armor_storm:armor
+t_name = armor_storm
+t_display = armor_storm
+i_availability = 1
+////
+
+armor_storm_vest:armor_storm
+t_name = armor_storm_vest
+t_display = armor_storm_vest
+i_price = 1000
+i_base_armor_chest = 2
+////
+
+armor_storm_rh:armor_storm
+t_name = armor_storm_rh
+t_display = armor_storm_rh
+i_price = 550
+i_base_armor_rh = 2
+////
+
+armor_storm_lh:armor_storm
+t_name = armor_storm_lh
+t_display = armor_storm_lh
+i_price = 550
+i_base_armor_lh = 2
+////
+
+armor_storm_legs:armor_storm
+t_name = armor_storm_legs
+t_display = armor_storm_legs
+i_price = 800
 i_base_armor_ll = 2
 i_base_armor_rl = 2
 ////
 
-lamellar_arms:lamellar_armor
-t_name = lamellar_arms
-i_base_armor_lh = 1
-i_base_armor_rh = 1
+armor_lamel_armor:armor
+t_name = armor_lamel_armor
+t_display = armor_lamel_armor
+i_price = 3500
+i_availability = 4
+i_base_armor_chest = 2
+i_base_armor_lh = 2
+i_base_armor_rh = 2
+i_base_armor_ll = 2
+i_base_armor_rl = 2
 ////
 
-lamellar_chest:lamellar_armor
-t_name = lamellar_chest
+armor_dust:armor
+t_name = armor_dust
+t_display = armor_dust
+i_availability = 4
+////
+
+armor_dust_vest:armor_dust
+t_name = armor_dust_vest
+t_display = armor_dust_vest
+i_price = 600
+i_base_armor_chest = 3
+////
+
+armor_dust_rh:armor_dust
+t_name = armor_dust_rh
+t_display = armor_dust_rh
+i_price = 300
+i_base_armor_rh = 3
+////
+
+armor_dust_lh:armor_dust
+t_name = armor_dust_lh
+t_display = armor_dust_lh
+i_price = 300
+i_base_armor_lh = 3
+////
+
+armor_dust_legs:armor_dust
+t_name = armor_dust_legs
+t_display = armor_dust_legs
+i_price = 400
+i_base_armor_ll = 3
+i_base_armor_rl = 3
+////
+
+armor_dupl:armor
+t_name = armor_dupl
+t_display = armor_dupl
+i_availability = 4
+////
+
+armor_dupl_vest:armor_dupl
+t_name = armor_dupl_vest
+t_display = armor_dupl_vest
+i_price = 1000
 i_base_armor_chest = 2
 ////
 
-lamellar_helm:lamellar_armor
-t_name = lamellar_helm
+armor_dupl_rh:armor_dupl
+t_name = armor_dupl_rh
+t_display = armor_dupl_rh
+i_price = 550
+i_base_armor_rh = 2
+////
+
+armor_dupl_lh:armor_dupl
+t_name = armor_dupl_lh
+t_display = armor_dupl_lh
+i_price = 550
+i_base_armor_lh = 2
+////
+
+armor_dupl_legs:armor_dupl
+t_name = armor_dupl_legs
+t_display = armor_dupl_legs
+i_price = 800
+i_base_armor_ll = 2
+i_base_armor_rl = 2
+////
+
+armor_dupl_helm:armor_dupl
+t_name = armor_dupl_helm
+t_display = armor_dupl_helm
+i_price = 1200
 i_base_armor_head = 2
 ////
 
+armor_duar:armor
+t_name = armor_duar
+t_display = armor_duar
+i_availability = 2
+////
+
+armor_duar_vest:armor_duar
+t_name = armor_duar_vest
+t_display = armor_duar_vest
+i_price = 1200
+i_base_armor_chest = 3
+////
+
+armor_duar_rh:armor_duar
+t_name = armor_duar_rh
+t_display = armor_duar_rh
+i_price = 500
+i_base_armor_rh = 3
+////
+
+armor_duar_lh:armor_duar
+t_name = armor_duar_lh
+t_display = armor_duar_lh
+i_price = 500
+i_base_armor_lh = 3
+////
+
+armor_duar_legs:armor_duar
+t_name = armor_duar_legs
+t_display = armor_duar_legs
+i_price = 700
+i_base_armor_ll = 3
+i_base_armor_rl = 3
+////
+
+armor_duar_helm:armor_duar
+t_name = armor_duar_helm
+t_display = armor_duar_helm
+i_price = 1500
+i_base_armor_head = 3
+////
+
+armor_besk:armor
+t_name = armor_besk
+t_display = armor_besk
+i_availability = 1
+////
+
+armor_besk_vest:armor_besk
+t_name = armor_besk_vest
+t_display = armor_besk_vest
+i_price = 12000
+i_base_armor_chest = 4
+////
+
+armor_besk_rh:armor_besk
+t_name = armor_besk_rh
+t_display = armor_besk_rh
+i_price = 6000
+i_base_armor_rh = 4
+////
+
+armor_besk_lh:armor_besk
+t_name = armor_besk_lh
+t_display = armor_besk_lh
+i_price = 6000
+i_base_armor_lh = 4
+////
+
+armor_besk_legs:armor_besk
+t_name = armor_besk_legs
+t_display = armor_besk_legs
+i_price = 9000
+i_base_armor_ll = 4
+i_base_armor_rl = 4
+////
+
+armor_besk_helm:armor_besk
+t_name = armor_besk_helm
+t_display = armor_besk_helm
+i_price = 13000
+i_base_armor_head = 4
+////

@@ -42,13 +42,12 @@ t_name = droid_other
 t_type = droid_other
 ////
 
-
 droid_brain_assasin:droid_brain
 t_name = droid_brain_assasin
 t_display = droid_brain_assasin
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 10,attrib_integrity 10,attrib_hacking 5
+l_base_bonuses = attrib_intelligence 10, attrib_integrity 10, attrib_hacking 5
 ////
 
 droid_brain_combat:droid_brain
@@ -56,7 +55,7 @@ t_name = droid_brain_combat
 t_display = droid_brain_combat
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 5,attrib_integrity 10
+l_base_bonuses = attrib_intelligence 5, attrib_integrity 10
 ////
 
 droid_brain_engineer:droid_brain
@@ -64,7 +63,7 @@ t_name = droid_brain_engineer
 t_display = droid_brain_engineer
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 15,attrib_integrity 10,attrib_hacking 5
+l_base_bonuses = attrib_intelligence 15, attrib_integrity 10, attrib_hacking 5
 ////
 
 droid_brain_medical:droid_brain
@@ -72,7 +71,7 @@ t_name = droid_brain_medical
 t_display = droid_brain_medical
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 20,attrib_integrity 10
+l_base_bonuses = attrib_intelligence 20, attrib_integrity 10
 ////
 
 droid_brain_worker:droid_brain
@@ -80,7 +79,7 @@ t_name = droid_brain_worker
 t_display = droid_brain_worker
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 5,attrib_integrity 20
+l_base_bonuses = attrib_intelligence 5, attrib_integrity 20
 ////
 
 droid_brain_protocol:droid_brain
@@ -88,7 +87,7 @@ t_name = droid_brain_protocol
 t_display = droid_brain_protocol
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 15,attrib_integrity 15
+l_base_bonuses = attrib_intelligence 15, attrib_integrity 15
 ////
 
 droid_brain_pilot:droid_brain
@@ -96,7 +95,7 @@ t_name = droid_brain_pilot
 t_display = droid_brain_pilot
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 10,attrib_integrity 10
+l_base_bonuses = attrib_intelligence 10, attrib_integrity 10
 ////
 
 droid_brain_combatpilot:droid_brain
@@ -104,7 +103,7 @@ t_name = droid_brain_combatpilot
 t_display = droid_brain_combatpilot
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 10,attrib_integrity 10
+l_base_bonuses = attrib_intelligence 10, attrib_integrity 10
 ////
 
 droid_brain_astromech:droid_brain
@@ -112,7 +111,7 @@ t_name = droid_brain_astromech
 t_display = droid_brain_astromech
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 15,attrib_integrity 10,attrib_hacking 10
+l_base_bonuses = attrib_intelligence 15, attrib_integrity 10, attrib_hacking 10
 ////
 
 droid_brain_slicer:droid_brain
@@ -120,7 +119,7 @@ t_name = droid_brain_slicer
 t_display = droid_brain_slicer
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 15,attrib_integrity 15,attrib_hacking 15
+l_base_bonuses = attrib_intelligence 15, attrib_integrity 15, attrib_hacking 15
 ////
 
 droid_brain_gunner:droid_brain
@@ -128,7 +127,7 @@ t_name = droid_brain_gunner
 t_display = droid_brain_gunner
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_intelligence 5,attrib_integrity 10
+l_base_bonuses = attrib_intelligence 5, attrib_integrity 10
 ////
 
 droid_head_small:droid_head
@@ -160,7 +159,7 @@ t_name = droid_head_compact
 t_display = droid_head_compact
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_toughness 3,attrib_agility -5
+l_base_bonuses = attrib_toughness 3, attrib_agility -5
 ////
 
 droid_humanoidchest_small:droid_chest
@@ -168,7 +167,7 @@ t_name = droid_humanoidchest_small
 t_display = droid_humanoidchest_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 1,attrib_agility 7,attrib_toughness 4
+l_base_bonuses = attrib_strength 1, attrib_agility 7, attrib_toughness 4
 ////
 
 droid_humanoidchest_medium:droid_chest
@@ -176,7 +175,7 @@ t_name = droid_humanoidchest_medium
 t_display = droid_humanoidchest_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 3,attrib_agility 5,attrib_toughness 6
+l_base_bonuses = attrib_strength 3, attrib_agility 5, attrib_toughness 6
 ////
 
 droid_humanoidchest_large:droid_chest
@@ -184,7 +183,7 @@ t_name = droid_humanoidchest_large
 t_display = droid_humanoidchest_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 5,attrib_agility 4,attrib_toughness 8
+l_base_bonuses = attrib_strength 5, attrib_agility 4, attrib_toughness 8
 ////
 
 droid_boxchest_small:droid_chest
@@ -192,7 +191,7 @@ t_name = droid_boxchest_small
 t_display = droid_boxchest_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 2,attrib_toughness 5
+l_base_bonuses = attrib_strength 2, attrib_toughness 5
 ////
 
 droid_boxchest_medium:droid_chest
@@ -200,7 +199,7 @@ t_name = droid_boxchest_medium
 t_display = droid_boxchest_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 4,attrib_toughness 7
+l_base_bonuses = attrib_strength 4, attrib_toughness 7
 ////
 
 droid_boxchest_large:droid_chest
@@ -208,7 +207,7 @@ t_name = droid_boxchest_large
 t_display = droid_boxchest_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 6,attrib_toughness 10
+l_base_bonuses = attrib_strength 6, attrib_toughness 10
 ////
 
 droid_barrelchest_small:droid_chest
@@ -216,7 +215,7 @@ t_name = droid_barrelchest_small
 t_display = droid_barrelchest_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_agility 9,attrib_toughness 4
+l_base_bonuses = attrib_agility 9, attrib_toughness 4
 ////
 
 droid_barrelchest_medium:droid_chest
@@ -224,7 +223,7 @@ t_name = droid_barrelchest_medium
 t_display = droid_barrelchest_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_agility 8,attrib_toughness 7
+l_base_bonuses = attrib_agility 8, attrib_toughness 7
 ////
 
 droid_barrelchest_large:droid_chest
@@ -232,7 +231,7 @@ t_name = droid_barrelchest_large
 t_display = droid_barrelchest_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 2,attrib_agility 6,attrib_toughness 10
+l_base_bonuses = attrib_strength 2, attrib_agility 6, attrib_toughness 10
 ////
 
 droid_manipulatorarms_small:droid_arms
@@ -240,7 +239,7 @@ t_name = droid_manipulatorarms_small
 t_display = droid_manipulatorarms_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 2,attrib_agility 2,attrib_toughness 1
+l_base_bonuses = attrib_strength 2, attrib_agility 2, attrib_toughness 1
 ////
 
 droid_manipulatorarms_medium:droid_arms
@@ -248,7 +247,7 @@ t_name = droid_manipulatorarms_medium
 t_display = droid_manipulatorarms_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 3,attrib_agility 5,attrib_toughness 3
+l_base_bonuses = attrib_strength 3, attrib_agility 5, attrib_toughness 3
 ////
 
 droid_manipulatorarms_large:droid_arms
@@ -256,7 +255,7 @@ t_name = droid_manipulatorarms_large
 t_display = droid_manipulatorarms_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 5,attrib_agility 5,attrib_toughness 5
+l_base_bonuses = attrib_strength 5, attrib_agility 5, attrib_toughness 5
 ////
 
 droid_weaponarms_small:droid_arms
@@ -264,7 +263,7 @@ t_name = droid_weaponarms_small
 t_display = droid_weaponarms_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 1,attrib_agility 2,attrib_toughness 0
+l_base_bonuses = attrib_strength 1, attrib_agility 2, attrib_toughness 0
 ////
 
 droid_weaponarms_medium:droid_arms
@@ -272,7 +271,7 @@ t_name = droid_weaponarms_medium
 t_display = droid_weaponarms_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 2,attrib_agility 3,attrib_toughness 1
+l_base_bonuses = attrib_strength 2, attrib_agility 3, attrib_toughness 1
 ////
 
 droid_weaponarms_large:droid_arms
@@ -280,7 +279,7 @@ t_name = droid_weaponarms_large
 t_display = droid_weaponarms_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 2,attrib_agility 4,attrib_toughness 2
+l_base_bonuses = attrib_strength 2, attrib_agility 4, attrib_toughness 2
 ////
 
 droid_heavydutyarms_medium:droid_arms
@@ -288,7 +287,7 @@ t_name = droid_heavydutyarms_medium
 t_display = droid_heavydutyarms_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 5,attrib_agility 1,attrib_toughness 5
+l_base_bonuses = attrib_strength 5, attrib_agility 1, attrib_toughness 5
 ////
 
 droid_heavydutyarms_large:droid_arms
@@ -296,7 +295,7 @@ t_name = droid_heavydutyarms_large
 t_display = droid_heavydutyarms_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 10,attrib_toughness 10
+l_base_bonuses = attrib_strength 10, attrib_toughness 10
 ////
 
 droid_humanoidlegs_small:droid_legs
@@ -304,7 +303,7 @@ t_name = droid_humanoidlegs_small
 t_display = droid_humanoidlegs_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 2,attrib_agility 10,attrib_toughness 5
+l_base_bonuses = attrib_strength 2, attrib_agility 10, attrib_toughness 5
 ////
 
 droid_humanoidlegs_medium:droid_legs
@@ -312,7 +311,7 @@ t_name = droid_humanoidlegs_medium
 t_display = droid_humanoidlegs_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 7,attrib_agility 5,attrib_toughness 7
+l_base_bonuses = attrib_strength 7, attrib_agility 5, attrib_toughness 7
 ////
 
 droid_humanoidlegs_large:droid_legs
@@ -320,7 +319,7 @@ t_name = droid_humanoidlegs_large
 t_display = droid_humanoidlegs_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 10,attrib_agility 2,attrib_toughness 10
+l_base_bonuses = attrib_strength 10, attrib_agility 2, attrib_toughness 10
 ////
 
 droid_rollerlegs_small:droid_legs
@@ -328,7 +327,7 @@ t_name = droid_rollerlegs_small
 t_display = droid_rollerlegs_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 4,attrib_agility 5,attrib_toughness 7
+l_base_bonuses = attrib_strength 4, attrib_agility 5, attrib_toughness 7
 ////
 
 droid_rollerlegs_medium:droid_legs
@@ -336,7 +335,7 @@ t_name = droid_rollerlegs_medium
 t_display = droid_rollerlegs_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 10,attrib_agility 3,attrib_toughness 10
+l_base_bonuses = attrib_strength 10, attrib_agility 3, attrib_toughness 10
 ////
 
 droid_rollerlegs_large:droid_legs
@@ -344,7 +343,7 @@ t_name = droid_rollerlegs_large
 t_display = droid_rollerlegs_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 15,attrib_agility 1,attrib_toughness 15
+l_base_bonuses = attrib_strength 15, attrib_agility 1, attrib_toughness 15
 ////
 
 droid_hoverpad_small:droid_legs
@@ -352,7 +351,7 @@ t_name = droid_hoverpad_small
 t_display = droid_hoverpad_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_agility 15,attrib_toughness 5
+l_base_bonuses = attrib_agility 15, attrib_toughness 5
 ////
 
 droid_hoverpad_medium:droid_legs
@@ -360,7 +359,7 @@ t_name = droid_hoverpad_medium
 t_display = droid_hoverpad_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_agility 12,attrib_toughness 10
+l_base_bonuses = attrib_agility 12, attrib_toughness 10
 ////
 
 droid_spiderlegs_small:droid_legs
@@ -368,7 +367,7 @@ t_name = droid_spiderlegs_small
 t_display = droid_spiderlegs_small
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 1,attrib_agility 15,attrib_toughness 3
+l_base_bonuses = attrib_strength 1, attrib_agility 15, attrib_toughness 3
 ////
 
 droid_spiderlegs_medium:droid_legs
@@ -376,7 +375,7 @@ t_name = droid_spiderlegs_medium
 t_display = droid_spiderlegs_medium
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 3,attrib_agility 12,attrib_toughness 5
+l_base_bonuses = attrib_strength 3, attrib_agility 12, attrib_toughness 5
 ////
 
 droid_spiderlegs_large:droid_legs
@@ -384,7 +383,7 @@ t_name = droid_spiderlegs_large
 t_display = droid_spiderlegs_large
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_strength 5,attrib_agility 10,attrib_toughness 7
+l_base_bonuses = attrib_strength 5, attrib_agility 10, attrib_toughness 7
 ////
 
 droid_redundancy_circuits:droid_other
@@ -512,7 +511,7 @@ t_name = droid_repurposed_slicer_droid_brain
 t_display = droid_repurposed_slicer_droid_brain
 i_price = 0
 i_availability = 0
-l_base_bonuses = attrib_hacking 15,attrib_integrity -10
+l_base_bonuses = attrib_hacking 15, attrib_integrity -10
 ////
 
 droid_isolated_encryption_system:droid_other

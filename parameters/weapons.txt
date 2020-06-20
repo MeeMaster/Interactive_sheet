@@ -6,6 +6,14 @@ t_description = desc_ranged_weapon_addon
 t_display = ranged_weapon_addon
 ////
 
+ranged_weapon_addon:addon
+t_name = ranged_weapon_addon
+t_type = ranged_weapon_addon
+t_tooltip = tooltip_ranged_weapon_addon
+t_description = desc_ranged_weapon_addon
+t_display = ranged_weapon_addon
+////
+
 blaster:ranged_weapon
 t_name = blaster
 t_damage_type = damage_e
@@ -31,12 +39,16 @@ i_power_magazine = 5
 i_base_max_magazine = 5
 i_base_shot_cost = 1
 i_base_price = 600
-l_trait = trait_small, trait_balanced, trait_short
+l_trait = 
 l_fire_mode = fire_single
 t_tooltip = tooltip_holdout_blaster
 t_description = desc_holdout_blaster
 t_display = holdout_blaster
 f_base_weight = 0.0
+t_max_magazine = 5
+t_shot_cost = 1
+t_damage = 5
+t_price = 600
 ////
 
 blaster_rifle:blaster
@@ -68,14 +80,6 @@ t_description =
 t_display = 
 ////
 
-ranged_weapon_addon:addon
-t_name = ranged_weapon_addon
-t_type = ranged_weapon_addon
-t_tooltip = tooltip_ranged_weapon_addon
-t_description = desc_ranged_weapon_addon
-t_display = ranged_weapon_addon
-////
-
 blaster_pistol:blaster
 t_name = blaster_pistol
 t_tooltip = tooltip_blaster_pistol
@@ -87,7 +91,6 @@ l_modification = large_mag
 l_available_modification = large_mag
 f_base_weight = 0.0
 i_base_price = 0
-l_fire_mode = fire_multi
 l_trait = 
 t_max_magazine = 200
 t_shot_cost = 2

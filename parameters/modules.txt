@@ -399,3 +399,683 @@ l_base_bonuses = skill_systems 5
 i_slot = 1
 ////
 
+implants:modifier_item
+t_name = implants
+t_type = implant
+t_tooltip = tooltip_implants
+t_description = desc_implants
+t_display = implants
+////
+
+bionics:modifier_item
+t_name = bionics
+t_type = bionic
+t_tooltip = tooltip_bionics
+t_description = desc_bionics
+t_display = bionics
+////
+
+bionic_leg:bionics
+t_name = bionic_leg
+t_tooltip = tooltip_bionic_leg
+t_description = desc_bionic_leg
+t_display = bionic_leg
+////
+
+bionic_arm:bionics
+t_name = bionic_arm
+t_tooltip = tooltip_bionic_arm
+t_description = desc_bionic_arm
+t_display = bionic_arm
+////
+
+bionic_heart:bionics
+t_name = bionic_heart
+t_tooltip = tooltip_bionic_heart
+t_description = desc_bionic_heart
+t_display = bionic_heart
+////
+
+bionic_lung:bionics
+t_name = bionic_lung
+t_tooltip = tooltip_bionic_lung
+t_description = desc_bionic_lung
+t_display = bionic_lung
+////
+
+bionic_internal:bionics
+t_name = bionic_internal
+t_tooltip = tooltip_bionic_internal
+t_description = desc_bionic_internal
+t_display = bionic_internal
+////
+
+electonic_eye:bionics
+t_name = electonic_eye
+t_tooltip = tooltip_electonic_eye
+t_description = desc_electonic_eye
+t_display = electonic_eye
+////
+
+artificial_gill:bionics
+t_name = artificial_gill
+t_tooltip = tooltip_artificial_gill
+t_description = desc_artificial_gill
+t_display = artificial_gill
+i_base_price = 3500
+t_price = 3500
+i_availability = 3
+////
+
+attani_implant:bionics
+t_name = attani_implant
+t_tooltip = tooltip_attani_implant
+t_description = desc_attani_implant
+t_display = attani_implant
+i_availability = 0
+////
+
+bacta_implant:bionics
+t_name = bacta_implant
+t_tooltip = tooltip_bacta_implant
+t_description = desc_bacta_implant
+t_display = bacta_implant
+i_base_price = 25000
+i_availability = 1
+////
+
+biocomputer:bionics
+t_name = biocomputer
+t_tooltip = tooltip_biocomputer
+t_description = desc_biocomputer
+t_display = biocomputer
+i_base_price = 15000
+i_availability = 1
+t_price = 15000
+l_base_bonuses = attrib_intelligence 8
+l_bonuses = attrib_intelligence 8
+////
+
+avionics_interface:bionics
+t_name = avionics_interface
+t_tooltip = tooltip_avionics_interface
+t_description = desc_avionics_interface
+t_display = avionics_interface
+i_base_price = 12000
+i_availability = 3
+t_price = 12000
+l_base_bonuses = skill_pilot_spaceships 5, skill_pilot_speeders 5
+l_bonuses = skill_pilot_spaceships 5, skill_pilot_speeders 5
+////
+
+memory_core:bionics
+t_name = memory_core
+t_tooltip = tooltip_memory_core
+t_description = desc_memory_core
+t_display = memory_core
+i_base_price = 25000
+i_availability = 1
+////
+
+platinum_nails:bionics
+t_name = platinum_nails
+t_tooltip = tooltip_platinum_nails
+t_description = desc_platinum_nails
+t_display = platinum_nails
+i_base_price = 3500
+i_availability = 1
+////
+
+ear_implant:bionics
+t_name = ear_implant
+t_tooltip = tooltip_ear_implant
+t_description = desc_ear_implant
+t_display = ear_implant
+i_base_price = 6000
+i_availability = 3
+////
+
+sensory_pack:bionics
+t_name = sensory_pack
+t_tooltip = tooltip_sensory_pack
+t_description = desc_sensory_pack
+t_display = sensory_pack
+i_base_price = 6000
+i_availability = 3
+t_price = 6000
+l_base_bonuses = skill_perception 10
+l_bonuses = skill_perception 10
+////
+
+micro_motivator:bionics
+t_name = micro_motivator
+t_price = 1000
+t_tooltip = tooltip_micro_motivator
+t_description = desc_micro_motivator
+t_display = micro_motivator
+i_base_price = 1000
+i_availability = 3
+l_base_bonuses = skill_athletics 3
+l_bonuses = skill_athletics 3
+////
+
+psicom:bionics
+t_name = psicom
+t_tooltip = tooltip_psicom
+t_description = desc_psicom
+t_display = psicom
+i_base_price = 30000
+i_availability = 1
+////
+
+slave_implant:bionics
+t_name = slave_implant
+t_tooltip = tooltip_slave_implant
+t_description = desc_slave_implant
+t_display = slave_implant
+i_base_price = 350
+i_availability = 3
+////
+
+new_item_12:implants
+t_name = new_item_12
+i_price = 0
+f_weight = 0.0
+////
+
+implant_perc:implants
+t_name = implant_perc
+t_tooltip = tooltip_implant_perc
+t_description = desc_implant_perc
+t_display = implant_perc
+i_availability = 2
+l_base_bonuses = skill_perception 10
+l_bonuses = skill_perception 10
+////
+
+implant_agi:implants
+t_name = implant_agi
+t_tooltip = tooltip_implant_agi
+t_description = desc_implant_agi
+t_display = implant_agi
+i_availability = 2
+l_base_bonuses = attrib_agility 5
+l_bonuses = attrib_agility 5
+////
+
+implant_str:implants
+t_name = implant_str
+t_tooltip = tooltip_implant_str
+t_description = desc_implant_str
+t_display = implant_str
+i_availability = 2
+l_base_bonuses = attrib_strength 5
+l_bonuses = attrib_strength 5
+////
+
+implant_cardio:implants
+t_name = implant_cardio
+t_tooltip = tooltip_implant_cardio
+t_description = desc_implant_cardio
+t_display = implant_cardio
+i_availability = 2
+l_base_bonuses = skill_dexterity 2, attrib_toughness 2, skill_athletics 5
+l_bonuses = skill_dexterity 2, attrib_toughness 2, skill_athletics 5
+////
+
+implant_tough:implants
+t_name = implant_tough
+t_tooltip = tooltip_implant_tough
+t_description = desc_implant_tough
+t_display = implant_tough
+i_availability = 2
+l_base_bonuses = attrib_toughness 5
+l_bonuses = attrib_toughness 5
+////
+
+implant_reflex:implants
+t_name = implant_reflex
+t_tooltip = tooltip_implant_reflex
+t_description = desc_implant_reflex
+t_display = implant_reflex
+i_availability = 2
+l_base_bonuses = skill_dodge 10
+l_bonuses = skill_dodge 10
+////
+
+implant_resist:implants
+t_name = implant_resist
+t_tooltip = tooltip_implant_resist
+t_description = desc_implant_resist
+t_display = implant_resist
+i_availability = 2
+////
+
+implant_battle:implants
+t_name = implant_battle
+t_tooltip = tooltip_implant_battle
+t_description = desc_implant_battle
+t_display = implant_battle
+i_availability = 1
+l_base_bonuses = skill_melee_unarmed 5, skill_ranged_stationary 5, skill_ranged_light 5, skill_ranged_heavy 5, skill_melee_armed 5
+l_bonuses = skill_melee_unarmed 5, skill_ranged_stationary 5, skill_ranged_light 5, skill_ranged_heavy 5, skill_melee_armed 5
+////
+
+implent_cha:implants
+t_name = implent_cha
+t_tooltip = tooltip_implent_cha
+t_description = desc_implent_cha
+t_display = implent_cha
+i_availability = 2
+l_base_bonuses = attrib_charisma 10
+l_bonuses = attrib_charisma 10
+////
+
+implant_int:implants
+t_name = implant_int
+t_tooltip = tooltip_implant_int
+t_description = desc_implant_int
+t_display = implant_int
+i_availability = 2
+l_base_bonuses = attrib_intelligence 10
+l_bonuses = attrib_intelligence 10
+////
+
+implane_regen:implants
+t_name = implane_regen
+t_tooltip = tooltip_implane_regen
+t_description = desc_implane_regen
+t_display = implane_regen
+i_base_price = 35000
+i_availability = 1
+////
+
+implant_lornan:implants
+t_name = implant_lornan
+t_tooltip = tooltip_implant_lornan
+t_description = desc_implant_lornan
+t_display = implant_lornan
+i_base_price = 12000
+i_availability = 1
+////
+
+bionic_leg_lq:bionic_leg
+t_name = bionic_leg_lq
+t_tooltip = tooltip_bionic_leg_lq
+t_description = desc_bionic_leg_lq
+t_display = bionic_leg_lq
+i_base_price = 1000
+i_availability = 3
+l_base_bonuses = skill_dexterity -10
+l_bonuses = skill_dexterity -10
+////
+
+bionic_leg_nq:bionic_leg
+t_name = bionic_leg_nq
+t_tooltip = tooltip_bionic_leg_nq
+t_description = desc_bionic_leg_nq
+t_display = bionic_leg_nq
+i_availability = 3
+////
+
+bionic_leq_hq:bionic_leg
+t_name = bionic_leq_hq
+t_tooltip = tooltip_bionic_leq_hq
+t_description = desc_bionic_leq_hq
+t_display = bionic_leq_hq
+i_base_price = 5000
+i_availability = 1
+l_base_bonuses = attrib_toughness 5
+l_bonuses = attrib_toughness 5
+////
+
+bionic_arm_lq:bionic_arm
+t_name = bionic_arm_lq
+t_tooltip = tooltip_bionic_arm_lq
+t_description = desc_bionic_arm_lq
+t_display = bionic_arm_lq
+i_base_price = 2000
+i_availability = 3
+l_base_bonuses = attrib_agility -10
+l_bonuses = attrib_agility -10
+////
+
+bionic_arm_nq:bionic_arm
+t_name = bionic_arm_nq
+t_tooltip = tooltip_bionic_arm_nq
+t_description = desc_bionic_arm_nq
+t_display = bionic_arm_nq
+i_base_price = 5000
+i_availability = 2
+l_base_bonuses = attrib_strength 5
+l_bonuses = attrib_strength 5
+////
+
+bionic_arm_hq:bionic_arm
+t_name = bionic_arm_hq
+t_tooltip = tooltip_bionic_arm_hq
+t_description = desc_bionic_arm_hq
+t_display = bionic_arm_hq
+i_base_price = 15000
+i_availability = 1
+l_base_bonuses = attrib_strength 10
+l_bonuses = attrib_strength 10
+////
+
+bionic_heart_nq:bionic_heart
+t_name = bionic_heart_nq
+t_tooltip = tooltip_bionic_heart_nq
+t_description = desc_bionic_heart_nq
+t_display = bionic_heart_nq
+i_base_price = 15000
+i_availability = 2
+l_base_bonuses = attrib_toughness 1
+l_bonuses = attrib_toughness 1
+////
+
+bionic_heart_hq:bionic_heart
+t_name = bionic_heart_hq
+t_tooltip = tooltip_bionic_heart_hq
+t_description = desc_bionic_heart_hq
+t_display = bionic_heart_hq
+i_base_price = 30000
+t_price = 30000
+i_availability = 1
+l_base_bonuses = skill_resistance 5, skill_athletics 5, attrib_toughness 1
+l_bonuses = skill_resistance 5, skill_athletics 5, attrib_toughness 1
+////
+
+bionic_lung_hq:bionic_lung
+t_name = bionic_lung_hq
+t_tooltip = tooltip_bionic_lung_hq
+t_description = desc_bionic_lung_hq
+t_display = bionic_lung_hq
+i_base_price = 25000
+i_availability = 1
+l_base_bonuses = attrib_toughness 1, skill_resistance 5
+l_bonuses = attrib_toughness 1, skill_resistance 5
+t_price = 25000
+////
+
+bionic_internal_nq:bionic_internal
+t_name = bionic_internal_nq
+t_tooltip = tooltip_bionic_internal_nq
+t_description = desc_bionic_internal_nq
+t_display = bionic_internal_nq
+i_base_price = 5000
+i_availability = 2
+l_base_bonuses = attrib_toughness 1
+l_bonuses = attrib_toughness 1
+t_price = 5000
+////
+
+bionic_internal_hq:bionic_internal
+t_name = bionic_internal_hq
+t_tooltip = tooltip_bionic_internal_hq
+t_description = desc_bionic_internal_hq
+t_display = bionic_internal_hq
+i_base_price = 15000
+i_availability = 1
+l_base_bonuses = skill_resistance 5, attrib_toughness 1
+l_bonuses = skill_resistance 5, attrib_toughness 1
+////
+
+electronic_eye_lq:electonic_eye
+t_name = electronic_eye_lq
+t_tooltip = tooltip_electronic_eye_lq
+t_description = desc_electronic_eye_lq
+t_display = electronic_eye_lq
+i_base_price = 1500
+i_availability = 3
+l_base_bonuses = skill_perception -5
+l_bonuses = skill_perception -5
+////
+
+electronic_eye_nq:electonic_eye
+t_name = electronic_eye_nq
+t_tooltip = tooltip_electronic_eye_nq
+t_description = desc_electronic_eye_nq
+t_display = electronic_eye_nq
+i_base_price = 3500
+i_availability = 2
+////
+
+electronic_eye_hq:electonic_eye
+t_name = electronic_eye_hq
+t_tooltip = tooltip_electronic_eye_hq
+t_description = desc_electronic_eye_hq
+t_display = electronic_eye_hq
+i_base_price = 10000
+i_availability = 1
+l_base_bonuses = skill_perception 5
+l_bonuses = skill_perception 5
+////
+
+appraising_eye:electonic_eye
+t_name = appraising_eye
+t_tooltip = tooltip_appraising_eye
+t_description = desc_appraising_eye
+t_display = appraising_eye
+i_base_price = 15000
+i_availability = 1
+////
+
+battle_eye:electonic_eye
+t_name = battle_eye
+t_tooltip = tooltip_battle_eye
+t_description = desc_battle_eye
+t_display = battle_eye
+i_base_price = 30000
+i_availability = 1
+l_base_bonuses = skill_ranged_light 10, skill_ranged_heavy 10
+l_bonuses = skill_ranged_light 10, skill_ranged_heavy 10
+////
+
+implant_perc_nq:implant_perc
+t_name = implant_perc_nq
+t_tooltip = tooltip_implant_perc_nq
+t_description = desc_implant_perc_nq
+t_display = implant_perc_nq
+l_base_bonuses = skill_perception 10
+l_bonuses = skill_perception 10
+i_base_price = 6000
+////
+
+implant_perc_hq:implant_perc
+t_name = implant_perc_hq
+t_tooltip = tooltip_implant_perc_hq
+t_description = desc_implant_perc_hq
+t_display = implant_perc_hq
+i_availability = 1
+l_base_bonuses = skill_perception 15
+l_bonuses = skill_perception 15
+i_base_price = 15000
+////
+
+implant_agi_nq:implant_agi
+t_name = implant_agi_nq
+t_tooltip = tooltip_implant_agi_nq
+t_description = desc_implant_agi_nq
+t_display = implant_agi_nq
+l_base_bonuses = attrib_agility 5
+l_bonuses = attrib_agility 5
+i_base_price = 6000
+////
+
+implant_agi_hq:implant_agi
+t_name = implant_agi_hq
+l_base_bonuses = attrib_agility 10
+l_bonuses = attrib_agility 10
+t_tooltip = tooltip_implant_agi_hq
+t_description = desc_implant_agi_hq
+t_display = implant_agi_hq
+i_availability = 1
+i_base_price = 15000
+////
+
+implant_str_nq:implant_str
+t_name = implant_str_nq
+t_tooltip = tooltip_implant_str_nq
+t_description = desc_implant_str_nq
+t_display = implant_str_nq
+l_base_bonuses = attrib_strength 5
+l_bonuses = attrib_strength 5
+i_base_price = 6000
+////
+
+implant_str_hq:implant_str
+t_name = implant_str_hq
+t_tooltip = tooltip_implant_str_hq
+t_description = desc_implant_str_hq
+t_display = implant_str_hq
+i_availability = 1
+l_base_bonuses = attrib_strength 10
+l_bonuses = attrib_strength 10
+i_base_price = 15000
+////
+
+implant_cardio_nq:implant_cardio
+t_name = implant_cardio_nq
+t_tooltip = tooltip_implant_cardio_nq
+t_description = desc_implant_cardio_nq
+t_display = implant_cardio_nq
+l_base_bonuses = skill_athletics 5, attrib_toughness 2, skill_dexterity 2
+l_bonuses = skill_athletics 5, attrib_toughness 2, skill_dexterity 2
+i_base_price = 7000
+////
+
+implant_cardio_hq:implant_cardio
+t_name = implant_cardio_hq
+l_base_bonuses = skill_athletics 10, skill_dexterity 5, attrib_toughness 5
+l_bonuses = skill_athletics 10, skill_dexterity 5, attrib_toughness 5
+t_tooltip = tooltip_implant_cardio_hq
+t_description = desc_implant_cardio_hq
+t_display = implant_cardio_hq
+i_availability = 1
+i_base_price = 18000
+////
+
+implant_tough_nq:implant_tough
+t_name = implant_tough_nq
+t_tooltip = tooltip_implant_tough_nq
+t_description = desc_implant_tough_nq
+t_display = implant_tough_nq
+l_base_bonuses = attrib_toughness 5
+l_bonuses = attrib_toughness 5
+i_base_price = 6000
+////
+
+implant_tough_hq:implant_tough
+t_name = implant_tough_hq
+t_tooltip = tooltip_implant_tough_hq
+t_description = desc_implant_tough_hq
+t_display = implant_tough_hq
+i_availability = 1
+l_base_bonuses = attrib_toughness 10
+l_bonuses = attrib_toughness 10
+i_base_price = 15000
+////
+
+implant_reflex_nq:implant_reflex
+t_name = implant_reflex_nq
+t_tooltip = tooltip_implant_reflex_nq
+t_description = desc_implant_reflex_nq
+t_display = implant_reflex_nq
+l_base_bonuses = skill_dodge 10
+l_bonuses = skill_dodge 10
+i_base_price = 7000
+////
+
+implant_reflex_hq:implant_reflex
+t_name = implant_reflex_hq
+t_tooltip = tooltip_implant_reflex_hq
+t_description = desc_implant_reflex_hq
+t_display = implant_reflex_hq
+l_base_bonuses = skill_dodge 15
+l_bonuses = skill_dodge 15
+////
+
+implant_resist_nq:implant_resist
+t_name = implant_resist_nq
+t_tooltip = tooltip_implant_resist_nq
+t_description = desc_implant_resist_nq
+t_display = implant_resist_nq
+i_base_price = 7000
+t_price = 7000
+l_base_bonuses = skill_resistance 5
+l_bonuses = skill_resistance 5
+////
+
+implant_resist_hq:implant_resist
+t_name = implant_resist_hq
+t_tooltip = tooltip_implant_resist_hq
+t_description = desc_implant_resist_hq
+t_display = implant_resist_hq
+i_base_price = 18000
+t_price = 18000
+l_base_bonuses = skill_resistance 10
+l_bonuses = skill_resistance 10
+////
+
+implant_battle_nq:implant_battle
+t_name = implant_battle_nq
+t_tooltip = tooltip_implant_battle_nq
+t_description = desc_implant_battle_nq
+t_display = implant_battle_nq
+l_base_bonuses = skill_melee_armed 5, skill_ranged_heavy 5, skill_ranged_light 5, skill_ranged_stationary 5, skill_melee_unarmed 5
+l_bonuses = skill_melee_armed 5, skill_ranged_heavy 5, skill_ranged_light 5, skill_ranged_stationary 5, skill_melee_unarmed 5
+i_base_price = 10000
+////
+
+implant_battle_hq:implant_battle
+t_name = implant_battle_hq
+t_tooltip = tooltip_implant_battle_hq
+t_description = desc_implant_battle_hq
+t_display = implant_battle_hq
+l_base_bonuses = skill_melee_unarmed 10, skill_ranged_stationary 10, skill_ranged_light 10, skill_ranged_heavy 10, skill_melee_armed 10
+l_bonuses = skill_melee_unarmed 10, skill_ranged_stationary 10, skill_ranged_light 10, skill_ranged_heavy 10, skill_melee_armed 10
+i_base_price = 25000
+////
+
+implent_cha_nq:implent_cha
+t_name = implent_cha_nq
+t_tooltip = tooltip_implent_cha_nq
+t_description = desc_implent_cha_nq
+t_display = implent_cha_nq
+l_base_bonuses = attrib_charisma 10
+l_bonuses = attrib_charisma 10
+i_base_price = 8000
+////
+
+implent_cha_hq:implent_cha
+t_name = implent_cha_hq
+t_tooltip = tooltip_implent_cha_hq
+t_description = desc_implent_cha_hq
+t_display = implent_cha_hq
+i_availability = 1
+l_base_bonuses = attrib_charisma 15
+l_bonuses = attrib_charisma 15
+i_base_price = 15000
+////
+
+implant_int_nq:implant_int
+t_name = implant_int_nq
+t_tooltip = tooltip_implant_int_nq
+t_description = desc_implant_int_nq
+t_display = implant_int_nq
+l_base_bonuses = attrib_intelligence 10
+l_bonuses = attrib_intelligence 10
+i_base_price = 10000
+////
+
+implant_int_hq:implant_int
+t_name = implant_int_hq
+t_tooltip = tooltip_implant_int_hq
+t_description = desc_implant_int_hq
+t_display = implant_int_hq
+i_availability = 1
+l_base_bonuses = attrib_intelligence 15
+l_bonuses = attrib_intelligence 15
+i_base_price = 25000
+////
+

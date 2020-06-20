@@ -543,11 +543,11 @@ class ItemListPopup(BasePopup):
         self.full_data_dict = dict(get_all_data())
 
     def add_item_field(self):
-        new_name = "new_item"
+        new_name = self.current_item_data["name"]
         index = 0
         while new_name in self.full_data_dict:
             index += 1
-            new_name = "new_item_{}".format(index)
+            new_name = self.current_item_data["name"] + "_{}".format(index)
         self.full_data_dict[new_name] = duplicate_dict(self.current_item_data)
         self.inheritance_dict[new_name] = {"name": new_name, }
         self.full_data_dict[new_name]["parent"] = self.current_item_data["name"]

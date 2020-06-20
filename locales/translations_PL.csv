@@ -82,6 +82,7 @@ ability_survival4;Partyzant
 ability_willpower1;¯elazna wola
 addon;Dodatki
 ap;Przebicie pancerza
+appraising_eye;Oceniaj¹ce oko
 armor;Pancerz
 armor_ball_helm;He³m balistyczny
 armor_ball_vest;Kamizelka balistyczna
@@ -117,6 +118,8 @@ armor_rh;Prawa rêka
 armor_rl;Prawa noga
 armor_storm_armor;Zbroja szturmowca
 armor_tact_vest;Kamizelka taktyczna
+artificial_gill;Sztuczne skrzela
+attani_implant;Implant Attani
 attrib_agility;Zrêcznoœæ
 attrib_charisma;Charyzma
 attrib_hacking;Hakowanie
@@ -127,6 +130,27 @@ attrib_toughness;Twardoœæ
 attrib_willpower;Si³a Woli
 available_addon;Dodatek
 available_modification;Modyfikacja
+avionics_interface;Interfejs awioniczny
+bacta_implant;Implant przetwarzaj¹cy bacta
+battle_eye;Bojowe oko
+biocomputer;Biokomputer
+bionic_arm;Bioniczna rêka
+bionic_arm_hq;Wysoka jakoœæ
+bionic_arm_lq;Niska jakoœæ
+bionic_arm_nq;Normalna jakoœæ
+bionic_heart;Bioniczne serce
+bionic_heart_hq;Wysoka jakoœæ
+bionic_heart_nq;Normalna jakoœæ
+bionic_internal;Bioniczne narz¹dy
+bionic_internal_hq;Wysoka jakoœæ
+bionic_internal_nq;Normalna jakoœæ
+bionic_leg;Bioniczna noga
+bionic_leg_lq;Niska jakoœæ
+bionic_leg_nq;Normalna jakoœæ
+bionic_leq_hq;Wysoka jakoœæ
+bionic_lung;Bioniczne p³uca
+bionic_lung_hq;Wysoka jakoœæ
+bionics;Bionika
 blades;Ostrza
 blaster;Blastery
 blaster_pistol;Pistolet
@@ -221,25 +245,94 @@ desc_ability_survival3;Pozwala na zak³adanie trudnych do wykrycia pu³apek
 desc_ability_survival4;Pozwala na tworzenie materia³ów wybuchowych z powszechnie dostêpnych elementów
 desc_ability_willpower1;Pozwala na przerzut testów opartych na Sile Woli
 desc_addon;desc_addon
+desc_appraising_eye;desc_modifier_item
 desc_armor;
+desc_artificial_gill;desc_modifier_item
+desc_attani_implant;desc_modifier_item
+desc_avionics_interface;desc_modifier_item
+desc_bacta_implant;desc_modifier_item
+desc_battle_eye;desc_modifier_item
+desc_biocomputer;desc_modifier_item
+desc_bionic_arm;desc_modifier_item
+desc_bionic_arm_hq;desc_modifier_item
+desc_bionic_arm_lq;desc_modifier_item
+desc_bionic_arm_nq;desc_modifier_item
+desc_bionic_heart;desc_modifier_item
+desc_bionic_heart_hq;desc_modifier_item
+desc_bionic_heart_nq;desc_modifier_item
+desc_bionic_internal;desc_modifier_item
+desc_bionic_internal_hq;desc_modifier_item
+desc_bionic_internal_nq;desc_modifier_item
+desc_bionic_leg;desc_modifier_item
+desc_bionic_leg_lq;desc_modifier_item
+desc_bionic_leg_nq;desc_modifier_item
+desc_bionic_leq_hq;desc_modifier_item
+desc_bionic_lung;desc_modifier_item
+desc_bionic_lung_hq;desc_modifier_item
+desc_bionics;desc_modifier_item
 desc_blades;desc_melee_weapon
 desc_blaster;
 desc_blaster_pistol;desc_blaster_pistol
 desc_droid_item;
 desc_droid_module;
 desc_droid_part;
+desc_ear_implant;desc_modifier_item
+desc_electonic_eye;desc_modifier_item
+desc_electronic_eye_hq;desc_modifier_item
+desc_electronic_eye_lq;desc_modifier_item
+desc_electronic_eye_nq;desc_modifier_item
 desc_equipment_item;
-desc_holdout_blaster;
+desc_holdout_blaster;desc_holdout_blaster
+desc_implane_regen;desc_modifier_item
+desc_implant_agi;desc_modifier_item
+desc_implant_agi_hq;desc_modifier_item
+desc_implant_agi_nq;desc_modifier_item
+desc_implant_battle;desc_modifier_item
+desc_implant_battle_hq;desc_modifier_item
+desc_implant_battle_nq;desc_modifier_item
+desc_implant_cardio;desc_modifier_item
+desc_implant_cardio_hq;desc_modifier_item
+desc_implant_cardio_nq;desc_modifier_item
+desc_implant_int;desc_modifier_item
+desc_implant_int_hq;desc_modifier_item
+desc_implant_int_nq;desc_modifier_item
+desc_implant_lornan;desc_modifier_item
+desc_implant_perc;desc_modifier_item
+desc_implant_perc_hq;desc_modifier_item
+desc_implant_perc_nq;desc_modifier_item
+desc_implant_reflex;desc_modifier_item
+desc_implant_reflex_hq;desc_modifier_item
+desc_implant_reflex_nq;desc_modifier_item
+desc_implant_resist;desc_modifier_item
+desc_implant_resist_hq;desc_modifier_item
+desc_implant_resist_nq;desc_modifier_item
+desc_implant_str;desc_modifier_item
+desc_implant_str_hq;desc_modifier_item
+desc_implant_str_nq;desc_modifier_item
+desc_implant_tough;desc_modifier_item
+desc_implant_tough_hq;desc_modifier_item
+desc_implant_tough_nq;desc_modifier_item
+desc_implants;desc_modifier_item
+desc_implent_cha;desc_modifier_item
+desc_implent_cha_hq;desc_modifier_item
+desc_implent_cha_nq;desc_modifier_item
 desc_item;desc_item
 desc_large_mag;desc_large_mag
 desc_long_scope;
 desc_melee_weapon;
 desc_melee_weapon_modification;
+desc_memory_core;Pozwala postaci na zapamiêtanie ogromnych iloœci informacji i zgromadzenie ich w implancie. Implant nie wymaga kontaktu z komputerem, a dane na nim s¹ zaszyfrowane.
+desc_micro_motivator;desc_modifier_item
 desc_modification;
 desc_modifier_item;
+desc_new_item_5;desc_modifier_item
+desc_platinum_nails;desc_modifier_item
+desc_psicom;desc_modifier_item
 desc_ranged_weapon;
 desc_ranged_weapon_addon;
 desc_ranged_weapon_modification;
+desc_sensory_pack;desc_modifier_item
+desc_slave_implant;desc_modifier_item
 desc_trait_balanced;
 desc_trait_long;desc_trait_long
 desc_trait_short;
@@ -350,14 +443,52 @@ droid_weaponarms_small;Rêce droida uzbrojone ma³e
 droid_wrist-blade;Ostrze nadgarstkowe
 droid_wrist-blaster;Blaster nadgarstkowy
 droid_wrist-flamethrower;Nadgarstkowy miotacz ognia
+ear_implant;Implant uszny
+electonic_eye;Elektroniczne oko
+electronic_eye_hq;Wysoka jakoœæ
+electronic_eye_lq;Niska jakoœæ
+electronic_eye_nq;Normalna jakoœæ
 equipment_item;Wyposa¿enie
 fire_auto;Automatyczny
 fire_burst;Seria
 fire_mode;Tryb ognia
 fire_multi;Wielokrotny
 fire_single;Pojedynczy
-holdout_blaster;
+holdout_blaster;Blaster kieszonkowy
+implane_regen;Implant regeneracyjny
+implant_agi;Implant zrêcznoœciowy
+implant_agi_hq;Wysoka jakoœæ
+implant_agi_nq;Normalna jakoœæ
+implant_battle;Implant bojowy
+implant_battle_hq;Wysoka jakoœæ
+implant_battle_nq;Normalna jakoœæ
+implant_cardio;Implant kardiowaskularny
+implant_cardio_hq;Wysoka jakoœæ
+implant_cardio_nq;Normalna jakoœæ
+implant_int;Implant inteligencji
+implant_int_hq;Wysoka jakoœæ
+implant_int_nq;Normalna jakoœæ
+implant_lornan;Implant Lornan
+implant_perc;Implant percepcyjny
+implant_perc_hq;Wysoka jakoœæ
+implant_perc_nq;Normalna jakoœæ
+implant_reflex;Implant refleksowy
+implant_reflex_hq;Wysoka jakoœæ
+implant_reflex_nq;Implant refleksowy
+implant_resist;Implant odpornoœciowy
+implant_resist_hq;Implant odpornoœciowy
+implant_resist_nq;Implant odpornoœciowy
+implant_str;Implant si³owy
+implant_str_hq;Wysoka jakoœæ
+implant_str_nq;Normalna jakoœæ
 implant_strength_1;Implant wydajnoœciowy
+implant_tough;Implant wytrzyma³oœciowy
+implant_tough_hq;Wysoka jakoœæ
+implant_tough_nq;Normalna jakoœæ
+implants;Implanty
+implent_cha;Implant feromonowy
+implent_cha_hq;Wysoka jakoœæ
+implent_cha_nq;Normalna jakoœæ
 item;Przedmioty
 item_other;Inny
 large_mag;Du¿y magazynek
@@ -365,6 +496,8 @@ long_scope;Luneta
 max_magazine;Pojemnoœæ magazynka
 melee_weapon;Broñ bia³a
 melee_weapon_modification;Modyfikacje broni bia³ej
+memory_core;Pamiêtnik podkorowy
+micro_motivator;Mikromotywator
 modification;Modyfikacja
 modifier_droid_ability10_1;Analizator medyczny
 modifier_droid_ability10_2;Modu³ zabiegowy
@@ -411,6 +544,7 @@ modifier_droid_ability8_2;Modu³ analizy jêzyka
 modifier_droid_ability9_1;Modu³ mechaniki
 modifier_droid_ability9_2;Modu³ systemów mech.
 modifier_item;Przedmioty modyfikuj¹ce cechy
+new_item_5;Implanty
 param_availability;Dostêpnoœæ
 param_base_ap;Przebicie pancerza
 param_base_armor_chest;Korpus
@@ -458,10 +592,13 @@ param_speed_med;Normalny
 param_xp_free;XP wolne
 param_xp_total;XP wykorzystane
 parent;Kategoria nadrzêdna
+platinum_nails;Platynowe paznokcie
 price;Cena ca³kowita
+psicom;Psicom
 ranged_weapon;Broñ zasiêgowa
 ranged_weapon_addon;Dodatki do broni zasiêgowej
 ranged_weapon_modification;Modyfikacje broni zasiêgowej
+sensory_pack;Pakiet sensoryczny
 skill_analysis;Analiza
 skill_athletics;Atletyka
 skill_cheat;Oszustwo
@@ -494,27 +631,97 @@ skill_resistance;Odpornoœæ
 skill_security;Zabezpieczenia
 skill_survival;Sztuka przetrwania
 skill_systems;Systemy
+slave_implant;Implant niewolniczy
 tooltip;PodpowiedŸ
 tooltip_addon;tooltip_addon
+tooltip_appraising_eye;Stale podpiête do holonetu, pozwala na szybkie poznanie informacji o produkcie.
 tooltip_armor;
+tooltip_artificial_gill;Pozwala na oddychanie pod wod¹
+tooltip_attani_implant;tooltip_modifier_item
+tooltip_avionics_interface;Pozwala postaci na bezpoœrednie wpiêcie siê do nawikomputera
+tooltip_bacta_implant;Pozwala na wykorzystywanie do¿ylnego wlewu bacta w celach leczniczych
+tooltip_battle_eye;tooltip_modifier_item
+tooltip_biocomputer;Domózgowy wszczep pozwalaj¹cy na szybsze przetwarzanie informacji
+tooltip_bionic_arm;tooltip_modifier_item
+tooltip_bionic_arm_hq;tooltip_modifier_item
+tooltip_bionic_arm_lq;tooltip_modifier_item
+tooltip_bionic_arm_nq;tooltip_modifier_item
+tooltip_bionic_heart;tooltip_modifier_item
+tooltip_bionic_heart_hq;tooltip_modifier_item
+tooltip_bionic_heart_nq;tooltip_modifier_item
+tooltip_bionic_internal;tooltip_modifier_item
+tooltip_bionic_internal_hq;tooltip_modifier_item
+tooltip_bionic_internal_nq;tooltip_modifier_item
+tooltip_bionic_leg;tooltip_modifier_item
+tooltip_bionic_leg_lq;tooltip_modifier_item
+tooltip_bionic_leg_nq;tooltip_modifier_item
+tooltip_bionic_leq_hq;tooltip_modifier_item
+tooltip_bionic_lung;tooltip_modifier_item
+tooltip_bionic_lung_hq;tooltip_modifier_item
+tooltip_bionics;tooltip_modifier_item
 tooltip_blades;tooltip_melee_weapon
 tooltip_blaster;
 tooltip_blaster_pistol;tooltip_blaster_pistol
 tooltip_droid_item;
 tooltip_droid_module;
 tooltip_droid_part;
+tooltip_ear_implant;+10 Percepcji przy nas³uchiwaniu
+tooltip_electonic_eye;tooltip_modifier_item
+tooltip_electronic_eye_hq;tooltip_modifier_item
+tooltip_electronic_eye_lq;tooltip_modifier_item
+tooltip_electronic_eye_nq;tooltip_modifier_item
 tooltip_equipment_item;
-tooltip_holdout_blaster;
+tooltip_holdout_blaster;tooltip_holdout_blaster
+tooltip_implane_regen;+1 P¯/godzinê
+tooltip_implant_agi;tooltip_modifier_item
+tooltip_implant_agi_hq;tooltip_modifier_item
+tooltip_implant_agi_nq;tooltip_modifier_item
+tooltip_implant_battle;tooltip_modifier_item
+tooltip_implant_battle_hq;tooltip_modifier_item
+tooltip_implant_battle_nq;tooltip_modifier_item
+tooltip_implant_cardio;tooltip_modifier_item
+tooltip_implant_cardio_hq;tooltip_modifier_item
+tooltip_implant_cardio_nq;tooltip_modifier_item
+tooltip_implant_int;tooltip_modifier_item
+tooltip_implant_int_hq;tooltip_modifier_item
+tooltip_implant_int_nq;tooltip_modifier_item
+tooltip_implant_lornan;+20 do testu Og³uszenia
+tooltip_implant_perc;tooltip_modifier_item
+tooltip_implant_perc_hq;tooltip_modifier_item
+tooltip_implant_perc_nq;tooltip_modifier_item
+tooltip_implant_reflex;+2 do Inicjatywy
+tooltip_implant_reflex_hq;+3 do Inicjatywy
+tooltip_implant_reflex_nq;+2 do Inicjatywy
+tooltip_implant_resist;-3 do obra¿eñ wewnêtrznych
+tooltip_implant_resist_hq;Niewra¿liwoœæ na obra¿enia wewnêtrzne
+tooltip_implant_resist_nq;-3 do obra¿eñ wewnêtrznych
+tooltip_implant_str;tooltip_modifier_item
+tooltip_implant_str_hq;tooltip_modifier_item
+tooltip_implant_str_nq;tooltip_modifier_item
+tooltip_implant_tough;tooltip_modifier_item
+tooltip_implant_tough_hq;tooltip_modifier_item
+tooltip_implant_tough_nq;tooltip_modifier_item
+tooltip_implants;tooltip_modifier_item
+tooltip_implent_cha;tooltip_modifier_item
+tooltip_implent_cha_hq;tooltip_modifier_item
+tooltip_implent_cha_nq;tooltip_modifier_item
 tooltip_item;tooltip_item
 tooltip_large_mag;tooltip_large_mag
 tooltip_long_scope;
 tooltip_melee_weapon;
 tooltip_melee_weapon_modification;
+tooltip_memory_core;+20 do Wytrwa³oœci podczas przes³uchiwania
+tooltip_micro_motivator;Pozwala na tymczasowe zwiêkszenie wydajnoœci organizmu przez 1 godzinê. +1 do zmêczenia po ustaniu dzia³ania
 tooltip_modification;
 tooltip_modifier_item;
+tooltip_new_item_5;tooltip_modifier_item
+tooltip_platinum_nails;Naturalna broñ
+tooltip_psicom;Pozwala na bezpoœredni¹ komunikacjê z robotami
 tooltip_ranged_weapon;
 tooltip_ranged_weapon_addon;
 tooltip_ranged_weapon_modification;
+tooltip_sensory_pack;+10 Percepcji
+tooltip_slave_implant;Pozwala na zdaln¹ lokalizacjê, pora¿enie lub zabicie osoby z takim implantem
 tooltip_trait_balanced;
 tooltip_trait_long;tooltip_trait_long
 tooltip_trait_short;
