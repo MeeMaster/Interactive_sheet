@@ -75,16 +75,16 @@ class Character:
 
     def calculate_skill(self, skill, full=True):
         ski_value = 0
+        if skill not in self.skills:
+            return ["0"]
         ski_value += self.skills[skill]
         ski_bonus1, ski_bonus2 = self.get_skill_bonuses(skill)
         if self.is_robot and ski_bonus1 == 0 and ski_bonus2 == 0:
-            return 0
+            return ["0"]
         ski_value += ski_bonus1
         ski_value += ski_bonus2
         if full:
             attributes = self.attribute_skill_dict[skill]
-            modifier = self.read_modifier_items(skill, "modifier")
-            ski_value += modifier
             values = []
             for att in attributes:
                 values.append(str(self.calculate_attribute(att) + ski_value))
@@ -110,10 +110,13 @@ class Character:
             for bonus in item.bonuses:
                 if bonus.name == skill:
                     ski_value1 += bonus.value
+
         return ski_value1, ski_value2
 
     def calculate_attribute(self, attribute, full=True):
         att_value = 0
+        if attribute not in self.attributes:
+            return 0
         att_value += self.attributes[attribute]
         att_value += self.attribute_advancements[attribute]
         att_value += self.attribute_bonuses[attribute]

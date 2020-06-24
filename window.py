@@ -175,7 +175,7 @@ class MyWindowWidget(QWidget):
         abilities_layout = QVBoxLayout()
         column2_layout.addLayout(abilities_layout)
         names_inner_layout = self.fill_names(character_names)
-        inner_armor_layout = self.fill_armor(armor_names)
+        inner_armor_layout = self.fill_armor(armor_names, alternative)
         names_layout.addLayout(names_inner_layout)
         hitbox_widget = QWidget()
         hitbox_widget.setMinimumWidth(250)
@@ -261,7 +261,8 @@ class MyWindowWidget(QWidget):
         label.setStyleSheet("font: bold 14px")
         skills2_layout.addWidget(label)
         max_per_column = 15 if alternative else 25
-        for index, skill in enumerate(sorted(skill_names)):
+        skill_names = sorted(skill_names, key=lambda x: translate(x))
+        for index, skill in enumerate(skill_names):
             ski = SkillView(name=skill, display_name=translate(skill),
                             val_dict=self.skills_dict, alternative=alternative)
             if index < max_per_column:
@@ -300,7 +301,7 @@ class MyWindowWidget(QWidget):
         layout_3.addWidget(free_xp)
         return inner_names_layout
 
-    def fill_armor(self, armor_names):
+    def fill_armor(self, armor_names, alternative=False):
         inner_armor_layout = QVBoxLayout()
         head = QHBoxLayout()
         head.setContentsMargins(0, 0, 0, 0)
@@ -331,7 +332,8 @@ class MyWindowWidget(QWidget):
         current_pp = InputLine("param_pp_curr", val_dict=self.params_dict,
                                label=translate("param_pp_curr"), maxwidth=35, spacer="upper")
         fatigue = InputLine("param_fatigue", val_dict=self.params_dict,
-                            label=translate("param_fatigue"), maxwidth=35, spacer="upper")
+                            label=translate("param_fatigue") if not alternative else translate("param_battery"),
+                            maxwidth=35, spacer="upper")
         life.addWidget(total_hp)
         life.addWidget(current_hp)
         life.addWidget(total_pp)

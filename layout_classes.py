@@ -145,10 +145,12 @@ class ConditionalScrollContainer(ScrollContainer):
         kwargs["include"] = conditions
 
     def fill(self, items):
+        ok_items = []
         for item in items:
-            ok = False
             if is_types(item, self.conditions):
-                self.add_widget(item)
+                ok_items.append(item)
+        for item in sorted(ok_items, key=lambda x: x.display):
+            self.add_widget(item)
 
 
 class InputLine(QWidget):
@@ -445,11 +447,12 @@ class AbilityView(View):
         layout = QVBoxLayout()
         self.display_name = translate(ability.name)  # TODO
         self.description = translate(ability.description)
-        self.setToolTip(translate(ability.tooltip))
+        self.setToolTip(translate(ability.description))
         self.display = QLineEdit()
         layout.addWidget(self.display)
 
-        self.display_name += " {}".format(ability.value) if not is_types(ability, ["ability", "trait", "fire_mode"]) else ""
+        self.display_name += " {}".format(ability.value) \
+            if not is_types(ability, ["ability", "trait", "fire_mode"]) else ""
         self.display.setText(self.display_name)
         self.display.setEnabled(False)
         self.setLayout(layout)
@@ -1118,6 +1121,7 @@ class ModifierItemView(View):
         cost = QLabel("TODO COST")  # TODO
         cost_layout.addWidget(cost)
         layout.addLayout(name_layout)
+        layout.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Expanding, QSizePolicy.Minimum))
         layout.addLayout(self.values_layout)
         layout.addLayout(cost_layout)
         checkbox_layout = QVBoxLayout()

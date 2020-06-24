@@ -68,9 +68,6 @@ class Application:
         self.main_widget.equipment_tables.item_qty_changed.connect(self.change_item_quantity)
         self.main_widget.equipment_tables.move_item.connect(self.move_item)
         self.main_widget.equipment_tables.delete_item.connect(self.remove_item)
-        # self.main_widget.equipment_tables.edit_item.connect(self.edit_item)
-        # self.main_widget.equipment_tables.delete_item.connect(self.delete_item)
-
         self.update_form()
 
     def file_IO(self, *args):
@@ -209,14 +206,10 @@ class Application:
     def update_weapons(self):
         self.main_widget.scrolls["weapons"].clear()
         self.main_widget.scrolls["weapons"].fill(self.sheet.items)
-        # for weapon in self.sheet.weapons:
-        #     self.main_widget.scrolls["weapons"].add_widget(weapon)
 
     def update_armor(self):
         self.main_widget.scrolls["armor"].clear()
         self.main_widget.scrolls["armor"].fill(self.sheet.items)
-        # for armor in self.sheet.armor:
-        #     self.main_widget.scrolls["armor"].add_widget(armor)
         self.update_armor_values()
 
     def update_armor_values(self):
@@ -232,8 +225,6 @@ class Application:
             self.main_widget.scrolls["modules"].fill(self.sheet.items)
             self.main_widget.scrolls["parts"].clear()
             self.main_widget.scrolls["parts"].fill(self.sheet.items)
-        # for modifier in self.sheet.modifier_items:
-        #     self.main_widget.scrolls["modifiers"].add_widget(modifier)
 
     def update_notes(self):
         for note_name in self.sheet.notes:
@@ -265,10 +256,7 @@ class Application:
 
     def ability_validator(self, ability):
         already_bought = self.sheet.has_ability(ability.name)
-        # if already_bought:
-        #     already_bought = True
         requires = []
-        # requirements = ability.requirements
         for requirement in ability.requirements:
             if "ability_" in requirement:
                 requires.append(int(self.sheet.has_ability(requirement)) - 1)

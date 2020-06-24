@@ -210,7 +210,7 @@ class TableRequirementItem(QWidget):
             if data[n] is True:
                 if not n:
                     continue
-                label = QLabel(translate(n)[0])
+                label = QLabel(translate(n))
             else:
                 label = QLabel("{} {}".format(translate(n), data[n]))
             label.setStyleSheet("color: green") if status[index] == 0 else label.setStyleSheet("color: red")
@@ -570,11 +570,14 @@ class ItemListPopup(BasePopup):
             widget = MyTreeWidgetItem(parent)
             widget.set_text(child)
             children = get_children(child)
-            for child in children:
+            for child in sorted(children, key=lambda x: translate(self.full_data_dict[x]["display"])):
                 get_tree_objects(widget, child)
 
         for item_type in self.item_types:
-            for item in get_children(item_type, other_dict):
+            type_children = get_children(item_type, other_dict)
+            # print([type_children)
+            type_children = sorted(type_children, key=lambda x: translate(self.full_data_dict[x]["display"]))
+            for item in type_children:
                 get_tree_objects(self.tree_view, item)
 
     def get_item(self, item, column):
