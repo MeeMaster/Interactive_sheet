@@ -63,7 +63,9 @@ class ShootingWidget(QWidget):
         if weapon is not None:
             skill = weapon.base_skill
             if character is not None:
+                print(skill)
                 skill_value = character.calculate_skill(skill)
+                skill_value = max(map(int, skill_value))
                 self.skill_value.setText(skill_value)
         parameters_layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         parameters_layout.addWidget(self.skill_value)

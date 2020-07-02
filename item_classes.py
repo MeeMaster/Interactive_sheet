@@ -59,6 +59,7 @@ class Item:
         self.name = None
         self.price = 0
         self.weight = 0
+        self.display = None
         self.tooltip = None
         self.description = None
         self.availability = None

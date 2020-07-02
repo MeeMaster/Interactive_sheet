@@ -124,6 +124,17 @@ class Character:
             att_value += self.read_modifier_items(attribute)
         return att_value
 
+    def get_equipped_weapons(self):
+        items = []
+        for item in self.items:
+            if not item.equipped_quantity:
+                continue
+            if not is_type(item, "ranged_weapon"):
+                continue
+            items.append(item)
+
+        return items
+
     def calculate_armor(self):
         armor_dict = {}
         for armor_slot in self.armor_names:
@@ -303,5 +314,4 @@ class Character:
             if obj.name == ability:
                 return True
         return False
-        # return ability in self.abilities
 

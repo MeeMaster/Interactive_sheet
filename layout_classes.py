@@ -169,6 +169,7 @@ class InputLine(QWidget):
             self.label.setStyleSheet("font: 8px")
             self.label.setContentsMargins(0, 0, 0, 0)
             self.layout.addWidget(self.label)
+            self.layout.setSpacing(0)
         self.line = QLineEdit()
         self.line.editingFinished.connect(self.emit_changed)
         self.line.setContentsMargins(0, 0, 0, 0)
@@ -316,15 +317,16 @@ class SkillView(QWidget):
         advancement_layout.addWidget(self.advancement)
         self.layout.addLayout(advancement_layout)
         bonuses_layout = QVBoxLayout()
+        bonuses_layout.setSpacing(0)
         self.bonus = InputLine("bonus", dtype="int", enabled=not alternative)
         self.bonus.value_changed.connect(self.emit_changed)
         self.bonus.setFixedWidth(30)
-        self.bonus.setContentsMargins(0, 0, 0, 0)
+        # self.bonus.setContentsMargins(0, 0, 0, 0)
         bonuses_layout.addWidget(self.bonus)
         self.bonus2 = InputLine("bonus2", dtype="int", enabled=not alternative)
         self.bonus2.value_changed.connect(self.emit_changed)
         self.bonus2.setFixedWidth(30)
-        self.bonus2.setContentsMargins(0, 0, 0, 0)
+        # self.bonus2.setContentsMargins(0, 0, 0, 0)
         if alternative:
             bonuses_layout.addWidget(self.bonus2)
         self.layout.addLayout(bonuses_layout)
@@ -470,8 +472,11 @@ class WeaponView(View):
         self.setPalette(p)
         self.setAutoFillBackground(True)
         layout = QVBoxLayout()
+        layout.setSpacing(1)
         line1_layout = QHBoxLayout()
+        line1_layout.setSpacing(4)
         line2_layout = QHBoxLayout()
+        line1_layout.setSpacing(4)
         self.equipped_checkbox = EquippedCheckbox()
         self.equipped_checkbox.setChecked(self.item.equipped_quantity > 0)
         self.equipped_checkbox.stateChanged.connect(self.equip)
@@ -480,32 +485,32 @@ class WeaponView(View):
         # self.weapon_name.setFixedWidth(120
         self.weapon_name.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         line1_layout.addWidget(self.weapon_name, stretch=0)
-        self.weapon_type = LabelledLabel(label=translate("ui_weapon_type"))
+        self.weapon_type = LabelledLabel(label=translate("ui_weapon_type"), align_flag=Qt.AlignCenter)
         line1_layout.addWidget(self.weapon_type, stretch=0)
-        self.weapon_damage = LabelledLabel(label=translate("ui_weapon_damage"))
+        self.weapon_damage = LabelledLabel(label=translate("ui_weapon_damage"), align_flag=Qt.AlignCenter)
         line1_layout.addWidget(self.weapon_damage, stretch=0)
-        self.weapon_pp = LabelledLabel(label=translate("ui_weapon_ap"))
+        self.weapon_pp = LabelledLabel(label=translate("ui_weapon_ap"), align_flag=Qt.AlignCenter)
         line1_layout.addWidget(self.weapon_pp, stretch=0)
-        self.weapon_damage_type = LabelledLabel(label=translate("ui_weapon_damage_type"))
+        self.weapon_damage_type = LabelledLabel(label=translate("ui_weapon_damage_type"), align_flag=Qt.AlignCenter)
         line1_layout.addWidget(self.weapon_damage_type, stretch=0)
         if is_type(self.item, "ranged_weapon"):
-            self.weapon_ammo_cost = LabelledLabel(label=translate("ui_weapon_shotcost"))
+            self.weapon_ammo_cost = LabelledLabel(label=translate("ui_weapon_shotcost"), align_flag=Qt.AlignCenter)
             line1_layout.addWidget(self.weapon_ammo_cost, stretch=0)
             self.weapon_current_power = InputLine(name="power_magazine", label=translate("ui_weapon_magazine"),
-                                                  dtype="int", maxwidth=60)
+                                                  dtype="int", maxwidth=60, align_flag=Qt.AlignCenter)
             line1_layout.addWidget(self.weapon_current_power, stretch=0)
             self.weapon_current_power.value_changed.connect(self.modify_item)
-        self.weapon_weight = LabelledLabel(label=translate("ui_item_weight"))
+        self.weapon_weight = LabelledLabel(label=translate("ui_item_weight"), align_flag=Qt.AlignCenter)
         line2_layout.addWidget(self.weapon_weight, stretch=0)
-        self.weapon_value = LabelledLabel(label=translate("ui_item_price"))
+        self.weapon_value = LabelledLabel(label=translate("ui_item_price"), align_flag=Qt.AlignCenter)
         line2_layout.addWidget(self.weapon_value, stretch=0)
-        self.weapon_traits = LabelledLabel(label=translate("ui_item_traits"))
+        self.weapon_traits = LabelledLabel(label=translate("ui_item_traits"))  # TODO!
         self.weapon_traits.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         line2_layout.addWidget(self.weapon_traits, stretch=0)
         layout.addLayout(line1_layout, stretch=0)
         layout.addLayout(line2_layout, stretch=0)
-        layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        layout.setContentsMargins(0, 0, 0, 0)
+        # layout.addSpacerItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        layout.setContentsMargins(1, 1, 1, 1)
         self.fill_values()
         self.add_header_option("Edit", self.edit)
         self.setLayout(layout)
@@ -616,10 +621,11 @@ class EquippedCheckbox(QWidget):
         self.label.setStyleSheet("font: 8px")
         self.label.setContentsMargins(0, 0, 0, 0)
         self.layout.addWidget(self.label)
+        self.layout.setSpacing(0)
         self.checkbox = QCheckBox()
         self.checkbox.setContentsMargins(0, 0, 0, 0)
         self.layout.addWidget(self.checkbox)
-        self.layout.addItem(QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        # self.layout.addItem(QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.checkbox.stateChanged.connect(lambda: self.stateChanged.emit(self.checkbox.isChecked()))
         self.setLayout(self.layout)
@@ -804,8 +810,10 @@ class LabelledLabel(QWidget):
             self.label.setAlignment(align_flag)
             layout.addWidget(self.label)
         self.text = QLabel()
+        self.text.setAlignment(align_flag)
         self.text.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.text)
+        layout.setSpacing(0)
         if spacer == "lower":
             layout.addSpacerItem(QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding))
         if spacer == "upper":
@@ -1064,7 +1072,7 @@ class ItemTable(QWidget):
         header.setSectionResizeMode(4, QHeaderView.ResizeToContents)
 
     def fill_table(self, data):
-        data = [item for item in data if item.type == "item"]
+        data = sorted([item for item in data if item.type == "item"], key=lambda x: translate(x.display))
         data_len = len([item for item in data if item.equipped_quantity > 0]) if self.equipped else \
             len([item for item in data if (item.total_quantity != item.equipped_quantity) or item.total_quantity == 0])
         self.table.setRowCount(data_len)
@@ -1164,4 +1172,84 @@ class PropertyView(QWidget):
             layout.addWidget(self.cont)
         self.setToolTip("\n".join([translate(bonus.name)+": "+str(bonus.value) for bonus in bonuses]))
         self.setLayout(layout)
+
+
+class ActiveWeaponView(QWidget):
+    shoot_weapon = pyqtSignal(BaseObject)
+    swap_weapon = pyqtSignal(int)
+
+    def __init__(self):
+        QWidget.__init__(self)
+        layout = QHBoxLayout()
+        button_left_layout = QVBoxLayout()
+        weapon_layout = QVBoxLayout()
+        button_right_layout = QVBoxLayout()
+        layout.addLayout(button_left_layout)
+        layout.addLayout(weapon_layout)
+        layout.addLayout(button_right_layout)
+        self.setLayout(layout)
+
+        button_left = QToolButton()
+        button_left.setArrowType(Qt.LeftArrow)
+        button_left.clicked.connect(lambda: self.emit_swap(-1))
+        button_left_layout.addWidget(button_left)
+
+        button_right = QToolButton()
+        button_right.setArrowType(Qt.RightArrow)
+        button_right.clicked.connect(lambda: self.emit_swap(1))
+        button_right_layout.addWidget(button_right)
+
+        weapon_line1 = QHBoxLayout()
+        weapon_line2 = QHBoxLayout()
+        weapon_layout.addLayout(weapon_line1)
+        weapon_layout.addLayout(weapon_line2)
+
+        self.weapon = None
+        self.weapon_name = LabelledLabel("", align_flag=Qt.AlignCenter, label=translate("ui_item_name"))
+        self.weapon_damage = LabelledLabel("", align_flag=Qt.AlignCenter, label=translate("damage"))
+        self.weapon_ap = LabelledLabel("", align_flag=Qt.AlignCenter, label=translate("ap"))
+        self.weapon_damage_type = LabelledLabel("", align_flag=Qt.AlignCenter, label=translate("damage_type"))
+        weapon_line1.addWidget(self.weapon_name)
+        weapon_line1.addWidget(self.weapon_damage)
+        weapon_line1.addWidget(self.weapon_ap)
+        weapon_line1.addWidget(self.weapon_damage_type)
+
+        self.traits = LabelledLabel("", align_flag=Qt.AlignCenter, label=translate("name"))
+        self.shoot_button = QPushButton(translate("shoot"))
+        self.shoot_button.clicked.connect(self.emit_shoot)
+        self.reload_button = QPushButton(translate("reload"))
+        self.reload_button.clicked.connect(self.reload)
+        weapon_line2.addWidget(self.traits, stretch=4)
+        weapon_line2.addWidget(self.shoot_button, stretch=1)
+        weapon_line2.addWidget(self.reload_button, stretch=1)
+        self.update_fields()
+
+    def set_weapon(self, weapon):
+        self.weapon = weapon
+        self.update_fields()
+
+    def update_fields(self):
+        if self.weapon is None:
+            self.shoot_button.setEnabled(False)
+            self.reload_button.setEnabled(False)
+            return
+        self.shoot_button.setEnabled(True)
+        self.reload_button.setEnabled(True)
+        self.weapon_name.set_text(self.weapon.display)
+        self.weapon_damage.set_text(str(self.weapon.damage))
+        self.weapon_ap.set_text(str(self.weapon.ap))
+        self.weapon_damage_type.set_text(self.weapon.damage_type)
+
+    def emit_swap(self, val):
+        self.swap_weapon.emit(val)
+
+    def emit_shoot(self):
+        self.shoot_weapon.emit(self.weapon)
+
+    def reload(self):
+        if self.weapon is None:
+            return
+        self.weapon.power_magazine = int(self.weapon.max_magazine)
+        self.update_fields()
+
 

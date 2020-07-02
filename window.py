@@ -106,8 +106,8 @@ class MainWindow(QMainWindow):
         self.current_file_path = None
         self.close_popup()
 
-    def open_calculator(self):
-        self.popup = ShootingWidget()
+    def open_calculator(self, weapon=None, sheet=None):
+        self.popup = ShootingWidget(character=sheet, weapon=weapon)
         self.popup.closed.connect(self.close_popup)
         self.popup.show()
 
@@ -129,9 +129,9 @@ class MyWindowWidget(QWidget):
         self.main_layout = QHBoxLayout(self)
         self.main_sheet_layout = QVBoxLayout()
         self.main_layout.addLayout(self.main_sheet_layout, 6)
-        self.actions_panel_layout = QVBoxLayout()
-        self.main_layout.addLayout(self.actions_panel_layout, 1)
-        self.actions_panel_layout.setSizeConstraint(3)
+        # self.actions_panel_layout = QVBoxLayout()
+        # self.main_layout.addLayout(self.actions_panel_layout, 1)
+        # self.actions_panel_layout.setSizeConstraint(3)
         # self.character = None
         self.tabs = QTabWidget()
         self.main_sheet_layout.addWidget(self.tabs, 9)
@@ -164,7 +164,7 @@ class MyWindowWidget(QWidget):
         page1.addLayout(parameters_layout)
         character_layout = QHBoxLayout()
         page1.addLayout(character_layout)
-        page1.addSpacerItem(QSpacerItem(40, 200, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        # page1.addSpacerItem(QSpacerItem(40, 200, QSizePolicy.Minimum, QSizePolicy.Expanding))
         column2_layout = QVBoxLayout()
         skills_hitbox_layout = QHBoxLayout()
         skills1_layout, skills2_layout = self.fill_skills(skill_names, alternative=alternative)
@@ -179,7 +179,7 @@ class MyWindowWidget(QWidget):
         names_layout.addLayout(names_inner_layout)
         hitbox_widget = QWidget()
         hitbox_widget.setMinimumWidth(250)
-        hitbox_widget.setMinimumHeight(450)
+        # hitbox_widget.setMinimumHeight(450)
         skills_hitbox_layout.addWidget(hitbox_widget)
         hitbox_widget.setLayout(inner_armor_layout)
         # Set Attributes
@@ -189,6 +189,12 @@ class MyWindowWidget(QWidget):
                                     validator=validator, alternative=alternative, popup=AbilityPopup)
         self.scrolls["abilities"] = abilities
         abilities_layout.addWidget(abilities)
+
+        current_weapon_layout = QVBoxLayout()
+        self.current_weapon_widget = ActiveWeaponView()
+        current_weapon_layout.addWidget(self.current_weapon_widget)
+        page1.addLayout(current_weapon_layout)
+        # current_weapon_widget =
 
     def fill_parameters(self):
         parameters_layout = QHBoxLayout()
@@ -257,9 +263,11 @@ class MyWindowWidget(QWidget):
         label = QLabel(translate("ui_skills"))
         label.setStyleSheet("font: bold 14px")
         skills1_layout.addWidget(label)
+        skills1_layout.setSpacing(1)
         label = QLabel(" ")
         label.setStyleSheet("font: bold 14px")
         skills2_layout.addWidget(label)
+        skills2_layout.setSpacing(1)
         max_per_column = 15 if alternative else 25
         skill_names = sorted(skill_names, key=lambda x: translate(x))
         for index, skill in enumerate(skill_names):
@@ -269,8 +277,8 @@ class MyWindowWidget(QWidget):
                 skills1_layout.addWidget(ski)
             else:
                 skills2_layout.addWidget(ski, stretch=0)
-        skills1_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        skills2_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        skills1_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        skills2_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Minimum, QSizePolicy.Expanding))
         return skills1_layout, skills2_layout
 
     def fill_attributes(self, attributes_layout, attribute_names, alternative):
@@ -304,24 +312,25 @@ class MyWindowWidget(QWidget):
     def fill_armor(self, armor_names, alternative=False):
         inner_armor_layout = QVBoxLayout()
         head = QHBoxLayout()
-        head.setContentsMargins(0, 0, 0, 0)
+        # head.setContentsMargins(0, 0, 0, 0)
         arms = QHBoxLayout()
-        arms.setContentsMargins(0, 0, 0, 0)
+        # arms.setContentsMargins(0, 0, 0, 0)
         legs = QHBoxLayout()
-        legs.setContentsMargins(0, 0, 0, 0)
+        # legs.setContentsMargins(0, 0, 0, 0)
         life = QHBoxLayout()
-        life.setContentsMargins(0, 0, 0, 0)
+        # life.setContentsMargins(0, 0, 0, 0)
         label_layout = QHBoxLayout()
         label = QLabel(translate("ui_armor"))
         label.setStyleSheet("font: bold 14px")
-        label.setContentsMargins(0, 0, 0, 0)
+        # label.setContentsMargins(0, 0, 0, 0)
         label.setAlignment(Qt.AlignCenter)
         label_layout.addWidget(label)
-        label_layout.setContentsMargins(0, 0, 0, 0)
+        # label_layout.setContentsMargins(0, 0, 0, 0)
         inner_armor_layout.addLayout(label_layout)
-        inner_armor_layout.addLayout(head, 2)
-        inner_armor_layout.addLayout(arms, 3)
-        inner_armor_layout.addLayout(legs, 2)
+        inner_armor_layout.setSpacing(0)
+        inner_armor_layout.addLayout(head, 1)
+        inner_armor_layout.addLayout(arms, 2)
+        inner_armor_layout.addLayout(legs, 1)
         inner_armor_layout.addLayout(life, 1)
         total_hp = InputLine("param_hp_max", val_dict=self.params_dict,
                              label=translate("param_hp_max"), maxwidth=35, spacer="upper")

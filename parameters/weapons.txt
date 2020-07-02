@@ -18,7 +18,6 @@ blaster:ranged_weapon
 t_name = blaster
 t_damage_type = damage_e
 i_base_damage = 6
-t_skill = skill_ranged_light
 t_hands = 1.0
 i_power_magazine = 100
 i_base_max_magazine = 100

@@ -4,7 +4,8 @@ from item_classes import BaseObject
 # from copy import deepcopy
 
 ALL_OBJECTS_DICT = {}
-
+translations = {}
+locale = "PL"
 
 def load_parameters(alternative=False):
     parameters = {"param": [],
@@ -42,70 +43,39 @@ def get_all_data():
     return ALL_OBJECTS_DICT
 
 
+def load_translations():
+    global translations
+    global locale
+    locale_file = path.join("locales", "translations_{}.csv".format(locale))
+    if not path.exists(locale_file):
+        # print("Could not localize locale file '{}'".format(locale_file))
+        locale_file = path.join("locales", "translations_{}.csv".format("EN"))
+        if not path.exists(locale_file):
+            return
+    with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
+        for line in infile:
+            if not line.strip():
+                continue
+            if line.strip().startswith("#"):
+                continue
+            # if not line.startswith(name):
+            #     continue
+            read_name, translation = line.strip().split(";")
+            translations[read_name] = translation
+
+
 def translate(name, locale="PL", supp_dict=None):
     if not name.strip():
         return ""
     if supp_dict is None:
-        locale_file = path.join("locales", "translations_{}.csv".format(locale))
-        if not path.exists(locale_file):
-            # print("Could not localize locale file '{}'".format(locale_file))
-            locale_file = path.join("locales", "translations_{}.csv".format("EN"))
-            if not path.exists(locale_file):
-                return name
-        with codecs.open(locale_file, "r", encoding="windows-1250", errors='ignore') as infile:
-            for line in infile:
-                if not line.startswith(name):
-                    continue
-                read_name, translation = line.strip().split(";")
-                if read_name == name:
-                    return translation
+        if not translations:
+            load_translations()
+        if name not in translations:
             print("No translation found for value '{}' and locale '{}'".format(name, locale))
             return name
+        return translations[name]
     else:
         return supp_dict[name]
-
-
-def read_objects(filepath):
-    objects = {}
-    with open(filepath, "r") as infile:
-        current_object = None
-        for line in infile:
-            valid_line = line.split("#")[0].strip()
-            if not valid_line.strip():
-                continue
-            if "////" in valid_line:
-                current_object = None
-                continue
-            if current_object is None:
-                if ":" not in valid_line:
-                    continue
-                current_object, parent = valid_line.split(":")
-                objects[current_object] = {"parent": parent, "name": current_object}
-                continue
-            parameter, value = valid_line.split("=")
-            parameter_type = parameter.split("_")[0]
-            parameter = "_".join(parameter.split("_")[1:])
-            parameter = parameter.strip()
-            value = value.strip()
-
-            if parameter_type == "i":
-                try:
-                    value = int(value)
-                except:
-                    value = 0
-            elif parameter_type == "f":
-                try:
-                    value = float(value)
-                except:
-                    value = 0.0
-            if parameter_type == "l":
-                value = value.split(",")
-                for index in reversed(range(len(value))):
-                    value[index] = value[index].strip()
-                    if not value[index]:
-                        del value[index]
-            objects[current_object][parameter] = value
-    return objects
 
 
 def is_leaf(object_name, other_dict=None):
@@ -163,6 +133,50 @@ def is_types(item, item_types):
         return get_data(parent_dict["parent"])
     result = get_data(item)
     return result
+
+
+def read_objects(filepath):
+    objects = {}
+    with open(filepath, "r") as infile:
+        current_object = None
+        for line in infile:
+            valid_line = line.split("#")[0].strip()
+            if not valid_line.strip():
+                continue
+            if "////" in valid_line:
+                current_object = None
+                continue
+            if current_object is None:
+                if ":" not in valid_line:
+                    continue
+                current_object, parent = valid_line.split(":")
+                objects[current_object] = {"parent": parent, "name": current_object}
+                continue
+
+            parameter, value = valid_line.split("=")
+            parameter_type = parameter.split("_")[0]
+            parameter = "_".join(parameter.split("_")[1:])
+            parameter = parameter.strip()
+            value = value.strip()
+
+            if parameter_type == "i":
+                try:
+                    value = int(value)
+                except:
+                    value = 0
+            elif parameter_type == "f":
+                try:
+                    value = float(value)
+                except:
+                    value = 0.0
+            if parameter_type == "l":
+                value = value.split(",")
+                for index in reversed(range(len(value))):
+                    value[index] = value[index].strip()
+                    if not value[index]:
+                        del value[index]
+            objects[current_object][parameter] = value
+    return objects
 
 
 def get_object_data(object_name, other_dict=None):
@@ -231,6 +245,7 @@ def get_full_data(object_dict, item):
         for key in parent_dict:
             if key in item_dict:
                 continue
+            if item == "blaster":
             if isinstance(parent_dict[key], int):
                 item_dict[key] = int(parent_dict[key])
             elif isinstance(parent_dict[key], float):

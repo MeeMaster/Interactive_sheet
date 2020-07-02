@@ -68,7 +68,21 @@ class Application:
         self.main_widget.equipment_tables.item_qty_changed.connect(self.change_item_quantity)
         self.main_widget.equipment_tables.move_item.connect(self.move_item)
         self.main_widget.equipment_tables.delete_item.connect(self.remove_item)
+        self.main_widget.current_weapon_widget.shoot_weapon.connect(self.shoot_weapon)
+        self.main_widget.current_weapon_widget.swap_weapon.connect(self.swap_weapon)
         self.update_form()
+
+    def shoot_weapon(self, weapon):
+        self.main_window.open_calculator(sheet=self.sheet, weapon=weapon)
+
+    def swap_weapon(self, direction):
+        weapons = self.sheet.get_equipped_weapons()
+        weapons = sorted(weapons, key=lambda x: x.name)
+        current_weapon = self.main_widget.current_weapon_widget.weapon
+        if current_weapon not in weapons:
+            self.main_widget.current_weapon_widget.set_weapon(weapons[0])
+            return
+
 
     def file_IO(self, *args):
         path, action = args
