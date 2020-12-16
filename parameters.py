@@ -7,6 +7,7 @@ ALL_OBJECTS_DICT = {}
 translations = {}
 locale = "PL"
 
+
 def load_parameters(alternative=False):
     parameters = {"param": [],
                   "armor": [],
@@ -245,7 +246,6 @@ def get_full_data(object_dict, item):
         for key in parent_dict:
             if key in item_dict:
                 continue
-            if item == "blaster":
             if isinstance(parent_dict[key], int):
                 item_dict[key] = int(parent_dict[key])
             elif isinstance(parent_dict[key], float):
@@ -321,5 +321,6 @@ def read_all_objects(full_data=True):
 
 def reload_objects():
     read_all_objects()
+
 
 read_all_objects()
